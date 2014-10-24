@@ -2,16 +2,33 @@
     <ion-content class="db-login-page">
         <div class="db-login">
             <div class="row">
-                <div class="col col-80 col-offset-10 db-login-button">
+                <div class="col col-84 col-offset-2 db-login-button">
                     <h1>Dropbyke</h1>
 
-                    <p>Byke sharing service</p>
+                    <p>Bike sharing service</p>
 
-                    <div class="padding-top">
-                        <button class="button button-positive" ng-click="vm.login()">Facebook login {{vm.msg}}</button>
-                    </div>
+
+
                 </div>
             </div>
         </div>
+
     </ion-content>
+    <div style="position:fixed; bottom: 0; height: 150px; width: 100%;">
+
+        <div class="padding-left padding-right">
+            <button class="button icon-facebook icon-facebook button-positive button-block" ng-click="vm.login()">
+
+                Log in with Facebook
+            </button>
+        </div>
+
+        <div class="padding-left padding-right">
+            <button class="button button-outline button-block" ng-click="vm.loginWithPhone()">Log
+                in with phone number
+            </button>
+        </div>
+
+    </div>
 </ion-view>
+

@@ -6,11 +6,11 @@ define([
 
     angular.module('dropbike.login').service('facebook', facebook);
 
-    facebook.$inject = ['$q', '$timeout', '$log', 'facebookId'];
+    facebook.$inject = ['$q', '$timeout', '$log', 'FACEBOOK_ID'];
 
-    function facebook($q, $timeout, $log, facebookId) {
+    function facebook($q, $timeout, $log, FACEBOOK_ID) {
 
-        $log.log("facebookId", facebookId);
+        $log.log("facebookId", FACEBOOK_ID);
 
         var apiDeferred;
 
@@ -33,7 +33,7 @@ define([
                 window.fbAsyncInit = function () {
                     apiDeferred.resolve(facebookConnectPlugin);
                     $timeout.cancel(fbTimeout);
-                    facebookConnectPlugin.browserInit(facebookId);
+                    facebookConnectPlugin.browserInit(FACEBOOK_ID);
                 };
 
                 require(["../lib/facebookConnectPlugin"]);

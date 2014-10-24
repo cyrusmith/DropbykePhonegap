@@ -31,7 +31,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     size: auto;
   }
   .db-login-button {
-    margin-top: 10rem;
+    margin-top: 6rem;
     text-align: center;
     h1, p {
       font: {
@@ -82,5 +82,29 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     }
   }
 
+}
+
+.icon-facebook:before {
+  content: ' ';
+  width: 1.5rem;
+  height: 1.5rem;
+  position: relative;
+  top: .4rem;
+  background: {
+    image: url(../img/ic-facebook.png);
+    repeat: no-repeat;
+    position: 50% 50%;
+  };
+  display: inline-block;
+  font-family: "Ionicons";
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  text-rendering: auto;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 

@@ -12,19 +12,24 @@ define([
 
     angular.module('dropbike.login').controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$ionicLoading', '$q', '$log', '$state', 'facebook', 'UserModel'];
+    LoginController.$inject = ['$ionicLoading', '$localStorage', '$http', '$q', '$log', '$state', 'facebook', 'UserModel', 'BACKEND_URL'];
 
-    function LoginController($ionicLoading, $q, $log, $state, facebook, UserModel) {
+    function LoginController($ionicLoading, $localStorage, $http, $q, $log, $state, facebook, UserModel, BACKEND_URL) {
 
         var vm = this;
         vm.login = login;
+        vm.loginWithPhone = loginWithPhone;
 
         init();
+
+        function loginWithPhone() {
+            $state.go('app.phoneconfirm');
+        }
 
         function login() {
 
             $ionicLoading.show({
-                template: 'Loading...'
+                template: '<i class="icon ion-loading-c"></i> Loading...'
             });
 
             doLogin().then(function (res) {
@@ -44,11 +49,10 @@ define([
 
                 $state.go('app.phoneconfirm');
 
-
             }, function () {
                 $ionicLoading.hide();
                 $log.log("Login rejected");
-            });
+            })
         }
 
         function getLoginStatus() {
@@ -57,7 +61,8 @@ define([
             facebook.getApi().then(function (fbApi) {
 
                 fbApi.getLoginStatus(function success(result) {
-                     if (result.status == "connected") {
+                    if (result.status == "connected") {
+                        $log.log(result);
                         deferred.resolve(true);
                     }
                     else {
@@ -82,6 +87,14 @@ define([
                 var deferred = $q.defer();
                 fbApi.login(["public_profile", "user_photos"], function succes(response) {
                     $log.log("login response", response);
+                    if (response.authResponse) {
+                        $localStorage.facebook = {
+                            token: response.authResponse.accessToken,
+                            expiresIn: response.authResponse.expiresIn,
+                            signedRequest: response.authResponse.signedRequest,
+                            userID: response.authResponse.signedRequest
+                        }
+                    }
                     deferred.resolve(response);
                 }, function failure(res) {
                     $log.log("login failure", res);
