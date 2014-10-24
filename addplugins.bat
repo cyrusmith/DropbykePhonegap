@@ -1,0 +1,1 @@
+cordova -d plugin add d:\tmp\phonegap-facebook-plugin\ --variable APP_ID="297052723828418" --variable APP_NAME="Dropbike"

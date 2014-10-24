@@ -1,0 +1,35 @@
+<ion-view>
+
+    <ion-nav-buttons side="left">
+        <div class="buttons">
+            <button class="button button-clear ion-arrow-left-c" ng-click="vm.changeNumber()"></button>
+        </div>
+    </ion-nav-buttons>
+
+    <ion-content class="db-page-phone-verifycode">
+
+        <div class="title">
+            <i class="ion-checkmark-round"></i><br><br>
+            Verify your phone number
+        </div>
+
+        <div class="list list-inset">
+            <label class="item item-input">
+                <i class="icon ion-ios7-telephone placeholder-icon"></i>
+                <input type="text" placeholder="Code from SMS" ng-model="vm.code">
+            </label>
+            <div class="padding-top">
+                <button class="button button-calm button-block" ng-click="vm.submit()">
+                    Verify
+                </button>
+            </div>
+            <div class="padding-top resend">
+                <a href="javascript:void(0)" ng-click="vm.resendSMS()">Resend code</a>
+            </div>
+            <div class="padding-top chagenumber">
+                <a href="javascript:void(0)" ng-click="vm.changeNumber()">Change phone number</a>
+            </div>
+        </div>
+
+    </ion-content>
+</ion-view>

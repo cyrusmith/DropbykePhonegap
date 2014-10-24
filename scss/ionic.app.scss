@@ -1,0 +1,86 @@
+/*
+To customize the look and feel of Ionic, you can override the variables
+in ionic's _variables.scss file.
+
+For example, you might change some of the default colors:
+
+$light:                           #fff !default;
+$stable:                          #f8f8f8 !default;
+$positive:                        #4a87ee !default;
+$calm:                            #43cee6 !default;
+$balanced:                        #66cc33 !default;
+$energized:                       #f0b840 !default;
+$assertive:                       #ef4e3a !default;
+$royal:                           #8a6de9 !default;
+$dark:                            #444 !default;
+*/
+
+// The path for our ionicons font files, relative to the built CSS in www/css
+$ionicons-font-path: "../lib/ionic/fonts" !default;
+
+// Include all of Ionic
+@import "../www/lib/ionic/scss/ionic";
+
+@import url(http://fonts.googleapis.com/css?family=Righteous);
+
+.db-login-page {
+  background: {
+    image: url(../img/loginbg.jpg);
+    repeat: no-repeat;
+    position: 50% 50%;
+    size: auto;
+  }
+  .db-login-button {
+    margin-top: 10rem;
+    text-align: center;
+    h1, p {
+      font: {
+        family: 'Righteous', Arial, Helvetica, sans-serif;
+      }
+      color: #FFF;
+    }
+
+    h1 {
+      white-space: nowrap;
+      font-size: 3rem;
+    }
+    p {
+      white-space: nowrap;
+      font-size: 1rem;
+    }
+
+  }
+}
+
+.db-page-phone-confirm,
+.db-page-phone-verifycode {
+  .title {
+    color: #555;
+    i {
+      font-size: 2rem;
+    }
+    margin-top: 4rem;
+    font-size: 1.4rem;
+    text-align: center;
+  }
+}
+
+.db-page-phone-verifycode {
+
+  .resend {
+    text-align: center;
+    a {
+      color: #1aaac3;
+      font-size: 0.7rem;
+    }
+  }
+
+  .chagenumber {
+    text-align: center;
+    a {
+      color: #478f24;
+    }
+  }
+
+}
+
