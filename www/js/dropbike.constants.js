@@ -6,7 +6,7 @@ define([
 
     angular.module('dropbike')
         .constant("FACEBOOK_ID", "297052723828418")
-        .constant('BACKEND_URL', 'http://localhost:8080/DropbikeBackend');
+        .constant('BACKEND_URL', 'http://localhost:8081/DropbikeBackend');
 
 });
 

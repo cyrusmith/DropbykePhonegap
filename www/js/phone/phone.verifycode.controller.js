@@ -6,9 +6,9 @@ define([
 
     angular.module('dropbike.phone').controller('PhoneVerifyCodeController', PhoneVerifyCodeController);
 
-    PhoneVerifyCodeController.$inject = ['$ionicPopup', '$state', 'confirmService'];
+    PhoneVerifyCodeController.$inject = ['$ionicPopup', '$localStorage', '$state', 'confirmService'];
 
-    function PhoneVerifyCodeController($ionicPopup, $state, confirmService) {
+    function PhoneVerifyCodeController($ionicPopup, $localStorage, $state, confirmService) {
 
         var vm = this;
 
@@ -30,7 +30,7 @@ define([
 
             if (!vm.code) {
 
-                var myPopup = $ionicPopup.show({
+                 $ionicPopup.show({
                     title: 'Code not set',
                     buttons: [
                         {
@@ -43,7 +43,21 @@ define([
                 return;
             }
 
-            confirmService.verifyCode(vm.code)
+            if(!$localStorage.phone_verification_key) {
+                $ionicPopup.show({
+                    title: 'Set your phone number first',
+                    buttons: [
+                        {
+                            text: 'Ok',
+                            type: 'button-assertive'
+                        }
+                    ]
+                });
+                $state.go('app.phoneconfirm');
+                return;
+            }
+
+            confirmService.verifyCode(vm.code, $localStorage.phone_verification_key)
                 .then(function () {
 
                     $ionicPopup.show({

@@ -5,8 +5,8 @@ define([
     'use strict';
 
     angular.module('dropbike.phone').controller('PhoneController', PhoneController);
-    PhoneController.$inject = ['$ionicPopup', '$ionicLoading', '$log', '$state', 'confirmService'];
-    function PhoneController($ionicPopup, $ionicLoading, $log, $state, confirmService) {
+    PhoneController.$inject = ['$ionicPopup', '$ionicLoading', '$localStorage', '$log', '$state', 'confirmService'];
+    function PhoneController($ionicPopup, $ionicLoading, $localStorage, $log, $state, confirmService) {
 
         var vm = this;
 
@@ -41,6 +41,7 @@ define([
                 .then(function (result) {
                     $ionicLoading.hide();
                     $log.log("submitSMS result", result);
+                    $localStorage.phone_verification_key = result.data.request_key;
                     $state.go('app.phoneverifycode')
                 }, function () {
                     $ionicLoading.hide();

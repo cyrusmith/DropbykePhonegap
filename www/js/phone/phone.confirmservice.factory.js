@@ -6,9 +6,9 @@ define([
 
     angular.module('dropbike.phone').factory('confirmService', confirmService);
 
-    confirmService.$inject = ['$q', '$http', '$log', 'BACKEND_URL'];
+    confirmService.$inject = ['$q', '$http', '$log', 'authService', 'BACKEND_URL'];
 
-    function confirmService($q, $http, $log, BACKEND_URL) {
+    function confirmService($q, $http, $log, authService, BACKEND_URL) {
 
         return {
             submitSMS: submitSMS,
@@ -32,21 +32,28 @@ define([
             return deferred.promise;
         }
 
-        function verifyCode(code) {
+        function verifyCode(code, key) {
 
-            var defer = $q.defer();
+            var deferred = $q.defer();
 
-            setTimeout(function () {
-                if (code == "000000") {
-                    defer.resolve(true);
-                }
-                else {
-                    defer.reject(true);
-                }
+            $http.post(BACKEND_URL + "/api/verify", {
+                "code": code,
+                "verify_key": key
+            }).then(function success(resp) {
+                    $log.log("verifyCode success", resp);
+                    if(!!resp.data.access_token) {
+                        authService.setToken(resp.data.access_token);
+                        deferred.resolve(resp);
+                    }
+                    else {
+                        reject(resp);
+                    }
+                }, function fail(resp) {
+                    $log.log("verifyCode fail", resp);
+                    deferred.reject(resp);
+                });
 
-            }, 1000);
-
-            return defer.promise;
+            return deferred.promise;
         }
 
     }
