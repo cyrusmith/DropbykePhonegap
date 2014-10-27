@@ -1,6 +1,8 @@
 define([
     "angular"
-], function(angular) {
+], function (angular) {
+
+    'use strict';
 
     angular.module('dropbike')
 
@@ -90,8 +92,22 @@ define([
                         controller: 'PhoneVerifyCodeController as vm'
                     }
                 }
-            })
+            });
 
+    });
+
+    angular.module('dropbike.card').config(function ($stateProvider) {
+
+        $stateProvider
+            .state('app.addcard', {
+                url: "/addcard",
+                views: {
+                    'menuContent': {
+                        templateUrl: "js/card/card.data.tpl.html",
+                        controller: 'CardController as vm'
+                    }
+                }
+            });
 
     });
 

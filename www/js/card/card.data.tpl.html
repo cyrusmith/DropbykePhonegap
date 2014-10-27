@@ -1,0 +1,39 @@
+<ion-view hide-nav-bar="true">
+    <ion-content class="db-page-addcard">
+
+        <div class="title">
+            <i class="icon ion-card"></i><br><br>
+            Add a credit card
+        </div>
+
+        <div class="list list-inset">
+            <label class="item item-input item-stacked-label">
+                <span class="input-label"><i class="icon ion-card placeholder-icon"></i>&nbsp;Number</span>
+                <input type="text" placeholder="4242 4242 4242 4242" ng-model="vm.card">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label"><i class="icon ion-person placeholder-icon"></i>&nbsp;Name</span>
+                <input type="text" placeholder="John Doe" ng-model="vm.name">
+            </label>
+
+            <label class="item item-input item-stacked-label">
+                <span class="input-label"><i class="icon ion-ios7-calendar placeholder-icon"></i>&nbsp;Expire</span>
+                <input type="text" placeholder="01/17" ng-model="vm.expire" ng-keyup="vm.validateExpire()">
+            </label>
+
+
+            <label class="item item-input item-stacked-label">
+                <span class="input-label"><i class="icon ion-ios7-locked placeholder-icon"></i>&nbsp;CVC</span>
+                <input type="text" placeholder="123" ng-model="vm.cvc" ng-keyup="vm.validateCVC()">
+            </label>
+
+
+            <div class="padding-top">
+                <button class="button button-calm button-block" ng-click="vm.submit()">
+                    Add card
+                </button>
+            </div>
+        </div>
+
+    </ion-content>
+</ion-view>

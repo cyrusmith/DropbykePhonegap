@@ -2,12 +2,13 @@ define([
     "angular",
     "login/login.module",
     "phone/phone.module",
+    "card/card.module",
     "controllers"
 ], function (angular) {
 
     'use strict';
 
-    angular.module('dropbike', ['ionic', 'dropbike.login', 'dropbike.phone', 'dropbike.controllers']);
+    angular.module('dropbike', ['ionic', 'dropbike.login', 'dropbike.phone', 'dropbike.card', 'dropbike.controllers']);
 
     require([
         "dropbike.constants",

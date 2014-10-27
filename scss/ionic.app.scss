@@ -53,7 +53,8 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 }
 
 .db-page-phone-confirm,
-.db-page-phone-verifycode {
+.db-page-phone-verifycode,
+.db-page-addcard {
   .title {
     color: #555;
     i {
@@ -62,6 +63,12 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     margin-top: 4rem;
     font-size: 1.4rem;
     text-align: center;
+  }
+}
+
+.db-page-addcard {
+  .title {
+    margin-top: 1rem;
   }
 }
 
@@ -94,7 +101,8 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     image: url(../img/ic-facebook.png);
     repeat: no-repeat;
     position: 50% 50%;
-  };
+  }
+  ;
   display: inline-block;
   font-family: "Ionicons";
   speak: none;
@@ -106,5 +114,12 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.expirecvc {
+  padding: 0;
+  .col {
+    padding: 0;
+  }
 }
 
