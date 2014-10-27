@@ -3,16 +3,27 @@ define([
     "login/login.module",
     "phone/phone.module",
     "card/card.module",
+    "offline/offline.module",
+    "search/search.module",
     "controllers"
 ], function (angular) {
 
     'use strict';
 
-    angular.module('dropbike', ['ionic', 'dropbike.login', 'dropbike.phone', 'dropbike.card', 'dropbike.controllers']);
+    angular.module('dropbike', [
+        'ionic',
+        'dropbike.login',
+        'dropbike.phone',
+        'dropbike.card',
+        'dropbike.offline',
+        'dropbike.search',
+        'dropbike.controllers']);
 
     require([
         "dropbike.constants",
-        "dropbike.routes.config"
+        "dropbike.config",
+        "dropbike.routes.config",
+        "dropbike.interceptor"
     ], function () {
 
         angular.module('dropbike')

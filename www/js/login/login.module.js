@@ -15,7 +15,8 @@ define([
         "login/login.controller",
         "login/login.user.factory",
         "login/login.facebook.factory",
-        "login/login.auth.service"
+        "login/login.auth.service",
+        "login/login.authredirect.service.factory"
     ]);
 
 });

@@ -5,13 +5,13 @@ define([
     'use strict';
 
     angular.module('dropbike.card').controller('CardController', CardController);
-    CardController.$inject = ['$ionicPopup', '$ionicLoading', '$localStorage', '$log', '$state', 'confirmService'];
+    CardController.$inject = ['$ionicPopup', '$ionicLoading', '$localStorage', '$log', '$state', 'cardService', 'UserModel'];
 
-    function CardController($ionicPopup, $ionicLoading, $localStorage, $log, $state, confirmService) {
+    function CardController($ionicPopup, $ionicLoading, $localStorage, $log, $state, cardService, UserModel, loggedUser) {
 
         var vm = this;
 
-        vm.code = "";
+        vm.number = "";
         vm.name = "";
         vm.expire = "";
         vm.cvc = "";
@@ -36,7 +36,7 @@ define([
 
         function submit() {
 
-            var valid = false;
+            var valid = !!vm.number && !!vm.name && !!vm.expire && !!vm.cvc;
 
             if (!valid) {
 
@@ -57,17 +57,36 @@ define([
                 template: '<i class="icon ion-loading-c"></i> Wait...'
             });
 
-            confirmService.addCard(
-                    vm.code,
+            cardService.addCard(
+                    vm.number,
                     vm.name,
                     vm.expire,
                     vm.cvc)
                 .then(function (result) {
                     $ionicLoading.hide();
-                    //TODO
-                }, function () {
+
+                    var user = new UserModel();
+                    user.load();
+                    user.isCardConfirmed = true;
+                    user.save();
+
+                    $state.go('app.addcard');
+
+                }, function (resp) {
                     $ionicLoading.hide();
-                    //TODO
+
+                    if(resp.data && resp.data.error) {
+                        $ionicPopup.show({
+                            title: resp.data.error,
+                            buttons: [
+                                {
+                                    text: 'Ok',
+                                    type: 'button-assertive'
+                                }
+                            ]
+                        });
+                    }
+
                 });
         }
 

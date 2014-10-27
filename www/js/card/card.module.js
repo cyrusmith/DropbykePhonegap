@@ -7,7 +7,8 @@ define([
     angular.module('dropbike.card', []);
 
     require([
-        "card/card.controller"
+        "card/card.controller",
+        "card/card.dataservice.factory"
     ]);
 
 });

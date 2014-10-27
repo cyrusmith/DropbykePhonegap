@@ -6,9 +6,9 @@ define([
 
     angular.module('dropbike.phone').controller('PhoneVerifyCodeController', PhoneVerifyCodeController);
 
-    PhoneVerifyCodeController.$inject = ['$ionicPopup', '$localStorage', '$state', 'confirmService'];
+    PhoneVerifyCodeController.$inject = ['$ionicPopup', '$localStorage', '$state', 'confirmService', 'UserModel'];
 
-    function PhoneVerifyCodeController($ionicPopup, $localStorage, $state, confirmService) {
+    function PhoneVerifyCodeController($ionicPopup, $localStorage, $state, confirmService, UserModel) {
 
         var vm = this;
 
@@ -69,6 +69,13 @@ define([
                             }
                         ]
                     });
+
+                    var user = new UserModel();
+                    user.load();
+                    user.isPhoneConfirmed = true;
+                    user.save();
+
+                    $state.go('app.addcard');
 
                 }, function() {
                     $ionicPopup.show({

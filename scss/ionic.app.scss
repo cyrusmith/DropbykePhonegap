@@ -123,3 +123,40 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   }
 }
 
+.search-pane-content {
+  position: absolute;
+  top: 44px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  .map-container {
+    position: absolute;
+    top: 0;
+    bottom: 88px;
+    left: 0;
+    right: 0;
+    background: #ccc;
+  }
+
+  .footer-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 88px;
+  }
+
+  .ion-location {
+    font-size: 1.2em;
+  }
+
+  .list {
+    margin: 0;
+  }
+
+  .button-block {
+    margin: 0;
+  }
+}
+

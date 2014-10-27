@@ -6,7 +6,7 @@ define([
 
     angular.module('dropbike')
 
-        .config(function ($stateProvider, $urlRouterProvider) {
+        .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function ($stateProvider, $urlRouterProvider) {
 
             $stateProvider
 
@@ -21,7 +21,8 @@ define([
                     url: "/search",
                     views: {
                         'menuContent': {
-                            templateUrl: "templates/search.html"
+                            controller: 'SearchController as vm',
+                            templateUrl: "js/search/search.tpl.html"
                         }
                     }
                 })
@@ -55,7 +56,7 @@ define([
                 });
             // if none of the above states are matched, use this as the fallback
             $urlRouterProvider.otherwise('/app/start');
-        });
+        }]);
 
     angular.module('dropbike.login').config(function ($stateProvider, $urlRouterProvider) {
 
@@ -105,6 +106,22 @@ define([
                     'menuContent': {
                         templateUrl: "js/card/card.data.tpl.html",
                         controller: 'CardController as vm'
+                    }
+                }
+            });
+
+    });
+
+
+    angular.module('dropbike.offline').config(function ($stateProvider) {
+
+        $stateProvider
+            .state('app.offline', {
+                url: "/offline",
+                views: {
+                    'menuContent': {
+                        templateUrl: "js/offline/offline.tpl.html",
+                        controller: 'OfflineController as vm'
                     }
                 }
             });
