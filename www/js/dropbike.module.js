@@ -5,6 +5,7 @@ define([
     "card/card.module",
     "offline/offline.module",
     "search/search.module",
+    "geolocation/geolocation.module",
     "controllers"
 ], function (angular) {
 
