@@ -13,7 +13,8 @@ require.config({
         'angular': {
             exports: 'angular'
         }
-    },
+    }
 
-    deps: ['./bootstrap']
 });
+
+require(['bootstrap']);

@@ -70,7 +70,7 @@ define([
                     user.isCardConfirmed = true;
                     user.save();
 
-                    $state.go('app.addcard');
+                    $state.go('app.search');
 
                 }, function (resp) {
                     $ionicLoading.hide();

@@ -137,6 +137,13 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     left: 0;
     right: 0;
     background: #ccc;
+    .dropbike-map-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
   }
 
   .footer-container {

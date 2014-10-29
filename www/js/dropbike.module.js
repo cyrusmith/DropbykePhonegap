@@ -5,6 +5,7 @@ define([
     "card/card.module",
     "offline/offline.module",
     "search/search.module",
+    "util/util.module",
     "geolocation/geolocation.module",
     "controllers"
 ], function (angular) {
@@ -13,11 +14,13 @@ define([
 
     angular.module('dropbike', [
         'ionic',
+        'geolocation',
         'dropbike.login',
         'dropbike.phone',
         'dropbike.card',
         'dropbike.offline',
         'dropbike.search',
+        'dropbike.util',
         'dropbike.controllers']);
 
     require([

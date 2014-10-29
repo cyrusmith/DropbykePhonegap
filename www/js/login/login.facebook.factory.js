@@ -2,13 +2,13 @@ define([
     "angular"
 ], function (angular) {
 
-    "user strict";
+    "use strict";
 
     angular.module('dropbike.login').service('facebook', facebook);
 
-    facebook.$inject = ['$q', '$timeout', '$log', 'FACEBOOK_ID'];
+    facebook.$inject = ['$q', '$log', 'FACEBOOK_ID'];
 
-    function facebook($q, $timeout, $log, FACEBOOK_ID) {
+    function facebook($q, $log, FACEBOOK_ID) {
 
         $log.log("facebookId", FACEBOOK_ID);
 
@@ -25,18 +25,8 @@ define([
             apiDeferred = $q.defer();
 
             if (!window.cordova) {
-
-                var fbTimeout = $timeout(function () {
-                    apiDeferred.reject(null);
-                }, 10000);
-
-                window.fbAsyncInit = function () {
-                    apiDeferred.resolve(facebookConnectPlugin);
-                    $timeout.cancel(fbTimeout);
-                    facebookConnectPlugin.browserInit(FACEBOOK_ID);
-                };
-
-                require(["../lib/facebookConnectPlugin"]);
+                apiDeferred.resolve(facebookConnectPlugin);
+                facebookConnectPlugin.browserInit(FACEBOOK_ID);
             }
             else {
                 apiDeferred.resolve(facebookConnectPlugin);

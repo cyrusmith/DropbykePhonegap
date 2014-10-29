@@ -22,7 +22,12 @@ define([
                     views: {
                         'menuContent': {
                             controller: 'SearchController as vm',
-                            templateUrl: "js/search/search.tpl.html"
+                            templateUrl: "js/search/search.tpl.html",
+                            resolve: {
+                                bikes: ['searchDataService', function (searchDataService) {
+                                    return searchDataService.loadBikes();
+                                }]
+                            }
                         }
                     }
                 })
