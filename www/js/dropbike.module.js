@@ -7,6 +7,8 @@ define([
     "search/search.module",
     "util/util.module",
     "geolocation/geolocation.module",
+    "address/address.module",
+    "dropbike.templates",
     "dropbike.controller"
 ], function (angular) {
 
@@ -20,6 +22,8 @@ define([
         'dropbike.card',
         'dropbike.offline',
         'dropbike.search',
+        'dropbike.address',
+        'dropbike.templates',
         'dropbike.util',
         'dropbike.controllers']);
 

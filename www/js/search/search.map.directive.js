@@ -11,9 +11,9 @@ define([
 
     angular.module('dropbike.search').directive('dropbikeMap', dropbikeMapDirective);
 
-    dropbikeMapDirective.$inject = ['$q', '$window', '$rootScope', 'dropbikeUtil'];
+    dropbikeMapDirective.$inject = ['$q', '$window', '$rootScope', '$interval', 'dropbikeUtil'];
 
-    function dropbikeMapDirective($q, $window, $rootScope, dropbikeUtil) {
+    function dropbikeMapDirective($q, $window, $rootScope, $interval, dropbikeUtil) {
 
         return {
             restrict: 'E',
@@ -23,7 +23,8 @@ define([
                 location: '=',
                 zoom: '=',
                 locationIcon: '@',
-                markerDefaultIcon: '@'
+                markerDefaultIcon: '@',
+                bounds: '='
             },
             template: '<div class="dropbike-map-container"></div>',
             link: function (scope, element, attrs) {
@@ -50,6 +51,15 @@ define([
                     };
 
                     _map = new google.maps.Map(_mapContainer, mapOptions);
+
+                    google.maps.event.addListener(_map, 'bounds_changed', function () {
+                        scope.$apply(function () {
+                            waitMapInitialized().then(function () {
+                                updateBounds();
+                            });
+                        });
+                    });
+
 
                     scope.$watch('markers', function (markers) {
                         if (_markers && _markers.length) {
@@ -81,6 +91,36 @@ define([
                         }
                     });
 
+                }
+
+                function updateBounds() {
+                    var bounds = _map.getBounds();
+                    var ne = bounds.getNorthEast();
+                    var sw = bounds.getSouthWest();
+                    scope.bounds = {
+                        "ne": {
+                            lat: ne.lat(),
+                            lng: ne.lng()
+                        },
+                        "sw": {
+                            lat: sw.lat(),
+                            lng: sw.lng()
+                        }
+                    };
+                }
+
+                function waitMapInitialized() {
+
+                    var d = $q.defer();
+
+                    var intervalPromise = $interval(function () {
+                        if (!!_mapContainer.firstChild) {
+                            $interval.cancel(intervalPromise);
+                            d.resolve();
+                        }
+                    }, 100);
+
+                    return d.promise;
                 }
 
                 function addMarker(lat, lng, icon) {

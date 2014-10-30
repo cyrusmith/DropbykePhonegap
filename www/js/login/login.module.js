@@ -4,7 +4,8 @@
  * info@interosite.ru
  */
 define([
-    "angular"
+    "angular",
+    "facebookConnectPlugin"
 ], function (angular) {
 
     'use strict';
@@ -16,8 +17,7 @@ define([
         "login/login.user.factory",
         "login/login.facebook.factory",
         "login/login.auth.service",
-        "login/login.authredirect.service.factory",
-        "../../lib/facebookConnectPlugin"
+        "login/login.authredirect.service.factory"
     ]);
 
 });

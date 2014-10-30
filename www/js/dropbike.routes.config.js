@@ -13,7 +13,7 @@ define([
                 .state('app', {
                     url: "/app",
                     abstract: true,
-                    templateUrl: "templates/menu.html",
+                    templateUrl: "templates/menu.tpl.html",
                     controller: 'AppCtrl'
                 })
 
@@ -36,7 +36,7 @@ define([
                     url: "/browse",
                     views: {
                         'menuContent': {
-                            templateUrl: "templates/browse.html"
+                            templateUrl: "templates/browse.tpl.html"
                         }
                     }
                 })
@@ -44,7 +44,7 @@ define([
                     url: "/playlists",
                     views: {
                         'menuContent': {
-                            templateUrl: "templates/playlists.html",
+                            templateUrl: "templates/playlists.tpl.html",
                             controller: 'PlaylistsCtrl'
                         }
                     }
@@ -54,7 +54,7 @@ define([
                     url: "/playlists/:playlistId",
                     views: {
                         'menuContent': {
-                            templateUrl: "templates/playlist.html",
+                            templateUrl: "templates/playlist.tpl.html",
                             controller: 'PlaylistCtrl'
                         }
                     }
@@ -127,6 +127,21 @@ define([
                     'menuContent': {
                         templateUrl: "js/offline/offline.tpl.html",
                         controller: 'OfflineController as vm'
+                    }
+                }
+            });
+
+    }]);
+
+    angular.module('dropbike.address').config(['$stateProvider', function ($stateProvider) {
+
+        $stateProvider
+            .state('app.address', {
+                url: "/address",
+                views: {
+                    'menuContent': {
+                        templateUrl: "js/address/address.tpl.html",
+                        controller: 'AddressController as vm'
                     }
                 }
             });

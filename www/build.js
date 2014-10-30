@@ -10,11 +10,15 @@
         'angular': '../lib/ionic/js/ionic.bundle',
         'domReady': '../lib/requirejs-domready/domReady',
         'ngStorage': '../lib/ngstorage/ngStorage',
+        'facebookConnectPlugin': '../lib/facebookConnectPlugin',
         'requireLib': '../lib/requirejs/require'
     },
     shim: {
         'angular': {
             exports: 'angular'
+        },
+        'facebookConnectPlugin': {
+            exports: 'facebookConnectPlugin'
         }
     },
     include: ['requireLib', 'main'],

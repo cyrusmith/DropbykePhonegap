@@ -14,11 +14,23 @@ define([
             loadBikes: loadBikes
         }
 
-        function loadBikes() {
+        function loadBikes(lng1, lng2, lat1, lat2) {
 
             var deferred = $q.defer();
 
-            $http.get(BACKEND_URL + "/bikes", {
+            var query = [];
+
+            if (lng1 && lng2 && lat1 && lat2) {
+                if (lng1 > lng2) {
+                    var tmp = lng2;
+                    lng2 = lng1;
+                    lng1 = tmp;
+                }
+                query = ['lng1=' + lng1, 'lng2=' + lng2, 'lat1=' + lat1, 'lat2=' + lat2];
+            }
+
+
+            $http.get(BACKEND_URL + "/bikes?" + query.join('&'), {
                     headers: {
                         "Authorization": "Bearer " + authService.getToken()
                     }
