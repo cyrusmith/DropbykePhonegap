@@ -63,7 +63,7 @@ define([
             $urlRouterProvider.otherwise('/app/start');
         }]);
 
-    angular.module('dropbike.login').config(function ($stateProvider, $urlRouterProvider) {
+    angular.module('dropbike.login').config(['$stateProvider', function ($stateProvider) {
 
         $stateProvider
             .state('app.start', {
@@ -77,9 +77,9 @@ define([
             })
 
 
-    });
+    }]);
 
-    angular.module('dropbike.phone').config(function ($stateProvider) {
+    angular.module('dropbike.phone').config(['$stateProvider', function ($stateProvider) {
 
         $stateProvider
             .state('app.phoneconfirm', {
@@ -100,9 +100,9 @@ define([
                 }
             });
 
-    });
+    }]);
 
-    angular.module('dropbike.card').config(function ($stateProvider) {
+    angular.module('dropbike.card').config(['$stateProvider', function ($stateProvider) {
 
         $stateProvider
             .state('app.addcard', {
@@ -115,10 +115,10 @@ define([
                 }
             });
 
-    });
+    }]);
 
 
-    angular.module('dropbike.offline').config(function ($stateProvider) {
+    angular.module('dropbike.offline').config(['$stateProvider', function ($stateProvider) {
 
         $stateProvider
             .state('app.offline', {
@@ -131,7 +131,7 @@ define([
                 }
             });
 
-    });
+    }]);
 
 
 });

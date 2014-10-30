@@ -7,7 +7,7 @@ define([
     "search/search.module",
     "util/util.module",
     "geolocation/geolocation.module",
-    "controllers"
+    "dropbike.controller"
 ], function (angular) {
 
     'use strict';
@@ -32,7 +32,7 @@ define([
 
         angular.module('dropbike')
 
-            .run(function ($ionicPlatform) {
+            .run(['$ionicPlatform', function ($ionicPlatform) {
                 $ionicPlatform.ready(function () {
                     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
                     // for form inputs)
@@ -44,7 +44,7 @@ define([
                         StatusBar.styleDefault();
                     }
                 });
-            })
+            }]);
 
     });
 

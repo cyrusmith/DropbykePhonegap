@@ -5,9 +5,9 @@ define([
     'use strict';
 
     angular.module('dropbike.card').controller('CardController', CardController);
-    CardController.$inject = ['$ionicPopup', '$ionicLoading', '$localStorage', '$log', '$state', 'cardService', 'UserModel'];
+    CardController.$inject = ['$ionicPopup', '$ionicLoading', '$state', 'cardService', 'UserModel'];
 
-    function CardController($ionicPopup, $ionicLoading, $localStorage, $log, $state, cardService, UserModel, loggedUser) {
+    function CardController($ionicPopup, $ionicLoading, $state, cardService, UserModel) {
 
         var vm = this;
 

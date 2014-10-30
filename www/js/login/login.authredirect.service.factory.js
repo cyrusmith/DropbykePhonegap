@@ -6,9 +6,9 @@ define([
 
     angular.module('dropbike.login').factory('authRedirectService', authRedirectService);
 
-    authRedirectService.$inject = ['$q', '$localStorage', '$state', 'UserModel'];
+    authRedirectService.$inject = ['$q', '$state', 'UserModel'];
 
-    function authRedirectService($q, $localStorage, $state, UserModel) {
+    function authRedirectService($q, $state, UserModel) {
 
         var defer = $q.defer();
         setTimeout(function () {

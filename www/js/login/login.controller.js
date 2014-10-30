@@ -12,9 +12,9 @@ define([
 
     angular.module('dropbike.login').controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$ionicLoading', '$localStorage', '$http', '$q', '$log', '$state', 'facebook', 'UserModel', 'BACKEND_URL'];
+    LoginController.$inject = ['$ionicLoading', '$localStorage', '$q', '$log', '$state', 'facebook', 'UserModel'];
 
-    function LoginController($ionicLoading, $localStorage, $http, $q, $log, $state, facebook, UserModel, BACKEND_URL) {
+    function LoginController($ionicLoading, $localStorage, $q, $log, $state, facebook, UserModel) {
 
         var vm = this;
         vm.login = login;
@@ -151,7 +151,7 @@ define([
                             $state.go('app.phoneconfirm');
                         }
                         else if (!user.isCardConfirmed) {
-                            $state.go('app.cardconfirm');
+                            $state.go('app.addcard');
                         }
                         return true;
                     }

@@ -6,9 +6,9 @@ define([
 
     angular.module('dropbike.phone').controller('SearchController', SearchController);
 
-    SearchController.$inject = ['bikes', 'GOOGLE_API_KEY', '$timeout', '$scope', 'geolocation'];
+    SearchController.$inject = ['bikes', 'GOOGLE_API_KEY', 'geolocation'];
 
-    function SearchController(bikes, GOOGLE_API_KEY, $timeout, $scope, geolocation) {
+    function SearchController(bikes, GOOGLE_API_KEY, geolocation) {
 
         var vm = this;
 
