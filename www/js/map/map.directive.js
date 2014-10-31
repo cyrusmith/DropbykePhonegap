@@ -9,22 +9,22 @@ define([
 
     'use strict';
 
-    angular.module('dropbike.search').directive('dropbikeMap', dropbikeMapDirective);
+    angular.module('map').directive('googleMap', googleMapDirective);
 
-    dropbikeMapDirective.$inject = ['$q', '$window', '$rootScope', '$interval', 'dropbikeUtil'];
+    googleMapDirective.$inject = ['$q', '$interval', 'mapDataService'];
 
-    function dropbikeMapDirective($q, $window, $rootScope, $interval, dropbikeUtil) {
+    function googleMapDirective($q, $interval, mapDataService) {
 
         return {
             restrict: 'E',
             scope: {
-                apiKey: '=',
                 markers: '=',
                 location: '=',
                 zoom: '=',
                 locationIcon: '@',
                 markerDefaultIcon: '@',
-                bounds: '='
+                bounds: '=',
+                onMarkerClick: '&'
             },
             template: '<div class="dropbike-map-container"></div>',
             link: function (scope, element, attrs) {
@@ -33,10 +33,9 @@ define([
                     _map = null,
                     _currentLocation = null,
                     _currentLocationMarker = null,
-                    _markers = null;
+                    _markers = {};
 
-
-                mapApiReady(scope.apiKey)
+                mapDataService.mapApi()
                     .then(function () {
                         init();
                     });
@@ -45,7 +44,7 @@ define([
                 function init() {
 
                     var mapOptions = {
-                        center: new google.maps.LatLng(scope.location[0], scope.location[1]),
+                        center: scope.location && scope.location[0] && scope.location[1] ? new google.maps.LatLng(scope.location[0], scope.location[1]) : new google.maps.LatLng(40.727489, -73.997230),
                         zoom: scope.zoom || 8,
                         mapTypeId: google.maps.MapTypeId.ROADMAP
                     };
@@ -62,19 +61,41 @@ define([
 
 
                     scope.$watch('markers', function (markers) {
-                        if (_markers && _markers.length) {
-                            for (var i = 0; i < _markers.length; i++) {
-                                _markers[i].setMap(null);
+                        for (var hash in _markers) {
+                            if (_markers.hasOwnProperty(hash)) {
+                                _markers[hash].marker.setMap(null);
                             }
                         }
-                        _markers = [];
+                        _markers = {};
                         if (markers && markers.length) {
                             for (var i = 0; i < markers.length; i++) {
                                 if (markers[i] && markers[i].length) {
                                     var location = markers[i];
-                                    _markers.push(addMarker(location[0], location[1], scope.markerDefaultIcon));
+                                    var marker = addMarker(location[0], location[1], scope.markerDefaultIcon);
+                                    _markers[getMarkerHash(marker)] = {
+                                        'marker': marker,
+                                        'index': i
+                                    };
                                 }
                             }
+
+                            for (var hash in _markers) {
+                                if (_markers.hasOwnProperty(hash)) {
+                                    google.maps.event.addListener(_markers[hash].marker, 'mousedown', function (evt) {
+                                        var hash = getMarkerHash(this);
+                                        if (_markers[hash]) {
+                                            if (attrs.onMarkerClick) {
+                                                scope.onMarkerClick({
+                                                    index: _markers[hash].index
+                                                });
+                                            }
+                                        }
+
+                                    });
+                                }
+
+                            }
+
                         }
                     });
 
@@ -91,12 +112,27 @@ define([
                         }
                     });
 
+                    element.on('$destroy', function () {
+                        google.maps.event.clearInstanceListeners(_map);
+                        for (var hash in _markers) {
+                            if (_markers.hasOwnProperty(hash)) {
+                                _markers[hash].marker.setMap(null);
+                                google.maps.event.clearInstanceListeners(_markers[hash].marker);
+                            }
+                        }
+                        _markers = null;
+                    })
+
                 }
 
                 function updateBounds() {
+
+                    if (!attrs.bounds) return;
+
                     var bounds = _map.getBounds();
                     var ne = bounds.getNorthEast();
                     var sw = bounds.getSouthWest();
+
                     scope.bounds = {
                         "ne": {
                             lat: ne.lat(),
@@ -132,28 +168,9 @@ define([
                     });
                 }
 
-                function checkMapLoaded() {
-                    return $window['google'] && $window['google']['maps']
-                        && $window['google']['maps']['Map']
-                }
-
-                function mapApiReady(apiKey) {
-                    var d = $q.defer();
-                    if (checkMapLoaded()) {
-                        d.resolve();
-                    }
-                    else {
-                        $window.dropbykeMapLoadedCallback = function () {
-                            $window.dropbykeMapLoadedCallback = null;
-                            $rootScope.$apply(function () {
-                                d.resolve();
-                            });
-                        };
-                        dropbikeUtil.loadScript("http://maps.googleapis.com/maps/api/js?key="
-                            + apiKey
-                            + "&sensor=false&&callback=dropbykeMapLoadedCallback")
-                    }
-                    return d.promise;
+                function getMarkerHash(marker) {
+                    var latLng = marker.getPosition();
+                    return latLng.lat() + '-' + latLng.lng();
                 }
 
             }

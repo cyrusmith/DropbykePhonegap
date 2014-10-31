@@ -7,8 +7,10 @@ define([
     "search/search.module",
     "util/util.module",
     "geolocation/geolocation.module",
+    "map/map.module",
     "address/address.module",
     "dropbike.templates",
+    "bike/bike.module",
     "dropbike.controller"
 ], function (angular) {
 
@@ -24,7 +26,9 @@ define([
         'dropbike.search',
         'dropbike.address',
         'dropbike.templates',
+        'dropbike.bike',
         'dropbike.util',
+        'map',
         'dropbike.controllers']);
 
     require([

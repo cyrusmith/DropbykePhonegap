@@ -134,7 +134,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   .map-container {
     position: absolute;
     top: 0;
-    bottom: 88px;
+    bottom: 44px;
     left: 0;
     right: 0;
     background: #ccc;
@@ -152,7 +152,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     bottom: 0;
     left: 0;
     right: 0;
-    height: 88px;
+    height: 44px;
   }
 
   .ion-location {
@@ -166,5 +166,58 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   .button-block {
     margin: 0;
   }
+}
+
+.bike-pane-content {
+
+  position: absolute;
+  top: 44px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  .bike-info {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 44px;
+
+    .map-container {
+
+      position: absolute;
+      width:100%;
+      height: 50%;
+
+      .dropbike-map-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+    }
+
+    .photo-container {
+      position: absolute;
+      width:100%;
+      height: 50%;
+      top: 50%;
+    }
+
+  }
+
+  .footer-container {
+    position: absolute;
+    height: 44px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    .button {
+      margin-top: 0;
+    }
+  }
+
 }
 

@@ -7,9 +7,13 @@ define([
     "angular"
 ], function (angular) {
 
-    angular.module("dropbike.address", []);
+    'use strict';
+
+    angular.module("dropbike.bike", []);
 
     require([
-        "address/address.controller"]);
+        "bike/bike.controller",
+        "bike/bike.dataservice.factory"
+    ]);
 
 });

@@ -148,5 +148,25 @@ define([
 
     }]);
 
+    angular.module('dropbike.bike').config(['$stateProvider', function ($stateProvider) {
+
+        $stateProvider
+            .state('app.bike', {
+                url: "/bike/:bikeId",
+                views: {
+                    'menuContent': {
+                        templateUrl: "js/bike/bike.tpl.html",
+                        controller: 'BikeController as vm',
+                        resolve: {
+                            bike: ['$stateParams', 'bikeDataService', function ($stateParams, bikeDataService) {
+                                return bikeDataService.getBike($stateParams.bikeId);
+                            }]
+                        }
+                    }
+                }
+            });
+
+    }]);
+
 
 });

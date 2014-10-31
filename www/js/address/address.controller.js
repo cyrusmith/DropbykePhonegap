@@ -9,9 +9,9 @@ define([
 
     angular.module("dropbike.address").controller('AddressController', AddressController);
 
-    AddressController.$inject = ['$timeout', '$ionicPopup', 'addressDataService', '$scope', '$state', '$localStorage'];
+    AddressController.$inject = ['$timeout', '$ionicPopup', 'mapDataService', '$scope', '$state', '$localStorage'];
 
-    function AddressController($timeout, $ionicPopup, addressDataService, $scope, $state, $localStorage) {
+    function AddressController($timeout, $ionicPopup, mapDataService, $scope, $state, $localStorage) {
 
         var vm = this;
 
@@ -26,7 +26,7 @@ define([
         function scheduleSearch() {
             $timeout.cancel(_timeout);
             _timeout = $timeout(function () {
-                addressDataService.geocode(vm.address)
+                mapDataService.geocode(vm.address)
                     .then(function (results) {
                         vm.results = [];
                         for(var i=0; i < results.length; i++) {

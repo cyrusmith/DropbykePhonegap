@@ -30,7 +30,7 @@ define([
             }
 
 
-            $http.get(BACKEND_URL + "/bikes?" + query.join('&'), {
+            $http.get(BACKEND_URL + "/api/bikes?" + query.join('&'), {
                     headers: {
                         "Authorization": "Bearer " + authService.getToken()
                     }

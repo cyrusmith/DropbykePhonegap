@@ -6,9 +6,9 @@ define([
 
     angular.module('dropbike.phone').controller('SearchController', SearchController);
 
-    SearchController.$inject = ['bikes', 'GOOGLE_API_KEY', 'geolocation', 'searchDataService', '$timeout', '$state', '$scope', '$localStorage'];
+    SearchController.$inject = ['bikes', 'GOOGLE_API_KEY', 'geolocation', 'searchDataService', 'mapDataService', '$ionicLoading', '$timeout', '$state', '$scope', '$localStorage'];
 
-    function SearchController(bikes, GOOGLE_API_KEY, geolocation, searchDataService, $timeout, $state, $scope, $localStorage) {
+    function SearchController(bikes, GOOGLE_API_KEY, geolocation, searchDataService, mapDataService, $ionicLoading, $timeout, $state, $scope, $localStorage) {
 
         var vm = this;
 
@@ -20,6 +20,8 @@ define([
         vm.address = "";
 
         vm.setAddress = setAddress;
+        vm.applyCurrentLocation = applyCurrentLocation;
+        vm.onMarkerClick = onMarkerClick;
 
         if ($localStorage.selectedLocation) {
             vm.currentLocation = [$localStorage.selectedLocation.lat, $localStorage.selectedLocation.lng];
@@ -44,6 +46,12 @@ define([
                 geolocation.getLocation({})
                     .then(function (pos) {
                         vm.currentLocation = [pos.coords.latitude, pos.coords.longitude];
+                        mapDataService.geodecode(pos.coords)
+                            .then(function (address) {
+                                if (address.length) {
+                                    vm.address = address[0].formatted_address;
+                                }
+                            });
                     }, function (error) {
                         $ionicPopup.show({
                             title: error,
@@ -89,6 +97,52 @@ define([
 
         function setAddress() {
             $state.go('app.address');
+        }
+
+        function onMarkerClick(index) {
+            console.log(index);
+            if (!bikes[index]) {
+                $log.error('Illegal state: unknown bike with index ' + index);
+                return;
+            }
+            $state.go('app.bike', {
+                bikeId: bikes[index].id
+            });
+        }
+
+        function applyCurrentLocation() {
+            $ionicLoading.show({
+                template: '<i class="icon ion-loading-c"></i> Fetching you location...'
+            });
+            geolocation.getLocation({})
+                .then(function (pos) {
+                    vm.currentLocation = [pos.coords.latitude, pos.coords.longitude];
+                    $localStorage.selectedLocation = null;
+                    return pos.coords;
+                }, function (error) {
+                    $ionicPopup.show({
+                        title: error,
+                        buttons: [
+                            {
+                                text: 'Ok',
+                                type: 'button-assertive'
+                            }
+                        ]
+                    });
+                })
+                .then(function (location) {
+                    return mapDataService.geodecode(location);
+                }).then(function (address) {
+                    if (address.length) {
+                        vm.address = address[0].formatted_address;
+                    }
+
+                },function (error) {
+                    console.error(error);
+                }).finally(function () {
+                    $ionicLoading.hide();
+                });
+            ;
         }
 
     }

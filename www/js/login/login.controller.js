@@ -153,6 +153,9 @@ define([
                         else if (!user.isCardConfirmed) {
                             $state.go('app.addcard');
                         }
+                        else {
+                            $state.go('app.search');
+                        }
                         return true;
                     }
 

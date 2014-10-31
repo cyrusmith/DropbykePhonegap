@@ -15,6 +15,7 @@ define([
         }
 
         function loadScript(uri, isLoadSequentially) {
+
             var d = $q.defer();
             uri += (uri.indexOf("?") == -1) ? "?" : "&";
             uri += "nocache=" + (new Date().getTime());

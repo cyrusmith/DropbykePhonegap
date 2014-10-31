@@ -8,7 +8,6 @@ define([
 
     require([
         "search/search.controller",
-        "search/search.map.directive",
         "search/search.dataservice.factory"
     ]);
 

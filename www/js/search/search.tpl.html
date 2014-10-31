@@ -4,23 +4,23 @@
         <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
     </ion-nav-buttons>
 
+    <ion-nav-buttons side="right">
+        <button class="button button-icon icon ion-ios7-navigate" ng-click="vm.applyCurrentLocation()">
+        </button>
+    </ion-nav-buttons>
+
     <div class="search-pane-content">
 
         <div class="map-container">
-            <dropbike-map
+            <google-map
                     api-key="vm.apiKey" markers="vm.markers" location="vm.currentLocation" zoom="vm.zoom"
-                    location-icon="img/ic-pin-small.png" marker-default-icon="img/ic-bike-small.png" bounds="vm.mapBounds"/>
+                    location-icon="img/ic-pin-small.png" marker-default-icon="img/ic-bike-small.png" bounds="vm.mapBounds"
+                    on-marker-click="vm.onMarkerClick(index)"/>
         </div>
 
         <div class="footer-container">
-            <div class="list">
-                <label class="item item-input">
-                    <i class="icon ion-location placeholder-icon balanced"></i>
-                    <input type="text" placeholder="Boston" value="{{vm.address}}">
-                </label>
-            </div>
-            <button class="button button-energized button-block" ng-click="vm.setAddress()">
-                Set Pickup Location
+            <button class="button button-block" ng-click="vm.setAddress()">
+                <i class="icon ion-location placeholder-icon balanced"></i> {{vm.address}}
             </button>
 
         </div>

@@ -1,0 +1,29 @@
+<ion-view title="{{vm.bike.title}}">
+
+    <ion-nav-buttons side="left">
+        <button menu-toggle="left" class="button"> Cancel</button>
+    </ion-nav-buttons>
+
+    <div class="bike-pane-content">
+
+        <div class="bike-info">
+            <div class="map-container">
+               <google-map markers="vm.location" location="vm.location" zoom="vm.zoom"
+                            location-icon="img/ic-pin-small.png" marker-default-icon="img/ic-bike-small.png"/>
+            </div>
+
+            <div class="photo-container">
+                <img ngSrc="{{vm.bike.photo}}"/>
+            </div>
+        </div>
+
+        <div class="footer-container">
+
+            <button class="button button-block button-positive" ng-click="vm.getAccess()">
+                Get access
+            </button>
+
+        </div>
+    </div>
+
+</ion-view>
