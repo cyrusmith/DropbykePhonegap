@@ -1,0 +1,41 @@
+<ion-view title="">
+
+    <ion-nav-buttons side="right">
+        <button class="button" ui-sref="app.usage.drop">Usage</button>
+    </ion-nav-buttons>
+
+    <ion-content>
+
+        <div class="photo-container" bg-image="{{vm.bike.photo}}">
+            </div>
+        <div class="title">
+            {{vm.bike.title}} (<i class="ion-ios7-star energized"></i> {{vm.bike.rating}})
+            </div>
+
+        <div class="last-user-info">
+
+            <h4>Lock password</h4>
+
+            <div class="item item-input-inset">
+                <label class="item-input-wrapper">
+                    <input type="text" value="QWERTY">
+                </label>
+            </div>
+
+            <h4>Access time</h4>
+
+            <div class="item item-input-inset">
+                <label class="item-input-wrapper">
+                    <input type="text" value="10:22:33">
+                </label>
+            </div>
+
+            <h4>Message from lat user</h4>
+
+            <p>Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet</p>
+
+        </div>
+
+    </ion-content>
+
+</ion-view>

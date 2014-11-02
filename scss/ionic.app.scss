@@ -203,6 +203,41 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
       width:100%;
       height: 50%;
       top: 50%;
+      .photo {
+        position: absolute;
+        top:0;
+        left: 0;
+        right: 0;
+        height: 70%;
+        img {
+          width: 100%;
+        }
+      }
+      .location {
+        position: absolute;
+        top: 70%;
+        left: 0;
+        right: 0;
+        height: 50;
+        text-align: center;
+        .title {
+          text-align: left;
+          padding-left: 0.5rem;
+          background: {
+            color: #39444d;
+          }
+          white-space: nowrap;
+          color: #FFF;
+          font-size: .875em;
+        }
+        p, h4 {
+          margin: 0;
+        }
+        p {
+          color: #10b667;
+          margin-top: .5rem;
+        }
+      }
     }
 
   }

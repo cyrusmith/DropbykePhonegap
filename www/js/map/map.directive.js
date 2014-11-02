@@ -20,6 +20,7 @@ define([
             scope: {
                 markers: '=',
                 location: '=',
+                showLocationMarker: '=',
                 zoom: '=',
                 locationIcon: '@',
                 markerDefaultIcon: '@',
@@ -71,7 +72,7 @@ define([
                             for (var i = 0; i < markers.length; i++) {
                                 if (markers[i] && markers[i].length) {
                                     var location = markers[i];
-                                    var marker = addMarker(location[0], location[1], scope.markerDefaultIcon);
+                                    var marker = addMarker(new google.maps.LatLng(location[0], location[1]), scope.markerDefaultIcon);
                                     _markers[getMarkerHash(marker)] = {
                                         'marker': marker,
                                         'index': i
@@ -101,12 +102,15 @@ define([
 
                     scope.$watch('location', function (location) {
                         if (location && location.length) {
-                            if (_currentLocationMarker) {
-                                _currentLocationMarker.setMap(null)
+                            var latLng = new google.maps.LatLng(location[0], location[1]);
+                            if(attrs.showLocationMarker && scope.showLocationMarker === true) {
+                                if (_currentLocationMarker) {
+                                    _currentLocationMarker.setMap(null)
+                                }
+                                _currentLocation = addMarker(latLng, scope.locationIcon).getPosition();
                             }
-                            _currentLocation = addMarker(location[0], location[1], scope.locationIcon).getPosition();
 
-                            _map.panTo(_currentLocation);
+                            _map.panTo(latLng);
                             _map.setZoom(scope.zoom || 8);
 
                         }
@@ -159,8 +163,7 @@ define([
                     return d.promise;
                 }
 
-                function addMarker(lat, lng, icon) {
-                    var location = new google.maps.LatLng(lat, lng);
+                function addMarker(location, icon) {
                     return new google.maps.Marker({
                         position: location,
                         map: _map,

@@ -6,9 +6,9 @@ define([
 
     angular.module('dropbike.phone').controller('SearchController', SearchController);
 
-    SearchController.$inject = ['bikes', 'GOOGLE_API_KEY', 'geolocation', 'searchDataService', 'mapDataService', '$ionicLoading', '$timeout', '$state', '$scope', '$localStorage'];
+    SearchController.$inject = ['bikes', 'GOOGLE_API_KEY', 'geolocation', 'searchDataService', 'mapDataService', '$ionicLoading', '$timeout', '$log', '$state', '$scope', '$localStorage'];
 
-    function SearchController(bikes, GOOGLE_API_KEY, geolocation, searchDataService, mapDataService, $ionicLoading, $timeout, $state, $scope, $localStorage) {
+    function SearchController(bikes, GOOGLE_API_KEY, geolocation, searchDataService, mapDataService, $ionicLoading, $timeout, $log, $state, $scope, $localStorage) {
 
         var vm = this;
 
@@ -105,6 +105,7 @@ define([
                 $log.error('Illegal state: unknown bike with index ' + index);
                 return;
             }
+            $log.log("Goto to bike", bikes[index].id);
             $state.go('app.bike', {
                 bikeId: bikes[index].id
             });
