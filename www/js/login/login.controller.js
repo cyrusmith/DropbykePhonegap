@@ -12,9 +12,9 @@ define([
 
     angular.module('dropbike.login').controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$ionicLoading', '$localStorage', '$q', '$log', '$state', 'facebook', 'UserModel'];
+    LoginController.$inject = ['authService', '$ionicLoading', '$localStorage', '$q', '$log', '$state', 'facebook', 'UserModel'];
 
-    function LoginController($ionicLoading, $localStorage, $q, $log, $state, facebook, UserModel) {
+    function LoginController(authService, $ionicLoading, $localStorage, $q, $log, $state, facebook, UserModel) {
 
         var vm = this;
         vm.login = login;
@@ -72,7 +72,7 @@ define([
                 }, function failure() {
                     deferred.resolve(false);
                 })
-            }, function() {
+            }, function () {
                 $ionicPopup.show({
                     title: 'Error',
                     subTitle: 'Could not load facebook api',
@@ -148,34 +148,24 @@ define([
 
         function init() {
 
-            $ionicLoading.show({
-                template: '<i class="icon ion-loading-c"></i> Loading...'
-            });
-
-            getLoginStatus()
-                .then(function (isLogged) {
-                    $ionicLoading.hide();
-                    if (isLogged) {
-                        //TODO go to next page
-                        var user = new UserModel();
-                        user.load();
-                        if (!user.isPhoneConfirmed) {
-                            $state.go('app.phoneconfirm');
-                        }
-                        else if (!user.isCardConfirmed) {
-                            $state.go('app.addcard');
-                        }
-                        else {
-                            $state.go('app.search');
-                        }
-                        return true;
-                    }
-
-                }, function () {
-                    $log.error("Unexpectedly rejected login status");
-                    $ionicLoading.hide();
-                });
-
+            if (authService.isLoggedIn()) {
+                //TODO go to next page
+                var user = new UserModel();
+                user.load();
+                if (!user.isPhoneConfirmed) {
+                    $state.go('app.phoneconfirm');
+                }
+                else if (!user.isCardConfirmed) {
+                    $state.go('app.addcard');
+                }
+                else if($localStorage.ride) {
+                    $state.go('app.usagemap');
+                }
+                else {
+                    $state.go('app.search');
+                }
+                return true;
+            }
 
         };
 

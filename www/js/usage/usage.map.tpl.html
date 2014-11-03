@@ -1,0 +1,29 @@
+<ion-view title="" hide-back-button="true">
+
+    <ion-nav-buttons side="left">
+        <button class="button" ui-sref="app.usageaccess">Access info</button>
+    </ion-nav-buttons>
+
+
+    <div class="usage-map-container">
+        <div class="map">
+            <google-map
+                    markers="vm.markers" location="vm.currentLocation"
+                    show-location-marker="true"
+                    zoom="vm.zoom"
+                    location-icon="img/ic-pin-small.png" marker-default-icon="img/ic-bike-small.png"
+                    pan-to-bounds="vm.bounds"
+                    />
+
+        </div>
+        <div class="timer-container">
+            <h4>Usage time</h4>
+
+            <p>01:43:28</p>
+        </div>
+    </div>
+
+    <div class="bar bar-footer footer-one-button">
+        <a href="javascript:void(0)" class="button button-block button-energized" ng-click="vm.drop()">Drop bike</a>
+    </div>
+</ion-view>

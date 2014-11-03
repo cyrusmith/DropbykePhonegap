@@ -11,9 +11,9 @@ define([
 
     angular.module("dropbike.bike").controller("BikeController", BikeController);
 
-    BikeController.$inject = ['bike', '$stateParams', '$ionicPopup', '$state', 'BACKEND_URL'];
+    BikeController.$inject = ['bike', 'usageDataService', '$localStorage', '$stateParams', '$ionicPopup', '$state', 'BACKEND_URL'];
 
-    function BikeController(data, $stateParams, $ionicPopup, $state, BACKEND_URL) {
+    function BikeController(data, usageDataService, $localStorage, $stateParams, $ionicPopup, $state, BACKEND_URL) {
 
         var vm = this;
 
@@ -26,7 +26,6 @@ define([
         vm.zoom = 17;
 
         vm.getAccess = getAccess;
-
 
         function getAccess() {
             $ionicPopup.show({
@@ -44,7 +43,25 @@ define([
                 ]
             }).then(function (res) {
                     if (res) {
-                        $state.go('app.usageaccess');
+                        usageDataService.startUsage(vm.bike.id)
+                            .then(function (ride) {
+                                $localStorage.ride = ride;
+                                $state.go('app.usageaccess', {
+                                    bikeId: vm.bike.id
+                                });
+                            }, function (resp) {
+                                $ionicPopup.show({
+                                    title: 'Could not start usage',
+                                    subTitle: resp.error ? resp.error : '',
+                                    buttons: [
+                                        {
+                                            text: 'Ok',
+                                            type: 'button-assertive'
+                                        }
+                                    ]
+                                })
+                            });
+
                     }
                 });
         }

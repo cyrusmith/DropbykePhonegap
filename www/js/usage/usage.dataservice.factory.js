@@ -7,7 +7,7 @@ define([
     "angular"
 ], function (angular) {
 
-    'use scrict';
+    'use strict';
 
     angular.module('dropbike.usage').factory('usageDataService', usageDataService);
 
@@ -19,15 +19,17 @@ define([
         }
 
         function startUsage(bikeId) {
-            return $http.get(BACKEND_URL + '/api/bikes/startusage/' + bikeId, {
+            return $http.post(BACKEND_URL + '/api/bikes/startusage/', {
+                bikeId: +bikeId
+            }, {
                 headers: {
                     "Authorization": "Bearer " + authService.getToken()
                 }
             }).then(function (response) {
-                    $log.log("Bike loaded", response);
-                    return response.data.bike;
+                    $log.log("Ride started", response);
+                    return response.data.ride;
                 }, function (error) {
-                    $log.error("Error getting bike", error);
+                    $log.error("Error starting ride", error);
                     return null;
                 });
         }

@@ -25,6 +25,7 @@ define([
                 locationIcon: '@',
                 markerDefaultIcon: '@',
                 bounds: '=',
+                panToBounds: '=',
                 onMarkerClick: '&'
             },
             template: '<div class="dropbike-map-container"></div>',
@@ -53,6 +54,7 @@ define([
                     _map = new google.maps.Map(_mapContainer, mapOptions);
 
                     google.maps.event.addListener(_map, 'bounds_changed', function () {
+
                         scope.$apply(function () {
                             waitMapInitialized().then(function () {
                                 updateBounds();
@@ -60,6 +62,21 @@ define([
                         });
                     });
 
+                    if (attrs.panToBounds) {
+                        scope.$watch('panToBounds', function (panToBounds) {
+
+                            console.log('panToBounds', panToBounds);
+
+                            if (!panToBounds || !panToBounds.sw || !panToBounds.ne) return;
+
+                            var sw = new google.maps.LatLng(panToBounds.sw.lat, panToBounds.sw.lng);
+                            var ne = new google.maps.LatLng(panToBounds.ne.lat, panToBounds.ne.lng);
+
+                            _map.panToBounds(new google.maps.LatLngBounds(sw, ne));
+
+                        });
+
+                    }
 
                     scope.$watch('markers', function (markers) {
                         for (var hash in _markers) {
@@ -103,7 +120,7 @@ define([
                     scope.$watch('location', function (location) {
                         if (location && location.length) {
                             var latLng = new google.maps.LatLng(location[0], location[1]);
-                            if(attrs.showLocationMarker && scope.showLocationMarker === true) {
+                            if (attrs.showLocationMarker && scope.showLocationMarker === true) {
                                 if (_currentLocationMarker) {
                                     _currentLocationMarker.setMap(null)
                                 }

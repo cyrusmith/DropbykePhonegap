@@ -172,16 +172,22 @@ define([
 
         $stateProvider
             .state('app.usageaccess', {
-                url: "/usageaccess/:bikeId",
+                url: "/usageaccess/",
                 views: {
                     'menuContent': {
-                        templateUrl: "js/bike/bike.tpl.html",
-                        controller: 'UsageAccessController as vm',
-                        resolve: {
-                            bike: ['$stateParams', 'usageDataService', function ($stateParams, usageDataService) {
-                                return usageDataService.startUsage($stateParams.bikeId);
-                            }]
-                        }
+                        templateUrl: "js/usage/usage.access.tpl.html",
+                        controller: 'UsageAccessController as vm'
+                    }
+                }
+            });
+
+        $stateProvider
+            .state('app.usagemap', {
+                url: "/usagemap/",
+                views: {
+                    'menuContent': {
+                        templateUrl: "js/usage/usage.map.tpl.html",
+                        controller: 'UsageMapController as vm'
                     }
                 }
             });

@@ -23,6 +23,16 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 @import url(http://fonts.googleapis.com/css?family=Righteous);
 
+.footer-one-button {
+  padding: .1rem .5rem;
+  .button {
+    margin-top: .2rem;
+  }
+  .button-block {
+    width: 100%;
+  }
+}
+
 .db-login-page {
 
   background: {
@@ -278,3 +288,86 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   }
 }
 
+.usage-container {
+  .usage-photo-container {
+    height: 200px;
+    position: relative;
+    background-color: #203241;
+  }
+  .title {
+    text-align: left;
+    padding-left: 0.5rem;
+    background: {
+      color: #39444d;
+    }
+    white-space: nowrap;
+    color: #FFF;
+    font-size: .875em;
+  }
+
+  .last-user-info {
+    padding: .5rem;
+    h4 {
+      margin-bottom: 0;
+    }
+    .field {
+      margin-bottom: .5rem;
+      p {
+        border-radius: .6rem;
+        background: #406076;
+        height: 2.2rem;
+        text-align: center;
+        color: white;
+        line-height: 2.2rem;
+        font-size: 1.2rem;
+      }
+    }
+  }
+}
+
+.usage-map-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 40px;
+  .map {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    right: 0;
+    bottom: 80px;
+    .dropbike-map-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+
+  }
+  .timer-container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 80px;
+    bottom: 0;
+    background-color: #506a80;
+    text-align: center;
+    h4 {
+      color: #FFF;
+      margin-bottom: 0;
+    }
+    p {
+      border-radius: .6rem;
+      background: #29404F;
+      height: 2.2rem;
+      text-align: center;
+      color: white;
+      line-height: 2.2rem;
+      font-size: 1.2rem;
+      margin-left: 1rem;
+      margin-right: 1rem;
+    }
+  }
+}

@@ -1,0 +1,40 @@
+<ion-view title="Access info" hide-back-button="true">
+
+    <ion-nav-buttons side="right">
+        <button class="button" ui-sref="app.usagemap">Usage</button>
+    </ion-nav-buttons>
+
+    <ion-content>
+        <div class="usage-container">
+            <div class="usage-photo-container" bg-image="vm.ride.photo">
+            </div>
+            <div class="title">
+                {{vm.ride.title}} (<i class="ion-ios7-star energized"></i> {{vm.ride.rating}}) ${{vm.price/100}}/hr
+            </div>
+
+            <div class="last-user-info">
+
+                <div class="field">
+                    <h4>Lock password</h4>
+                    <p>{{vm.ride.lockPassword}}</p>
+                </div>
+
+                <div class="field">
+                    <h4>Access time</h4>
+                    <p>{{vm.ride.accessTime}}</p>
+                </div>
+
+                <div class="field message">
+                    <h4>Message from last user</h4>
+                    <textarea disabled>{{vm.ride.message}}</textarea>
+                </div>
+
+            </div>
+
+        </div>
+
+    </ion-content>
+    <div class="bar bar-footer footer-one-button">
+        <a href="tel:{{vm.ride.phone}}" class="button button-block button-calm">Call</a>
+    </div>
+</ion-view>
