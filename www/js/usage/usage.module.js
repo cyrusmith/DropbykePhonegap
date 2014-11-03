@@ -12,7 +12,8 @@ define([
     angular.module('dropbike.usage', []);
 
     require([
-        "usage/usage.access.controller"
+        "usage/usage.access.controller",
+        "usage/usage.dataservice.factory"
     ]);
 
 });

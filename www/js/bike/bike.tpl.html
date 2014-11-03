@@ -14,15 +14,15 @@
             </div>
 
             <div class="photo-container">
-                <div class="photo" bg-image="{{vm.bike.photo}}">
+                <div class="photo" bg-image="vm.bike.photo">
 
                 </div>
                 <div class="location">
                     <div class="title">
-                        {{vm.bike.title}} (<i class="ion-ios7-star energized"></i> {{vm.bike.rating}})
+                        {{vm.bike.title}} (<i class="ion-ios7-star energized"></i> ${{vm.bike.rating + ""}}) {{vm.bike.priceRate/100}}/hr
                     </div>
                     <p class="">BIKE LOCATION</p>
-                    <h4>{{vm.bike.address}} asdasdasd asd asd ad</h4>
+                    <h4>{{vm.bike.address}}</h4>
                 </div>
             </div>
         </div>

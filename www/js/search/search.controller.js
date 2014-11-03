@@ -32,14 +32,15 @@ define([
          * Private block
          */
         var _scheduleUpdateTimeout = null,
-            _isUpdating = false;
+            _isUpdating = false,
+            _bikes = bikes;
 
         init();
 
         function init() {
             if ($localStorage.selectedLocation) {
-                for (var i = 0; i < bikes.length; i++) {
-                    vm.markers.push([bikes[i].lat, bikes[i].lng]);
+                for (var i = 0; i < _bikes.length; i++) {
+                    vm.markers.push([_bikes[i].lat, _bikes[i].lng]);
                 }
             }
             else {
@@ -64,8 +65,8 @@ define([
                         });
                     })
                     .finally(function () {
-                        for (var i = 0; i < bikes.length; i++) {
-                            vm.markers.push([bikes[i].lat, bikes[i].lng]);
+                        for (var i = 0; i < _bikes.length; i++) {
+                            vm.markers.push([_bikes[i].lat, _bikes[i].lng]);
                         }
                     });
             }
@@ -83,10 +84,11 @@ define([
             _scheduleUpdateTimeout = $timeout(function () {
                 _isUpdating = true;
                 searchDataService.loadBikes(vm.mapBounds.sw.lng, vm.mapBounds.ne.lng, vm.mapBounds.sw.lat, vm.mapBounds.ne.lat)
-                    .then(function (bikes) {
+                    .then(function (res) {
+                        _bikes = res;
                         vm.markers = [];
-                        for (var i = 0; i < bikes.length; i++) {
-                            vm.markers.push([bikes[i].lat, bikes[i].lng]);
+                        for (var i = 0; i < _bikes.length; i++) {
+                            vm.markers.push([_bikes[i].lat, _bikes[i].lng]);
                         }
                     })
                     .finally(function () {
@@ -101,13 +103,13 @@ define([
 
         function onMarkerClick(index) {
             console.log(index);
-            if (!bikes[index]) {
+            if (!_bikes[index]) {
                 $log.error('Illegal state: unknown bike with index ' + index);
                 return;
             }
-            $log.log("Goto to bike", bikes[index].id);
+            $log.log("Goto to bike", _bikes[index].id);
             $state.go('app.bike', {
-                bikeId: bikes[index].id
+                bikeId: _bikes[index].id
             });
         }
 

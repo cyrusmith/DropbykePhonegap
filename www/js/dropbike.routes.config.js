@@ -168,6 +168,26 @@ define([
 
     }]);
 
+    angular.module('dropbike.usage').config(['$stateProvider', function ($stateProvider) {
+
+        $stateProvider
+            .state('app.usageaccess', {
+                url: "/usageaccess/:bikeId",
+                views: {
+                    'menuContent': {
+                        templateUrl: "js/bike/bike.tpl.html",
+                        controller: 'UsageAccessController as vm',
+                        resolve: {
+                            bike: ['$stateParams', 'usageDataService', function ($stateParams, usageDataService) {
+                                return usageDataService.startUsage($stateParams.bikeId);
+                            }]
+                        }
+                    }
+                }
+            });
+
+    }]);
+
 
     angular.module('dropbike.profile').config(['$stateProvider', function ($stateProvider) {
 

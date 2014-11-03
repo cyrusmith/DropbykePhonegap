@@ -13,22 +13,19 @@ define([
 
     BikeController.$inject = ['bike', '$stateParams', '$ionicPopup', '$state', 'BACKEND_URL'];
 
-    function BikeController(bike, $stateParams, $ionicPopup, $state, BACKEND_URL) {
+    function BikeController(data, $stateParams, $ionicPopup, $state, BACKEND_URL) {
 
         var vm = this;
 
-        vm.bike = bike;
-        vm.location = [bike.lat, bike.lng];
+        vm.bike = data.bike;
+        vm.bike.photo = BACKEND_URL + '/images/rides/' + data.ride.id + '.jpg';
+        vm.location = [vm.bike.lat, vm.bike.lng];
         vm.markers = [
-            [bike.lat, bike.lng]
+            [vm.bike.lat, vm.bike.lng]
         ];
         vm.zoom = 17;
 
         vm.getAccess = getAccess;
-
-        if (bike.hasPhoto) {
-            vm.bike.photo = BACKEND_URL + '/images/bikes/' + vm.bike.id + '.jpg';
-        }
 
 
         function getAccess() {
@@ -41,11 +38,15 @@ define([
                         text: '<b>Get access</b>',
                         type: 'button-positive',
                         onTap: function () {
-                            $state.go('app.usage.access');
+                            return true;
                         }
                     }
                 ]
-            });
+            }).then(function (res) {
+                    if (res) {
+                        $state.go('app.usageaccess');
+                    }
+                });
         }
 
 

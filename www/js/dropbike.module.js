@@ -10,6 +10,7 @@ define([
     "map/map.module",
     "profile/profile.module",
     "address/address.module",
+    "usage/usage.module",
     "dropbike.templates",
     "bike/bike.module",
     "dropbike.controller"
@@ -28,6 +29,7 @@ define([
         'dropbike.address',
         'dropbike.templates',
         'dropbike.bike',
+        'dropbike.usage',
         'dropbike.util',
         'dropbike.profile',
         'map',
