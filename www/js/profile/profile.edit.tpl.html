@@ -1,0 +1,32 @@
+<ion-view title="Edit profile">
+
+    <ion-nav-buttons side="right">
+        <button class="button" ui-sref="app.profileedit">Save</button>
+    </ion-nav-buttons>
+
+    <ion-content>
+        <div class="profile-photo-container" bg-image="{{vm.profile.photo}}">
+            <div class="name">
+                <button class="button ion-camera" ng-click="vm.pickPhoto()">Pick photo</button>
+            </div>
+        </div>
+
+        <div class="list">
+            <label class="item item-stacked-label">
+                <span class="input-label">Name</span>
+                <input type="text" placeholder="Name" ng-model="vm.profile.name">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Email</span>
+                <input type="text" placeholder="Email" ng-model="vm.profile.email">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Phone</span>
+                <input type="text" placeholder="Phone" ng-model="vm.profile.phone" disabled>
+            </label>
+        </div>
+
+
+    </ion-content>
+
+</ion-view>

@@ -169,4 +169,41 @@ define([
     }]);
 
 
+    angular.module('dropbike.profile').config(['$stateProvider', function ($stateProvider) {
+
+        $stateProvider
+            .state('app.profileview', {
+                url: "/profileview",
+                views: {
+                    'menuContent': {
+                        templateUrl: "js/profile/profile.view.tpl.html",
+                        controller: 'ProfileViewController as vm',
+                        resolve: {
+                            profile: ['profileDataService', function (profileDataService) {
+                                return profileDataService.getProfile();
+                            }]
+                        }
+                    }
+                }
+            });
+
+        $stateProvider
+            .state('app.profileedit', {
+                url: "/profileedit",
+                views: {
+                    'menuContent': {
+                        templateUrl: "js/profile/profile.edit.tpl.html",
+                        controller: 'ProfileEditController as vm',
+                        resolve: {
+                            profile: ['profileDataService', function (profileDataService) {
+                                return profileDataService.getProfile();
+                            }]
+                        }
+                    }
+                }
+            });
+
+    }]);
+
+
 });

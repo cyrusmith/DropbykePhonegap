@@ -8,6 +8,7 @@ define([
     "util/util.module",
     "geolocation/geolocation.module",
     "map/map.module",
+    "profile/profile.module",
     "address/address.module",
     "dropbike.templates",
     "bike/bike.module",
@@ -28,6 +29,7 @@ define([
         'dropbike.templates',
         'dropbike.bike',
         'dropbike.util',
+        'dropbike.profile',
         'map',
         'dropbike.controllers']);
 
