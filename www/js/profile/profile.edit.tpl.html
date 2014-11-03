@@ -1,11 +1,11 @@
 <ion-view title="Edit profile">
 
     <ion-nav-buttons side="right">
-        <button class="button" ui-sref="app.profileedit">Save</button>
+        <button class="button" ui-sref="app.profileedit" ng-click="vm.save()">Save</button>
     </ion-nav-buttons>
 
     <ion-content>
-        <div class="profile-photo-container" bg-image="{{vm.profile.photo}}">
+        <div class="profile-photo-container" bg-image="vm.profile.photo">
             <div class="name">
                 <button class="button ion-camera" ng-click="vm.pickPhoto()">Pick photo</button>
             </div>

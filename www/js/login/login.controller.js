@@ -72,6 +72,18 @@ define([
                 }, function failure() {
                     deferred.resolve(false);
                 })
+            }, function() {
+                $ionicPopup.show({
+                    title: 'Error',
+                    subTitle: 'Could not load facebook api',
+                    buttons: [
+                        {
+                            text: 'Ok',
+                            type: 'button-assrtive'
+                        }
+                    ]
+                });
+                deferred.resolve(false);
             });
 
             return deferred.promise;

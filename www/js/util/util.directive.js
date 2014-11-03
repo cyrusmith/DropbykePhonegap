@@ -16,11 +16,12 @@ define([
     function bgImage() {
 
         return function (scope, element, attrs) {
-            var url = attrs.bgImage;
-            element.css({
-                'background-position': '50% 50%',
-                'background-image': 'url(' + url +')',
-                'background-size' : '100% auto'
+            scope.$watch(attrs.bgImage, function(url) {
+                element.css({
+                    'background-position': '50% 50%',
+                    'background-image': 'url(' + url +')',
+                    'background-size' : '100% auto'
+                });
             })
         };
 
