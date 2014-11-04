@@ -219,6 +219,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
         left: 0;
         right: 0;
         height: 70%;
+        background-color: #39444d;
         img {
           width: 100%;
         }
@@ -403,6 +404,73 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     margin-top: .5rem;
     textarea {
       height: 100px;
+    }
+  }
+
+}
+
+.checkout-container {
+
+  background-color: #33444d;
+
+  .photo {
+    height: 150px;
+  }
+
+  .title {
+    text-align: left;
+    padding-left: 0.5rem;
+    background: {
+      color: #637d88;
+    }
+    white-space: nowrap;
+    color: #FFF;
+    font-size: .875em;
+  }
+
+  .info {
+    h4 {
+      color: #FFF;
+      text-align: center;
+    }
+
+    .field {
+      border-radius: .6rem;
+      background: #1D2F3A;
+      height: 2.5rem;
+      text-align: center;
+      color: white;
+      line-height: 2.5rem;
+      font-size: 1.2rem;
+      margin-left: 1rem;
+      margin-right: 1rem;
+
+      &.field-rating {
+        height: 4.6rem;
+      }
+    }
+
+    .rating {
+      font-size: 0.875rem;
+      .row {
+        padding: 0;
+      }
+      .stars {
+        .col {
+          height: 42px;
+        }
+      }
+      .marks {
+        font-size: .65rem;
+        .col {
+          height: 36px;
+        }
+        .col1 {
+        }
+        .col2 {
+
+        }
+      }
     }
   }
 

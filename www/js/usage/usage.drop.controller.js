@@ -9,9 +9,9 @@ define([
 
     angular.module("dropbike.usage").controller('UsageDropController', UsageDropController);
 
-    UsageDropController.$inject = ['rideData', '$locaStorage', '$ionicPopup', '$state', 'geolocation', 'mapDataService', 'usageDataService', 'cameraUtil', 'BACKEND_URL'];
+    UsageDropController.$inject = ['rideData', '$localStorage', '$ionicPopup', '$state', 'geolocation', 'mapDataService', 'usageDataService', 'cameraUtil', 'BACKEND_URL'];
 
-    function UsageDropController(rideData, $locaStorage, $ionicPopup, $state, geolocation, mapDataService, usageDataService, cameraUtil, BACKEND_URL) {
+    function UsageDropController(rideData, $localStorage, $ionicPopup, $state, geolocation, mapDataService, usageDataService, cameraUtil, BACKEND_URL) {
 
         var vm = this;
         vm.currentLocation = null;
@@ -95,7 +95,7 @@ define([
 
             usageDataService.drop(vm.currentLocation[0], vm.currentLocation[1], vm.address, vm.lockPassword, vm.message)
                 .then(function (resp) {
-                    $locaStorage.lastRideId = resp.ride.id;
+                    $localStorage.lastRideId = resp.ride.id;
                     $state.go('app.checkout');
                 }, function (error) {
                     $ionicPopup.show({

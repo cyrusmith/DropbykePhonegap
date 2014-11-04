@@ -11,6 +11,7 @@ define([
     "profile/profile.module",
     "address/address.module",
     "usage/usage.module",
+    "checkout/checkout.module",
     "dropbike.templates",
     "bike/bike.module",
     "dropbike.controller"
@@ -30,6 +31,7 @@ define([
         'dropbike.templates',
         'dropbike.bike',
         'dropbike.usage',
+        'dropbike.checkout',
         'dropbike.util',
         'dropbike.profile',
         'map',

@@ -1,0 +1,33 @@
+<ion-view title="{{vm.bike.title}}" hide-back-button="true">
+
+    <ion-content class="checkout-container">
+
+
+        <div class="photo" bg-image="vm.photo">
+        </div>
+        <div class="title">
+            {{vm.bike.title}} (<i class="ion-ios7-star energized"></i> {{vm.bike.rating + ""}})
+            ${{vm.bike.priceRate}}/hr
+        </div>
+
+        <div class="info">
+
+            <h4>Total</h4>
+
+            <p class="field">00:01:04</p>
+
+            <p class="field">$0.08</p>
+
+            <p class="field field-rating">
+                <dropbike-checkout-rating rating="vm.rating"/>
+            </p>
+
+        </div>
+
+    </ion-content>
+
+    <div class="bar bar-footer footer-one-button">
+        <a class="button button-block button-balanced" ng-click="vm.checkout()">Checkout</a>
+    </div>
+
+</ion-view>

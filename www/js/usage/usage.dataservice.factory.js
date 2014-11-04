@@ -43,7 +43,7 @@ define([
                     "Authorization": "Bearer " + authService.getToken()
                 }
             }).then(function (response) {
-                    $log.log("Ride stropped", response);
+                    $log.log("Ride stopped", response);
                     return response.data;
                 }, function (resp) {
                     $log.error("Error stoppint usage");

@@ -273,6 +273,32 @@ define([
     angular.module('dropbike.profile').config(['$stateProvider', function ($stateProvider) {
 
         $stateProvider
+            .state('app.checkout', {
+                url: "/checkout/",
+                views: {
+                    'menuContent': {
+                        templateUrl: "js/checkout/checkout.tpl.html",
+                        controller: 'CheckoutController as vm',
+                        resolve: {
+                            rideData: ['$localStorage', 'checkoutDataService', '$state', function ($localStorage, checkoutDataService, $state) {
+                                if ($localStorage.lastRideId) {
+                                    return checkoutDataService.loadRideData($localStorage.lastRideId);
+                                }
+                                else {
+                                    $state.go('app.search');
+                                    return null;
+                                }
+                            }]
+                        }
+                    }
+                }
+            });
+
+    }]);
+
+    angular.module('dropbike.profile').config(['$stateProvider', function ($stateProvider) {
+
+        $stateProvider
             .state('app.profileview', {
                 url: "/profileview",
                 views: {
