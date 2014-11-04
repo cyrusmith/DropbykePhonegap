@@ -30,7 +30,7 @@ define([
 
             if (!vm.code) {
 
-                 $ionicPopup.show({
+                $ionicPopup.show({
                     title: 'Code not set',
                     buttons: [
                         {
@@ -43,7 +43,7 @@ define([
                 return;
             }
 
-            if(!$localStorage.phone_verification_key) {
+            if (!$localStorage.phone_verification_key) {
                 $ionicPopup.show({
                     title: 'Set your phone number first',
                     buttons: [
@@ -58,26 +58,24 @@ define([
             }
 
             confirmService.verifyCode(vm.code, $localStorage.phone_verification_key)
-                .then(function () {
+                .then(function (resp) {
 
-                    $ionicPopup.show({
-                        title: '<span class="balanced"><i class="ion-checkmark-round"></i> Code verified</span>',
-                        buttons: [
-                            {
-                                text: 'Ok',
-                                type: 'button-balanced'
-                            }
-                        ]
-                    });
+                    $localStorage.phone_verification_key = null;
 
-                    var user = new UserModel();
-                    user.load();
-                    user.isPhoneConfirmed = true;
-                    user.save();
+                    var user = resp.user,
+                        ride = resp.ride;
 
-                    $state.go('app.addcard');
+                    if (!user.cardVerified) {
+                        $state.go('app.addcard');
+                    }
+                    else if (ride) {
+                        $state.go('app.usageaccess');
+                    }
+                    else {
+                        $state.go('app.search');
+                    }
 
-                }, function() {
+                }, function () {
                     $ionicPopup.show({
                         title: '<span class="assertive"><i class="ion-alert-circled"></i>Invalid code</span>',
                         buttons: [

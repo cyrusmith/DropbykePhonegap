@@ -8,6 +8,7 @@ define([
 
     require([
         "util/util.factory",
+        "util/util.camera.factory",
         "util/util.directive"
     ])
 

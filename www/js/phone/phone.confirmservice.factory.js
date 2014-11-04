@@ -43,7 +43,7 @@ define([
                     $log.log("verifyCode success", resp);
                     if(!!resp.data.access_token) {
                         authService.setToken(resp.data.access_token);
-                        deferred.resolve(resp);
+                        deferred.resolve(resp.data.user_info);
                     }
                     else {
                         reject(resp);

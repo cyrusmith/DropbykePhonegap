@@ -44,15 +44,12 @@ define([
             }).then(function (res) {
                     if (res) {
                         usageDataService.startUsage(vm.bike.id)
-                            .then(function (ride) {
-                                $localStorage.ride = ride;
-                                $state.go('app.usageaccess', {
-                                    bikeId: vm.bike.id
-                                });
-                            }, function (resp) {
+                            .then(function () {
+                                $state.go('app.usageaccess');
+                            }, function (error) {
                                 $ionicPopup.show({
                                     title: 'Could not start usage',
-                                    subTitle: resp.error ? resp.error : '',
+                                    subTitle: error ? error : '',
                                     buttons: [
                                         {
                                             text: 'Ok',

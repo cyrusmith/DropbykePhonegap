@@ -1,0 +1,56 @@
+<ion-view title="Drop bike" hide-back-button="true">
+
+    <ion-nav-buttons side="left">
+        <button class="button" ui-sref="app.usagemap">Usage info</button>
+    </ion-nav-buttons>
+
+    <ion-nav-buttons side="right">
+        <button class="button button-icon icon ion-android-locate" ng-click="vm.getCurrentLocation()">
+        </button>
+    </ion-nav-buttons>
+
+    <ion-content>
+        <div class="usage-drop-container">
+
+            <div class="map">
+                <google-map
+                        location="vm.currentLocation"
+                        show-location-marker="true"
+                        zoom="vm.zoom"
+                        location-icon="img/ic-pin-small.png" marker-default-icon="img/ic-bike-small.png"
+                        pan-to-bounds="vm.bounds"
+                        />
+
+            </div>
+            <div class="list list-inset">
+                <label class="item item-input">
+                    <i class="icon ion-ios7-location placeholder-icon balanced"></i>
+                    <input type="text" placeholder="Location" ng-model="vm.address">
+                </label>
+            </div>
+            <div class="photo" bg-image="vm.photo">
+                <div class="takephoto">
+                    <button class="button ion-camera" ng-click="vm.pickPhoto()"> Take photo</button>
+                </div>
+            </div>
+
+            <div class="list list-inset">
+                <label class="item item-input">
+                    <i class="icon ion-locked placeholder-icon assertive"></i>
+                    <input type="text" placeholder="Lock password" ng-model="vm.lockPassword">
+                </label>
+            </div>
+
+            <div class="message">
+                <label class="item-input">
+                    <textarea placeholder="Massage to next user" ng-model="vm.message"></textarea>
+                </label>
+            </div>
+
+        </div>
+
+    </ion-content>
+    <div class="bar bar-footer footer-one-button">
+        <a class="button button-block button-energized" ng-click="vm.drop()">Drop bike</a>
+    </div>
+</ion-view>

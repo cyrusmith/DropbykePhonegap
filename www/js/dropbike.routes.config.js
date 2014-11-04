@@ -24,8 +24,18 @@ define([
                             controller: 'SearchController as vm',
                             templateUrl: "js/search/search.tpl.html",
                             resolve: {
-                                bikes: ['searchDataService', function (searchDataService) {
-                                    return searchDataService.loadBikes();
+                                bikes: ['searchDataService', 'profileDataService', '$state', function (searchDataService, profileDataService, $state) {
+                                    return profileDataService.getProfile()
+                                        .then(function (resp) {
+                                            if (!resp.ride) {
+                                                return searchDataService.loadBikes();
+                                            }
+                                            else {
+                                                $state.go('app.usageaccess');
+                                            }
+                                        }, function () {
+                                            d.reject(null);
+                                        });
                                 }]
                             }
                         }
@@ -176,7 +186,25 @@ define([
                 views: {
                     'menuContent': {
                         templateUrl: "js/usage/usage.access.tpl.html",
-                        controller: 'UsageAccessController as vm'
+                        controller: 'UsageAccessController as vm',
+                        resolve: {
+                            rideData: ['$q', 'profileDataService', '$state', function ($q, profileDataService, $state) {
+                                var d = $q.defer();
+                                profileDataService.getProfile()
+                                    .then(function (resp) {
+                                        if (resp.ride) {
+                                            d.resolve(resp);
+                                        }
+                                        else {
+                                            $state.go('app.search');
+                                            d.reject(null);
+                                        }
+                                    }, function () {
+                                        d.reject(null);
+                                    });
+                                return d.promise;
+                            }]
+                        }
                     }
                 }
             });
@@ -187,7 +215,54 @@ define([
                 views: {
                     'menuContent': {
                         templateUrl: "js/usage/usage.map.tpl.html",
-                        controller: 'UsageMapController as vm'
+                        controller: 'UsageMapController as vm',
+                        resolve: {
+                            rideData: ['$q', 'profileDataService', '$state', function ($q, profileDataService, $state) {
+                                var d = $q.defer();
+                                profileDataService.getProfile()
+                                    .then(function (resp) {
+                                        if (resp.ride) {
+                                            d.resolve(resp);
+                                        }
+                                        else {
+                                            $state.go('app.search');
+                                            d.reject(null);
+                                        }
+                                    }, function () {
+                                        d.reject(null);
+                                    });
+                                return d.promise;
+                            }]
+                        }
+                    }
+                }
+            });
+
+        $stateProvider
+            .state('app.usagedrop', {
+                url: "/usagedrop/",
+                views: {
+                    'menuContent': {
+                        templateUrl: "js/usage/usage.drop.tpl.html",
+                        controller: 'UsageDropController as vm',
+                        resolve: {
+                            rideData: ['$q', 'profileDataService', '$state', function ($q, profileDataService, $state) {
+                                var d = $q.defer();
+                                profileDataService.getProfile()
+                                    .then(function (resp) {
+                                        if (resp.ride) {
+                                            d.resolve(resp);
+                                        }
+                                        else {
+                                            $state.go('app.search');
+                                            d.reject(null);
+                                        }
+                                    }, function () {
+                                        d.reject(null);
+                                    });
+                                return d.promise;
+                            }]
+                        }
                     }
                 }
             });

@@ -5,9 +5,9 @@ define([
     'use strict';
 
     angular.module('dropbike.card').controller('CardController', CardController);
-    CardController.$inject = ['$ionicPopup', '$ionicLoading', '$state', 'cardService', 'UserModel'];
+    CardController.$inject = ['authService', '$ionicPopup', '$ionicLoading', '$state', 'cardService', 'UserModel'];
 
-    function CardController($ionicPopup, $ionicLoading, $state, cardService, UserModel) {
+    function CardController(authService, $ionicPopup, $ionicLoading, $state, cardService, UserModel) {
 
         var vm = this;
 
@@ -17,6 +17,10 @@ define([
         vm.cvc = "";
 
         vm.submit = submit;
+
+        if(!authService.isLoggedIn()) {
+            $state.go('app.start');
+        }
 
         vm.validateExpire = function () {
             if (vm.expire.length == 3 && vm.expire[2] != '/') {

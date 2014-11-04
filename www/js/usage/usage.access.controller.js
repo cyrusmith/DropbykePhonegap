@@ -9,18 +9,14 @@ define([
 
     angular.module("dropbike.usage").controller('UsageAccessController', UsageAccessController);
 
-    UsageAccessController.$inject = ['$localStorage', '$state', 'BACKEND_URL'];
+    UsageAccessController.$inject = ['rideData', '$state', 'BACKEND_URL'];
 
-    function UsageAccessController($localStorage, $state, BACKEND_URL) {
+    function UsageAccessController(rideData, $state, BACKEND_URL) {
 
         var vm = this;
 
-        if (!$localStorage.ride) {
-            $state.go('app.search');
-            return;
-        }
-
-        vm.ride = $localStorage.ride;
+        vm.ride = rideData.ride;
+        vm.bike = rideData.bike;
         vm.ride.photo = BACKEND_URL + '/images/rides/' + vm.ride.lastRideId + '.jpg';
     }
 

@@ -9,7 +9,7 @@
             <div class="usage-photo-container" bg-image="vm.ride.photo">
             </div>
             <div class="title">
-                {{vm.ride.title}} (<i class="ion-ios7-star energized"></i> {{vm.ride.rating}}) ${{vm.price/100}}/hr
+                {{vm.bike.title}} (<i class="ion-ios7-star energized"></i> {{vm.bike.rating}}) ${{vm.bike.priceRate/100}}/hr
             </div>
 
             <div class="last-user-info">
@@ -21,12 +21,12 @@
 
                 <div class="field">
                     <h4>Access time</h4>
-                    <p>{{vm.ride.accessTime}}</p>
+                    <p timer-elapsed="{{vm.ride.startTime}}">00:00:00</p>
                 </div>
 
                 <div class="field message">
                     <h4>Message from last user</h4>
-                    <textarea disabled>{{vm.ride.message}}</textarea>
+                    <textarea disabled>{{vm.bike.message}}</textarea>
                 </div>
 
             </div>

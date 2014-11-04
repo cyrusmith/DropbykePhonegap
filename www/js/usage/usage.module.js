@@ -14,6 +14,7 @@ define([
     require([
         "usage/usage.access.controller",
         "usage/usage.map.controller",
+        "usage/usage.drop.controller",
         "usage/usage.dataservice.factory"
     ]);
 

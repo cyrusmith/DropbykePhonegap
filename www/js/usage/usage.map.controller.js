@@ -9,9 +9,9 @@ define([
 
     angular.module("dropbike.usage").controller('UsageMapController', UsageMapController);
 
-    UsageMapController.$inject = ['$localStorage', 'geolocation', '$state', 'BACKEND_URL'];
+    UsageMapController.$inject = ['rideData', 'geolocation', '$state', 'BACKEND_URL'];
 
-    function UsageMapController($localStorage, geolocation, $state, BACKEND_URL) {
+    function UsageMapController(rideData, geolocation, $state, BACKEND_URL) {
 
         var vm = this;
         vm.ride = null;
@@ -24,15 +24,15 @@ define([
 
         function init() {
 
-            vm.ride = $localStorage.ride;
+            vm.ride = rideData.ride;
 
-            if (!$localStorage.ride) {
+            if (!vm.ride) {
                 $state.go('app.search');
                 return;
             }
 
             vm.markers = [
-                [$localStorage.ride.startLat, $localStorage.ride.startLng]
+                [vm.ride.startLat, vm.ride.startLng]
             ];
 
             geolocation.getLocation({})

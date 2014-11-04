@@ -371,3 +371,39 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     }
   }
 }
+
+.usage-drop-container {
+  .map {
+    height: 200px;
+    width: 100%;
+    .dropbike-map-container {
+      height: 200px;
+      width: 100%;
+    }
+  }
+
+  .list.list-inset {
+    margin: .2rem;
+  }
+
+  .photo {
+    height: 150px;
+    position: relative;
+    background-color: #456;
+    .takephoto {
+      position: absolute;
+      bottom: .5rem;
+      text-align: center;
+      width: 100%;
+    }
+
+  }
+
+  .message {
+    margin-top: .5rem;
+    textarea {
+      height: 100px;
+    }
+  }
+
+}

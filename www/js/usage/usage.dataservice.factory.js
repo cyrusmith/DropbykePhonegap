@@ -11,11 +11,12 @@ define([
 
     angular.module('dropbike.usage').factory('usageDataService', usageDataService);
 
-    usageDataService.$inject = ['authService', '$http', 'BACKEND_URL', '$log'];
+    usageDataService.$inject = ['$q', 'authService', '$http', 'BACKEND_URL', '$log'];
 
-    function usageDataService(authService, $http, BACKEND_URL, $log) {
+    function usageDataService($q, authService, $http, BACKEND_URL, $log) {
         return {
-            startUsage: startUsage
+            startUsage: startUsage,
+            drop: drop
         }
 
         function startUsage(bikeId) {
@@ -28,11 +29,28 @@ define([
             }).then(function (response) {
                     $log.log("Ride started", response);
                     return response.data.ride;
-                }, function (error) {
-                    $log.error("Error starting ride", error);
-                    return null;
+                }, function (resp) {
+                    $log.error("Error start usage");
+                    return $q.reject(resp.data.error ? resp.data.error : "Error start usage");
                 });
         }
+
+        function drop(lat, lng, address, lockPassword, message) {
+            return $http.post(BACKEND_URL + '/api/rides/stop/', {
+                lat: lat, lng: lng, address: address, lockPassword: lockPassword, message: message
+            }, {
+                headers: {
+                    "Authorization": "Bearer " + authService.getToken()
+                }
+            }).then(function (response) {
+                    $log.log("Ride stropped", response);
+                    return response.data;
+                }, function (resp) {
+                    $log.error("Error stoppint usage");
+                    return $q.reject(resp.data.error ? resp.data.error : "Error stop usage");
+                });
+        }
+
     }
 
 });

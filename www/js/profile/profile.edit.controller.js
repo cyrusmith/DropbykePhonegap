@@ -10,7 +10,7 @@ define([
 
         var vm = this;
 
-        vm.profile = profile;
+        vm.profile = profile.user;
         vm.save = save;
         vm.pickPhoto = pickPhoto;
 

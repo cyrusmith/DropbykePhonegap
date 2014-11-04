@@ -16,9 +16,13 @@ define([
 
         function responseError(response) {
             $log.log("responseError", response);
-            if (response.status == 0) {
+            if(response.status == 401) {
+                $injector.get('$state').go('app.start');
+            }
+            else if (response.status == 0) {
                 $injector.get('$state').go('app.offline');
             }
+
             return $q.reject(response);
         }
     }
