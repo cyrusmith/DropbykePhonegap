@@ -34,16 +34,18 @@ define([
         }
 
         function checkout(rideId, rating) {
-            //TODO
-            return $http.get(BACKEND_URL + '/api/bikes/' + id, {
+            return $http.post(BACKEND_URL + '/api/rides/checkout', {
+                rideId: rideId,
+                rating: rating
+            }, {
                 headers: {
                     "Authorization": "Bearer " + authService.getToken()
                 }
             }).then(function (response) {
-                    $log.log("Bike loaded", response);
+                    $log.log("Checkout complete", response);
                     return response.data;
                 }, function (error) {
-                    $log.error("Error getting bike", error);
+                    $log.error("Checkout error", error);
                     return null;
                 });
         }
