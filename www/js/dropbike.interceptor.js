@@ -16,7 +16,7 @@ define([
 
         function responseError(response) {
             $log.log("responseError", response);
-            if(response.status == 401) {
+            if(response.status == 401 || response.status == 403) {
                 $injector.get('$state').go('app.start');
             }
             else if (response.status == 0) {

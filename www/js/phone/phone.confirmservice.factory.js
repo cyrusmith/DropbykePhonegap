@@ -6,9 +6,9 @@ define([
 
     angular.module('dropbike.phone').factory('confirmService', confirmService);
 
-    confirmService.$inject = ['$q', '$http', '$log', 'authService', 'BACKEND_URL'];
+    confirmService.$inject = ['$q', '$http', '$localStorage', '$log', 'authService', 'BACKEND_URL'];
 
-    function confirmService($q, $http, $log, authService, BACKEND_URL) {
+    function confirmService($q, $http, $localStorage, $log, authService, BACKEND_URL) {
 
         return {
             submitSMS: submitSMS,
@@ -41,7 +41,7 @@ define([
                 "verify_key": key
             }).then(function success(resp) {
                     $log.log("verifyCode success", resp);
-                    if(!!resp.data.access_token) {
+                    if (!!resp.data.access_token) {
                         authService.setToken(resp.data.access_token);
                         deferred.resolve(resp.data.user_info);
                     }

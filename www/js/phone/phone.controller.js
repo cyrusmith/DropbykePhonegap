@@ -37,6 +37,8 @@ define([
                 template: '<i class="icon ion-loading-c"></i> Wait...'
             });
 
+            $localStorage.phone = vm.phone;
+
             confirmService.submitSMS(vm.phone)
                 .then(function (result) {
                     $ionicLoading.hide();
@@ -46,7 +48,7 @@ define([
                 }, function () {
                     $ionicLoading.hide();
                     $ionicPopup.show({
-                        title: 'Could not verify code',
+                        title: 'Failed to send sms',
                         buttons: [
                             {
                                 text: 'Ok',

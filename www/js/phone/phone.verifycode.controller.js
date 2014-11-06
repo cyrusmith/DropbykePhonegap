@@ -6,9 +6,9 @@ define([
 
     angular.module('dropbike.phone').controller('PhoneVerifyCodeController', PhoneVerifyCodeController);
 
-    PhoneVerifyCodeController.$inject = ['$ionicPopup', '$localStorage', '$state', 'confirmService', 'UserModel'];
+    PhoneVerifyCodeController.$inject = ['$ionicPopup', '$ionicLoading', '$localStorage', '$state', '$log', 'confirmService'];
 
-    function PhoneVerifyCodeController($ionicPopup, $localStorage, $state, confirmService, UserModel) {
+    function PhoneVerifyCodeController($ionicPopup, $ionicLoading, $localStorage, $state, $log, confirmService) {
 
         var vm = this;
 
@@ -18,7 +18,30 @@ define([
         vm.changeNumber = changeNumber;
 
         function resendSMS() {
-            alert('No implemeted');
+
+            $ionicLoading.show({
+                template: '<i class="icon ion-loading-c"></i> Wait...'
+            });
+
+            confirmService.submitSMS($localStorage.phone)
+                .then(function (result) {
+                    $ionicLoading.hide();
+                    $log.log("submitSMS result", result);
+                    $localStorage.phone_verification_key = result.data.request_key;
+                    $state.go('app.phoneverifycode')
+                }, function () {
+                    $ionicLoading.hide();
+                    $ionicPopup.show({
+                        title: 'Failed to send sms',
+                        buttons: [
+                            {
+                                text: 'Ok',
+                                type: 'button-assertive'
+                            }
+                        ]
+                    });
+                });
+
         }
 
         function changeNumber() {
@@ -60,6 +83,7 @@ define([
             confirmService.verifyCode(vm.code, $localStorage.phone_verification_key)
                 .then(function (resp) {
 
+                    $localStorage.phone = null;
                     $localStorage.phone_verification_key = null;
 
                     var user = resp.user,

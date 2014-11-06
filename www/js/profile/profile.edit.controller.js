@@ -5,16 +5,28 @@ define([
     'use strict';
 
     angular.module('dropbike.phone').controller('ProfileEditController', ProfileEditController);
-    ProfileEditController.$inject = ['profile', 'profileDataService', '$ionicPopup', '$ionicLoading', 'BACKEND_URL', '$log', '$state', 'confirmService'];
-    function ProfileEditController(profile, profileDataService, $ionicPopup, $ionicLoading, BACKEND_URL, $log, $state, confirmService) {
+    ProfileEditController.$inject = ['profile', 'profileDataService', '$ionicPopup', '$ionicLoading', '$localStorage', 'BACKEND_URL', '$log', '$state', 'confirmService'];
+    function ProfileEditController(profile, profileDataService, $ionicPopup, $ionicLoading, $localStorage, BACKEND_URL, $log, $state, confirmService) {
 
         var vm = this;
 
         vm.profile = profile.user;
+        vm.profile.photo = BACKEND_URL + '/images/users/' + vm.profile.id + '.jpg?nocache' + (new Date()).getTime();
+
+        if ($localStorage.facebook) {
+            if ($localStorage.facebook.email) {
+                vm.profile.email = $localStorage.facebook.email;
+            }
+            if ($localStorage.facebook.name) {
+                vm.profile.name = $localStorage.facebook.name;
+            }
+            if ($localStorage.facebook.image) {
+                vm.profile.photo = $localStorage.facebook.image;
+            }
+        }
+
         vm.save = save;
         vm.pickPhoto = pickPhoto;
-
-        vm.profile.photo = BACKEND_URL + '/images/users/' + vm.profile.id + '.jpg?nocache' + (new Date()).getTime();
 
         function save() {
             $ionicLoading.show({
@@ -22,6 +34,10 @@ define([
             });
             profileDataService.updateProfile(vm.profile.name, vm.profile.email)
                 .then(function () {
+                    if ($localStorage.facebook) {
+                        $localStorage.facebook.name = null;
+                        $localStorage.facebook.email = null;
+                    }
                     $state.go('app.profileview');
                 }, function (error) {
                     $ionicPopup.show({
@@ -64,6 +80,9 @@ define([
                     return profileDataService.updatePhoto(src);
                 })
                 .then(function () {
+                    if ($localStorage.facebook) {
+                        $localStorage.facebook.image = null;
+                    }
                     vm.profile.photo = BACKEND_URL + '/images/users/' + vm.profile.id + '.jpg?nocache' + (new Date()).getTime();
                 }, function (error) {
                     $ionicPopup.show({

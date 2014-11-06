@@ -45,8 +45,18 @@ define([
     ], function () {
 
         angular.module('dropbike')
+            .run(['$ionicPlatform', '$rootScope', '$state', 'authService', function ($ionicPlatform, $rootScope, $state, authService) {
 
-            .run(['$ionicPlatform', function ($ionicPlatform) {
+                $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+                    if (toState.name !== "app.start" && toState.name !== "app.phoneconfirm" && toState.name !== "app.phoneverifycode") {
+                        if (!authService.isLoggedIn()) {
+                            event.preventDefault();
+                            $state.go('app.start');
+                        }
+                    }
+                    return true;
+                });
+
                 $ionicPlatform.ready(function () {
                     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
                     // for form inputs)

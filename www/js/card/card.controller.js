@@ -5,9 +5,9 @@ define([
     'use strict';
 
     angular.module('dropbike.card').controller('CardController', CardController);
-    CardController.$inject = ['authService', '$ionicPopup', '$ionicLoading', '$state', 'cardService', 'UserModel'];
+    CardController.$inject = ['authService', '$ionicPopup', '$ionicLoading', '$state', 'cardService'];
 
-    function CardController(authService, $ionicPopup, $ionicLoading, $state, cardService, UserModel) {
+    function CardController(authService, $ionicPopup, $ionicLoading, $state, cardService) {
 
         var vm = this;
 
@@ -68,14 +68,7 @@ define([
                     vm.cvc)
                 .then(function (result) {
                     $ionicLoading.hide();
-
-                    var user = new UserModel();
-                    user.load();
-                    user.isCardConfirmed = true;
-                    user.save();
-
                     $state.go('app.search');
-
                 }, function (resp) {
                     $ionicLoading.hide();
 

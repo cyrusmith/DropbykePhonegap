@@ -59,6 +59,7 @@ define([
                 });
                 checkoutDataService.checkout(vm.ride.id, vm.rating)
                     .finally(function () {
+                        $localStorage.lastRideId = null;
                         $ionicLoading.hide();
                         $state.go('app.search');
                     });
