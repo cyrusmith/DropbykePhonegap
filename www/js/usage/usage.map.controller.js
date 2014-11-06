@@ -18,6 +18,7 @@ define([
         vm.currentLocation = null;
         vm.markers = null;
         vm.bounds = null;
+        vm.currentTimestamp = rideData.timestamp;
         vm.zoom = 15;
 
         init();

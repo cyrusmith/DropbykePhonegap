@@ -297,6 +297,24 @@ define([
     }]);
 
     angular.module('dropbike.profile').config(['$stateProvider', function ($stateProvider) {
+        $stateProvider
+            .state('app.payments', {
+                url: "/payments",
+                views: {
+                    'menuContent': {
+                        templateUrl: "js/payments/payments.tpl.html",
+                        controller: 'PaymentsController as vm',
+                        resolve: {
+                            profile: ['profileDataService', function (profileDataService) {
+                                return profileDataService.getProfile();
+                            }]
+                        }
+                    }
+                }
+            });
+    }]);
+
+    angular.module('dropbike.profile').config(['$stateProvider', function ($stateProvider) {
 
         $stateProvider
             .state('app.profileview', {

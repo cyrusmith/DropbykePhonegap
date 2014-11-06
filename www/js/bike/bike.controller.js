@@ -18,6 +18,7 @@ define([
         var vm = this;
 
         vm.bike = data.bike;
+        vm.bike.rating = parseInt(data.bike.rating*10)/10;
         vm.bike.photo = BACKEND_URL + '/images/rides/' + data.ride.id + '.jpg';
         vm.location = [vm.bike.lat, vm.bike.lng];
         vm.markers = [

@@ -19,6 +19,7 @@ define([
         vm.photo = BACKEND_URL + '/images/rides/' + rideData.ride.id + '.jpg';
         vm.rating = 0;
         vm.bike = rideData.bike;
+        vm.bike.rating = parseInt(rideData.bike.rating*10)/10;
         vm.ride = rideData.ride;
         vm.totalTime = 0;
 
