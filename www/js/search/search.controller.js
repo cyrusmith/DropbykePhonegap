@@ -6,27 +6,21 @@ define([
 
     angular.module('dropbike.phone').controller('SearchController', SearchController);
 
-    SearchController.$inject = ['GOOGLE_API_KEY', 'geolocation', 'searchDataService', 'mapDataService', '$q', '$ionicPopup', '$ionicLoading', '$timeout', '$log', '$state', '$scope', '$localStorage'];
+    SearchController.$inject = ['profile', 'geolocation', 'searchDataService', 'mapDataService', '$q', '$ionicPopup', '$ionicLoading', '$timeout', '$log', '$state', '$scope', '$localStorage'];
 
-    function SearchController(GOOGLE_API_KEY, geolocation, searchDataService, mapDataService, $q, $ionicPopup, $ionicLoading, $timeout, $log, $state, $scope, $localStorage) {
+    function SearchController(profile, geolocation, searchDataService, mapDataService, $q, $ionicPopup, $ionicLoading, $timeout, $log, $state, $scope, $localStorage) {
 
         var vm = this;
 
-        vm.apiKey = GOOGLE_API_KEY;
-        vm.currentLocation = [];
-        vm.markers = [];
-        vm.mapBounds = null;
-        vm.zoom = 16;
-        vm.address = "";
+        vm.currentLocation;
+        vm.markers;
+        vm.mapBounds;
+        vm.zoom;
+        vm.address;
 
         vm.setAddress = setAddress;
         vm.applyCurrentLocation = applyCurrentLocation;
         vm.onMarkerClick = onMarkerClick;
-
-        if ($localStorage.selectedLocation) {
-            vm.currentLocation = [$localStorage.selectedLocation.lat, $localStorage.selectedLocation.lng];
-            vm.address = $localStorage.selectedLocation.address;
-        }
 
         /**
          * Private block
@@ -39,80 +33,55 @@ define([
 
         function init() {
 
-            checkRide()
-                .then(function () {
+            vm.currentLocation = [];
+            vm.markers = [];
+            vm.mapBounds = null;
+            vm.zoom = 16;
+            vm.address = "";
 
-                    if ($localStorage.selectedLocation) {
+            if ($localStorage.selectedLocation) {
+                vm.currentLocation = [$localStorage.selectedLocation.lat, $localStorage.selectedLocation.lng];
+                vm.address = $localStorage.selectedLocation.address;
+            }
+
+            if ($localStorage.selectedLocation) {
+                for (var i = 0; i < _bikes.length; i++) {
+                    vm.markers.push([_bikes[i].lat, _bikes[i].lng]);
+                }
+            }
+            else {
+                geolocation.getLocation({})
+                    .then(function (pos) {
+                        vm.currentLocation = [pos.coords.latitude, pos.coords.longitude];
+                        mapDataService.geodecode(pos.coords)
+                            .then(function (address) {
+                                if (address.length) {
+                                    vm.address = address[0].formatted_address;
+                                }
+                            });
+                    }, function (error) {
+                        $ionicPopup.show({
+                            title: error,
+                            buttons: [
+                                {
+                                    text: 'Ok',
+                                    type: 'button-assertive'
+                                }
+                            ]
+                        });
+                    })
+                    .finally(function () {
                         for (var i = 0; i < _bikes.length; i++) {
                             vm.markers.push([_bikes[i].lat, _bikes[i].lng]);
                         }
-                    }
-                    else {
-                        geolocation.getLocation({})
-                            .then(function (pos) {
-                                vm.currentLocation = [pos.coords.latitude, pos.coords.longitude];
-                                mapDataService.geodecode(pos.coords)
-                                    .then(function (address) {
-                                        if (address.length) {
-                                            vm.address = address[0].formatted_address;
-                                        }
-                                    });
-                            }, function (error) {
-                                $ionicPopup.show({
-                                    title: error,
-                                    buttons: [
-                                        {
-                                            text: 'Ok',
-                                            type: 'button-assertive'
-                                        }
-                                    ]
-                                });
-                            })
-                            .finally(function () {
-                                for (var i = 0; i < _bikes.length; i++) {
-                                    vm.markers.push([_bikes[i].lat, _bikes[i].lng]);
-                                }
-                            });
-                    }
-
-                    $scope.$watch('vm.mapBounds', function (bounds) {
-                        scheduleUpdate();
-                    });
-
-                });
-
-        }
-
-        function checkRide() {
-            var d = $q.defer();
-            if (!$localStorage.ride) {
-                d.resolve(true);
-            }
-            else {
-                $ionicPopup.show({
-                    title: 'You have bike in usage',
-                    subTitle: 'Drop bike or continue usage?',
-                    buttons: [
-                        {
-                            text: 'Drop',
-                            type: 'button-energized',
-                            onTap: function (e) {
-                                $state.go('app.usagedrop');
-                            }
-                        },
-                        {
-                            text: 'Usage',
-                            type: 'button-positive',
-                            onTap: function (e) {
-                                $state.go('app.usagemap');
-                            }
-                        }
-                    ]
-                }).then(function () {
-                        d.reject();
                     });
             }
-            return d.promise;
+
+            $scope.$watch('vm.mapBounds', function (bounds) {
+                scheduleUpdate();
+            });
+
+
         }
 
         function scheduleUpdate() {

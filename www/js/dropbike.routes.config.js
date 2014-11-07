@@ -22,7 +22,18 @@ define([
                     views: {
                         'menuContent': {
                             controller: 'SearchController as vm',
-                            templateUrl: "js/search/search.tpl.html"
+                            templateUrl: "js/search/search.tpl.html",
+                            resolve: {
+                                profile: ['profileDataService', '$state', function (profileDataService, $state) {
+                                    return profileDataService.getProfile()
+                                        .then(function(profile) {
+                                            if(profile.ride) {
+                                                $state.go('app.usageaccess');
+                                            }
+                                            return profile;
+                                        })
+                                }]
+                            }
                         }
                     }
                 })

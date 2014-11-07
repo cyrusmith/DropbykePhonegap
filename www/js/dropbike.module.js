@@ -51,7 +51,8 @@ define([
             .run(['$ionicPlatform', '$rootScope', '$state', 'authService', '$localStorage', 'ConnectivityService', function ($ionicPlatform, $rootScope, $state, authService, $localStorage, connectivityService) {
 
                 $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-                    if (["app.start", "app.phoneconfirm", "app.phoneverifycode", "app.offline"].indexOf(toState.name) != -1) {
+
+                    if (["app.start", "app.phoneconfirm", "app.phoneverifycode", "app.offline"].indexOf(toState.name) === -1) {
                         if (!authService.isLoggedIn()) {
                             event.preventDefault();
                             $state.go('app.start');

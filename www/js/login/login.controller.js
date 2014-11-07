@@ -52,10 +52,7 @@ define([
             });
 
             doLogin().then(function (res) {
-
-
                 $log.log("Login res:", res);
-
                 $state.go('app.phoneconfirm');
 
             },function () {
@@ -72,7 +69,7 @@ define([
 
             var loginDeferred = $q.defer();
 
-            facebook.getApi().then(function (fbApi) {
+            return facebook.getApi().then(function (fbApi) {
                 var deferred = $q.defer();
                 fbApi.login(["public_profile", "user_photos"], function succes(response) {
                     $log.log("login response", response);
@@ -89,7 +86,6 @@ define([
                         fbApi.api('/me', null, function (meResp) {
 
                             $log.log("/me", meResp);
-
                             $localStorage.facebook = meResp;
 
                             fbApi.api("/me/picture?type=large", [], function (picResp) {
@@ -113,6 +109,8 @@ define([
                             loginDeferred.reject(err);
                         });
 
+                    }, function (err) {
+                        loginDeferred.reject(err);
                     });
 
                 }, function (res) {

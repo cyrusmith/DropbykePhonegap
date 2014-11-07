@@ -16,7 +16,7 @@ define([
         function submit() {
 
             var phoneRE = /[^0-9]/,
-                phone = vm.phone.replace(phoneRE, '');
+                phone = (vm.phone + "").replace(phoneRE, '');
 
             if (phone.length < 11) {
 

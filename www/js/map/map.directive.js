@@ -54,7 +54,6 @@ define([
                     _map = new google.maps.Map(_mapContainer, mapOptions);
 
                     google.maps.event.addListener(_map, 'bounds_changed', function () {
-
                         scope.$apply(function () {
                             waitMapInitialized().then(function () {
                                 updateBounds();
@@ -128,7 +127,7 @@ define([
                                 }
                                 _currentLocation = addMarker(latLng, scope.locationIcon).getPosition();
                             }
-                            if(!scope.panToBounds) {
+                            if (!scope.panToBounds) {
                                 _map.panTo(latLng);
                                 _map.setZoom(scope.zoom || 8);
                             }
@@ -173,12 +172,18 @@ define([
 
                     var d = $q.defer();
 
-                    var intervalPromise = $interval(function () {
-                        if (!!_mapContainer.firstChild) {
-                            $interval.cancel(intervalPromise);
-                            d.resolve();
-                        }
-                    }, 100);
+                    if (_mapContainer.firstChild) {
+                        d.resolve();
+                    }
+                    else {
+                        var intervalPromise = $interval(function () {
+                            if (_mapContainer.firstChild) {
+                                $interval.cancel(intervalPromise);
+                                d.resolve();
+                            }
+                        }, 100);
+
+                    }
 
                     return d.promise;
                 }

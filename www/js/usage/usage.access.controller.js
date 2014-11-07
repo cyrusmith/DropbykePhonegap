@@ -13,6 +13,8 @@ define([
 
     function UsageAccessController(rideData, $state, BACKEND_URL) {
 
+        console.log("rideData", rideData);
+
         var vm = this;
 
         vm.ride = rideData.ride;
@@ -20,7 +22,7 @@ define([
         vm.bike.rating = parseInt(rideData.bike.rating*10)/10;
         vm.currentTimestamp = rideData.timestamp;
 
-        vm.ride.photo = BACKEND_URL + '/images/rides/' + vm.ride.lastRideId + '.jpg';
+        vm.ride.photo = BACKEND_URL + '/images/rides/' + vm.bike.lastRideId + '.jpg';
     }
 
 });
