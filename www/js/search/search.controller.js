@@ -6,9 +6,9 @@ define([
 
     angular.module('dropbike.phone').controller('SearchController', SearchController);
 
-    SearchController.$inject = ['bikes', 'GOOGLE_API_KEY', 'geolocation', 'searchDataService', 'mapDataService', '$q', '$ionicPopup', '$ionicLoading', '$timeout', '$log', '$state', '$scope', '$localStorage'];
+    SearchController.$inject = ['GOOGLE_API_KEY', 'geolocation', 'searchDataService', 'mapDataService', '$q', '$ionicPopup', '$ionicLoading', '$timeout', '$log', '$state', '$scope', '$localStorage'];
 
-    function SearchController(bikes, GOOGLE_API_KEY, geolocation, searchDataService, mapDataService, $q, $ionicPopup, $ionicLoading, $timeout, $log, $state, $scope, $localStorage) {
+    function SearchController(GOOGLE_API_KEY, geolocation, searchDataService, mapDataService, $q, $ionicPopup, $ionicLoading, $timeout, $log, $state, $scope, $localStorage) {
 
         var vm = this;
 
@@ -33,7 +33,7 @@ define([
          */
         var _scheduleUpdateTimeout = null,
             _isUpdating = false,
-            _bikes = bikes;
+            _bikes = [];
 
         init();
 

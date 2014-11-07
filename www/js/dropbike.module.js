@@ -43,14 +43,15 @@ define([
         "dropbike.constants",
         "dropbike.config",
         "dropbike.routes.config",
-        "dropbike.interceptor"
+        "dropbike.interceptor",
+        "dropbike.connection.service"
     ], function () {
 
         angular.module('dropbike')
-            .run(['$ionicPlatform', '$rootScope', '$state', 'authService', function ($ionicPlatform, $rootScope, $state, authService) {
+            .run(['$ionicPlatform', '$rootScope', '$state', 'authService', '$localStorage', 'ConnectivityService', function ($ionicPlatform, $rootScope, $state, authService, $localStorage, connectivityService) {
 
                 $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-                    if (toState.name !== "app.start" && toState.name !== "app.phoneconfirm" && toState.name !== "app.phoneverifycode") {
+                    if (["app.start", "app.phoneconfirm", "app.phoneverifycode", "app.offline"].indexOf(toState.name) != -1) {
                         if (!authService.isLoggedIn()) {
                             event.preventDefault();
                             $state.go('app.start');
@@ -59,7 +60,20 @@ define([
                     return true;
                 });
 
+                $rootScope.$on('$stateChangeSuccess',
+                    function (event, toState, toParams, fromState, fromParams) {
+                        if (toState.name != "app.offline") {
+                            $localStorage.previousState = {
+                                "name": toState.name,
+                                "params": toParams
+                            };
+                        }
+                    });
+
                 $ionicPlatform.ready(function () {
+
+                    connectivityService.start();
+
                     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
                     // for form inputs)
                     if (window.cordova && window.cordova.plugins.Keyboard) {

@@ -73,6 +73,8 @@ define([
                             var ne = new google.maps.LatLng(panToBounds.ne.lat, panToBounds.ne.lng);
 
                             _map.panToBounds(new google.maps.LatLngBounds(sw, ne));
+                            _map.fitBounds(new google.maps.LatLngBounds(sw, ne));
+
 
                         });
 
@@ -126,9 +128,10 @@ define([
                                 }
                                 _currentLocation = addMarker(latLng, scope.locationIcon).getPosition();
                             }
-
-                            _map.panTo(latLng);
-                            _map.setZoom(scope.zoom || 8);
+                            if(!scope.panToBounds) {
+                                _map.panTo(latLng);
+                                _map.setZoom(scope.zoom || 8);
+                            }
 
                         }
                     });

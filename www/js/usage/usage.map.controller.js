@@ -9,9 +9,9 @@ define([
 
     angular.module("dropbike.usage").controller('UsageMapController', UsageMapController);
 
-    UsageMapController.$inject = ['rideData', 'geolocation', '$state', 'BACKEND_URL'];
+    UsageMapController.$inject = ['rideData', 'geolocation', '$localStorage', '$state', 'BACKEND_URL'];
 
-    function UsageMapController(rideData, geolocation, $state, BACKEND_URL) {
+    function UsageMapController(rideData, geolocation, $localStorage, $state, BACKEND_URL) {
 
         var vm = this;
         vm.ride = null;
@@ -36,12 +36,24 @@ define([
                 [vm.ride.startLat, vm.ride.startLng]
             ];
 
+
             geolocation.getLocation({})
                 .then(function (pos) {
                     vm.currentLocation = [pos.coords.latitude, pos.coords.longitude];
                     updateBounds();
                 }, function (error) {
+                    $ionicPopup.show({
+                        title: error,
+                        buttons: [
+                            {
+                                text: 'Ok',
+                                type: 'button-assertive'
+                            }
+                        ]
+                    });
                 });
+
+
         }
 
         function updateBounds() {

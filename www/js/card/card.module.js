@@ -8,6 +8,7 @@ define([
 
     require([
         "card/card.controller",
+        "card/card.edit.controller",
         "card/card.dataservice.factory"
     ]);
 

@@ -22,22 +22,7 @@ define([
                     views: {
                         'menuContent': {
                             controller: 'SearchController as vm',
-                            templateUrl: "js/search/search.tpl.html",
-                            resolve: {
-                                bikes: ['searchDataService', 'profileDataService', '$state', function (searchDataService, profileDataService, $state) {
-                                    return profileDataService.getProfile()
-                                        .then(function (resp) {
-                                            if (!resp.ride) {
-                                                return searchDataService.loadBikes();
-                                            }
-                                            else {
-                                                $state.go('app.usageaccess');
-                                            }
-                                        }, function () {
-                                            d.reject(null);
-                                        });
-                                }]
-                            }
+                            templateUrl: "js/search/search.tpl.html"
                         }
                     }
                 })
@@ -125,6 +110,22 @@ define([
                 }
             });
 
+        $stateProvider
+            .state('app.editcard', {
+                url: "/editcard",
+                views: {
+                    'menuContent': {
+                        templateUrl: "js/card/card.data.tpl.html",
+                        controller: 'CardEditController as vm',
+                        resolve: {
+                            profile: ['profileDataService', function (profileDataService) {
+                                return profileDataService.getProfile();
+                            }]
+                        }
+                    }
+                }
+            });
+
     }]);
 
 
@@ -168,7 +169,10 @@ define([
                         templateUrl: "js/bike/bike.tpl.html",
                         controller: 'BikeController as vm',
                         resolve: {
-                            bike: ['$stateParams', 'bikeDataService', function ($stateParams, bikeDataService) {
+                            bike: ['$stateParams', '$state', 'bikeDataService', function ($stateParams, $state, bikeDataService) {
+                                if (!$stateParams.bikeId) {
+                                    return null;
+                                }
                                 return bikeDataService.getBike($stateParams.bikeId);
                             }]
                         }

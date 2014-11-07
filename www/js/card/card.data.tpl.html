@@ -1,9 +1,14 @@
-<ion-view hide-nav-bar="true">
+<ion-view hide-nav-bar="{{vm.isEdit ? false : true}}">
+
+    <ion-nav-buttons side="left">
+        <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+    </ion-nav-buttons>
+
     <ion-content class="db-page-addcard">
 
         <div class="title">
             <i class="icon ion-card"></i><br><br>
-            Add a credit card
+            {{vm.isEdit ? "Edit credit card" : "Add a credit card"}}
         </div>
 
         <div class="list list-inset">
@@ -30,7 +35,7 @@
 
             <div class="padding-top">
                 <button class="button button-calm button-block" ng-click="vm.submit()">
-                    Add card
+                    {{vm.isEdit ? "Edit card" : "Add card"}}
                 </button>
             </div>
         </div>

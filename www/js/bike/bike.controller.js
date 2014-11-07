@@ -13,20 +13,35 @@ define([
 
     BikeController.$inject = ['bike', 'usageDataService', '$localStorage', '$stateParams', '$ionicPopup', '$state', 'BACKEND_URL'];
 
-    function BikeController(data, usageDataService, $localStorage, $stateParams, $ionicPopup, $state, BACKEND_URL) {
+    function BikeController(bike, usageDataService, $localStorage, $stateParams, $ionicPopup, $state, BACKEND_URL) {
 
         var vm = this;
 
-        vm.bike = data.bike;
-        vm.bike.rating = parseInt(data.bike.rating*10)/10;
-        vm.bike.photo = BACKEND_URL + '/images/rides/' + data.ride.id + '.jpg';
-        vm.location = [vm.bike.lat, vm.bike.lng];
-        vm.markers = [
-            [vm.bike.lat, vm.bike.lng]
-        ];
-        vm.zoom = 17;
+        vm.bike;
+        vm.location;
+        vm.markers;
+        vm.zoom;
 
         vm.getAccess = getAccess;
+
+        init();
+
+        function init() {
+
+            if (!bike || !bike.bike) {
+                $state.go('app.search');
+                return;
+            }
+
+            vm.bike = bike.bike;
+            vm.bike.rating = parseInt(bike.bike.rating * 10) / 10;
+            vm.bike.photo = BACKEND_URL + '/images/rides/' + bike.ride.id + '.jpg';
+            vm.location = [vm.bike.lat, vm.bike.lng];
+            vm.markers = [
+                [vm.bike.lat, vm.bike.lng]
+            ];
+            vm.zoom = 17;
+        }
 
         function getAccess() {
             $ionicPopup.show({
