@@ -122,6 +122,7 @@ define([
                                 if (address.length) {
                                     vm.address = address[0].formatted_address;
                                 }
+                            }, function (error) {
                             });
                     }
                 }, function (error) {

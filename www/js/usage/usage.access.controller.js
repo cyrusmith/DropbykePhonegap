@@ -13,16 +13,32 @@ define([
 
     function UsageAccessController(rideData, $state, BACKEND_URL) {
 
-        console.log("rideData", rideData);
+        console.log("UsageAccessController", rideData);
 
         var vm = this;
 
-        vm.ride = rideData.ride;
-        vm.bike = rideData.bike;
-        vm.bike.rating = parseInt(rideData.bike.rating*10)/10;
-        vm.currentTimestamp = rideData.timestamp;
+        vm.ride;
+        vm.bike;
+        vm.currentTimestamp;
 
-        vm.ride.photo = BACKEND_URL + '/images/rides/' + vm.bike.lastRideId + '.jpg';
+        vm.call = call;
+
+        init();
+
+        function init() {
+            vm.ride = rideData.ride;
+            vm.bike = rideData.bike;
+            vm.bike.rating = parseInt(rideData.bike.rating*10)/10;
+            vm.currentTimestamp = rideData.timestamp;
+            vm.ride.photo = BACKEND_URL + '/images/rides/' + vm.bike.lastRideId + '.jpg';
+        }
+
+        function call() {
+            if(vm.bike.lastUserPhone) {
+                window.open('tel:' + vm.bike.lastUserPhone, '_system');
+            }
+        }
+
     }
 
 });

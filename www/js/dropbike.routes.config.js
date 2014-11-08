@@ -27,7 +27,7 @@ define([
                                 profile: ['profileDataService', '$state', function (profileDataService, $state) {
                                     return profileDataService.getProfile()
                                         .then(function(profile) {
-                                            if(profile.ride) {
+                                            if(profile && profile.ride) {
                                                 $state.go('app.usageaccess');
                                             }
                                             return profile;
@@ -207,7 +207,7 @@ define([
                                 var d = $q.defer();
                                 profileDataService.getProfile()
                                     .then(function (resp) {
-                                        if (resp.ride) {
+                                        if (resp && resp.ride) {
                                             d.resolve(resp);
                                         }
                                         else {

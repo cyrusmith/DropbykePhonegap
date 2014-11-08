@@ -33,7 +33,6 @@ define([
 
                 var _mapContainer = element.children()[0],
                     _map = null,
-                    _currentLocation = null,
                     _currentLocationMarker = null,
                     _markers = {};
 
@@ -63,8 +62,6 @@ define([
 
                     if (attrs.panToBounds) {
                         scope.$watch('panToBounds', function (panToBounds) {
-
-                            console.log('panToBounds', panToBounds);
 
                             if (!panToBounds || !panToBounds.sw || !panToBounds.ne) return;
 
@@ -125,7 +122,7 @@ define([
                                 if (_currentLocationMarker) {
                                     _currentLocationMarker.setMap(null)
                                 }
-                                _currentLocation = addMarker(latLng, scope.locationIcon).getPosition();
+                                _currentLocationMarker = addMarker(latLng, scope.locationIcon);
                             }
                             if (!scope.panToBounds) {
                                 _map.panTo(latLng);
