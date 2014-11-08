@@ -7,7 +7,7 @@
     <ion-content>
         <div class="profile-photo-container" bg-image="vm.profile.photo">
             <div class="name">
-                <button class="button ion-camera" ng-click="vm.pickPhoto()">Pick photo</button>
+                <button class="button" ng-click="vm.pickPhoto()"><i class="icon" ng-class="{'ion-camera': !vm.loading, 'ion-ios7-reloading': vm.loading}"></i> Pick photo</button>
             </div>
         </div>
 

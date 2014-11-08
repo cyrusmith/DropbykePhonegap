@@ -10,23 +10,31 @@ define([
 
         var vm = this;
 
-        vm.profile = profile.user;
-        vm.profile.photo = BACKEND_URL + '/images/users/' + vm.profile.id + '.jpg?nocache' + (new Date()).getTime();
-
-        if ($localStorage.facebook) {
-            if ($localStorage.facebook.email) {
-                vm.profile.email = $localStorage.facebook.email;
-            }
-            if ($localStorage.facebook.name) {
-                vm.profile.name = $localStorage.facebook.name;
-            }
-            if ($localStorage.facebook.image) {
-                vm.profile.photo = $localStorage.facebook.image;
-            }
-        }
+        vm.loading;
+        vm.profile;
 
         vm.save = save;
         vm.pickPhoto = pickPhoto;
+
+        init();
+
+        function init() {
+            vm.loading = false;;
+            vm.profile = profile.user;
+            vm.profile.photo = BACKEND_URL + '/images/users/' + vm.profile.id + '.jpg?nocache' + (new Date()).getTime();
+
+            if ($localStorage.facebook) {
+                if ($localStorage.facebook.email) {
+                    vm.profile.email = $localStorage.facebook.email;
+                }
+                if ($localStorage.facebook.name) {
+                    vm.profile.name = $localStorage.facebook.name;
+                }
+                if ($localStorage.facebook.image) {
+                    vm.profile.photo = $localStorage.facebook.image;
+                }
+            }
+        }
 
         function save() {
             $ionicLoading.show({
@@ -57,6 +65,7 @@ define([
         }
 
         function pickPhoto() {
+            if (vm.loading) return;
             $ionicPopup.show({
                 title: 'Choose image source',
                 buttons: [
@@ -74,9 +83,7 @@ define([
                     }
                 ]
             }).then(function (src) {
-                    $ionicLoading.show({
-                        template: '<i class="icon ion-loading-c"></i> Loading...'
-                    });
+                    vm.loading = true;
                     return profileDataService.updatePhoto(src);
                 })
                 .then(function () {
@@ -97,7 +104,7 @@ define([
                     });
                 })
                 .finally(function () {
-                    $ionicLoading.hide();
+                    vm.loading = false;
                 });
 
         }

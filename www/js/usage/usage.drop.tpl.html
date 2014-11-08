@@ -29,7 +29,7 @@
             </div>
             <div class="photo" bg-image="vm.photo">
                 <div class="takephoto">
-                    <button class="button ion-camera" ng-click="vm.pickPhoto()"> Take photo</button>
+                    <button class="button" ng-click="vm.pickPhoto()"><i class="icon" ng-class="{'ion-camera': !vm.loading, 'ion-ios7-reloading': vm.loading}"></i> Take photo</button>
                 </div>
             </div>
 

@@ -14,13 +14,14 @@ define([
     function UsageDropController(rideData, $localStorage, $ionicPopup, $state, geolocation, mapDataService, usageDataService, cameraUtil, BACKEND_URL) {
 
         var vm = this;
-        vm.currentLocation = null;
-        vm.zoom = 16;
-        vm.ride = null;
-        vm.photo = null;
-        vm.message = null;
-        vm.lockPassword = null;
-        vm.address = null;
+        vm.currentLocation;
+        vm.zoom;
+        vm.ride;
+        vm.photo;
+        vm.message;
+        vm.lockPassword;
+        vm.address;
+        vm.loading;
 
         vm.pickPhoto = pickPhoto;
         vm.drop = drop;
@@ -30,8 +31,14 @@ define([
 
         function init() {
 
+            vm.currentLocation = null;
+            vm.zoom = 16;
             vm.ride = rideData.ride;
+            vm.photo = null;
+            vm.message = null;
             vm.lockPassword = rideData.bike.lockPassword;
+            vm.address = null;
+            vm.loading = false;
 
             vm.photo = BACKEND_URL + '/images/rides/' + vm.ride.id + '.jpg?nocache=' + (new Date().getTime());
 
@@ -40,7 +47,9 @@ define([
         }
 
         function pickPhoto() {
-            cameraUtil.pickAndUpload("cemera", BACKEND_URL + "/api/rides/photo")
+            if (vm.loading) return;
+            vm.loading = true;
+            cameraUtil.pickAndUpload("camera", BACKEND_URL + "/api/rides/photo")
                 .then(function () {
                     vm.photo = BACKEND_URL + '/images/rides/' + vm.ride.id + '.jpg?nocache=' + (new Date().getTime());
                     vm.ride.hasPhoto = true;
@@ -55,6 +64,9 @@ define([
                             }
                         ]
                     })
+                })
+                .finally(function () {
+                    vm.loading = false;
                 });
         }
 

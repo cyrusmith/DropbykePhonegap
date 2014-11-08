@@ -23,10 +23,15 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 @import url(http://fonts.googleapis.com/css?family=Righteous);
 
+$dropbike-bg-dark: #506a80;
+$dropbike-field-color: #29404F;
+
 .footer-one-button {
   padding: .1rem .5rem;
   .button {
     margin-top: .2rem;
+    margin-bottom: 0;
+    line-height: 2.2rem;
   }
   .button-block {
     width: 100%;
@@ -289,39 +294,45 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   }
 }
 
-.usage-container {
-  .usage-photo-container {
-    height: 200px;
-    position: relative;
-    background-color: #203241;
-  }
-  .title {
-    text-align: left;
-    padding-left: 0.5rem;
-    background: {
-      color: #39444d;
-    }
-    white-space: nowrap;
-    color: #FFF;
-    font-size: .875em;
-  }
+.usage-content-pane {
 
-  .last-user-info {
-    padding: .5rem;
-    h4 {
-      margin-bottom: 0;
-      text-align: center;
+  background-color: $dropbike-bg-dark;
+
+  .usage-container {
+    .usage-photo-container {
+      height: 200px;
+      position: relative;
+      background-color: #203241;
     }
-    .field {
-      margin-bottom: .5rem;
-      p {
-        border-radius: .6rem;
-        background: #406076;
-        height: 2.2rem;
+    .title {
+      text-align: left;
+      padding-left: 0.5rem;
+      background: {
+        color: #39444d;
+      }
+      white-space: nowrap;
+      color: #FFF;
+      font-size: .875em;
+    }
+
+    .last-user-info {
+      padding: .5rem;
+      h4 {
+        margin-bottom: 0;
         text-align: center;
         color: white;
-        line-height: 2.2rem;
-        font-size: 1.2rem;
+      }
+      .field {
+        margin-bottom: .5rem;
+        p {
+          border-radius: .6rem;
+          background: $dropbike-field-color;
+          height: 2.2rem;
+          text-align: center;
+          color: white;
+          line-height: 2.2rem;
+          font-size: 1.2rem;
+        }
       }
     }
   }
@@ -354,7 +365,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     right: 0;
     height: 80px;
     bottom: 0;
-    background-color: #506a80;
+    background-color: $dropbike-bg-dark;
     text-align: center;
     h4 {
       color: #FFF;
@@ -362,7 +373,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     }
     p {
       border-radius: .6rem;
-      background: #29404F;
+      background: $dropbike-field-color;
       height: 2.2rem;
       text-align: center;
       color: white;
