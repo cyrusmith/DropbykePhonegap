@@ -88,9 +88,10 @@ define([
                             $log.log("/me", meResp);
                             $localStorage.facebook = meResp;
 
-                            fbApi.api("/me/picture?type=large", [], function (picResp) {
+                            fbApi.api("/me/picture?type=large&redirect=0", null, function (picResp) {
+
                                 $log.log("/me/picture", picResp);
-                                if (picResp && !picResp.error) {
+                                if (picResp && picResp.data && picResp.data.url) {
                                     $localStorage.facebook = angular.extend({}, $localStorage.facebook, {
                                         image: picResp.data.url
                                     });
@@ -100,7 +101,7 @@ define([
                                     $log.warn("Could not get user picture", picResp);
                                     loginDeferred.reject();
                                 }
-                            }, function () {
+                            }, function (err) {
                                 $log.warn("Rejection while getting user picture");
                                 loginDeferred.reject();
                             });

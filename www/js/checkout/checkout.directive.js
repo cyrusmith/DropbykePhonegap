@@ -35,12 +35,10 @@ define([
                     for (var i = 0; i < 5; i++) {
                         var icon = stars.eq(i - 1).children();
                         icon.removeClass('energized');
-                        icon.addClass('stable');
                     }
 
                     for (var i = 1; i <= Math.min(pos, 5); i++) {
                         var icon = stars.eq(i - 1).children();
-                        icon.removeClass('stable');
                         icon.addClass('energized');
                     }
                 }

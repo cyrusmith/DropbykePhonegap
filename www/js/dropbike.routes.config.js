@@ -26,9 +26,15 @@ define([
                             resolve: {
                                 profile: ['profileDataService', '$state', function (profileDataService, $state) {
                                     return profileDataService.getProfile()
-                                        .then(function(profile) {
-                                            if(profile && profile.ride) {
-                                                $state.go('app.usageaccess');
+                                        .then(function (profile) {
+                                            if (profile && profile.ride) {
+                                                if (!profile.ride.stopTime) {
+                                                    $state.go('app.usageaccess');
+                                                }
+                                                else {
+                                                    $state.go('app.checkout');
+                                                }
+
                                             }
                                             return profile;
                                         })
@@ -208,7 +214,12 @@ define([
                                 profileDataService.getProfile()
                                     .then(function (resp) {
                                         if (resp && resp.ride) {
-                                            d.resolve(resp);
+                                            if (!resp.ride.stopTime) {
+                                                d.resolve(resp);
+                                            }
+                                            else {
+                                                $state.go('app.checkout');
+                                            }
                                         }
                                         else {
                                             $state.go('app.search');
@@ -237,7 +248,12 @@ define([
                                 profileDataService.getProfile()
                                     .then(function (resp) {
                                         if (resp.ride) {
-                                            d.resolve(resp);
+                                            if (!resp.ride.stopTime) {
+                                                d.resolve(resp);
+                                            }
+                                            else {
+                                                $state.go('app.checkout');
+                                            }
                                         }
                                         else {
                                             $state.go('app.search');
@@ -266,7 +282,12 @@ define([
                                 profileDataService.getProfile()
                                     .then(function (resp) {
                                         if (resp.ride) {
-                                            d.resolve(resp);
+                                            if (!resp.ride.stopTime) {
+                                                d.resolve(resp);
+                                            }
+                                            else {
+                                                $state.go('app.checkout');
+                                            }
                                         }
                                         else {
                                             $state.go('app.search');
@@ -295,14 +316,26 @@ define([
                         templateUrl: "js/checkout/checkout.tpl.html",
                         controller: 'CheckoutController as vm',
                         resolve: {
-                            rideData: ['$localStorage', 'checkoutDataService', '$state', function ($localStorage, checkoutDataService, $state) {
-                                if ($localStorage.lastRideId) {
-                                    return checkoutDataService.loadRideData($localStorage.lastRideId);
-                                }
-                                else {
-                                    $state.go('app.search');
-                                    return null;
-                                }
+                            rideData: ['$q', 'profileDataService', '$state', function ($q, profileDataService, $state) {
+                                var d = $q.defer();
+                                profileDataService.getProfile()
+                                    .then(function (resp) {
+                                        if (resp.ride) {
+                                            if (resp.ride.stopTime) {
+                                                d.resolve(resp);
+                                            }
+                                            else {
+                                                $state.go('app.usageaccess');
+                                            }
+                                        }
+                                        else {
+                                            $state.go('app.search');
+                                            d.reject(null);
+                                        }
+                                    }, function () {
+                                        d.reject(null);
+                                    });
+                                return d.promise;
                             }]
                         }
                     }

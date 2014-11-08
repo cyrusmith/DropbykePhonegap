@@ -16,20 +16,28 @@ define([
     function CheckoutController(rideData, usageDataService, checkoutDataService, $localStorage, $stateParams, $ionicLoading, $ionicPopup, $state, BACKEND_URL) {
 
         var vm = this;
-        vm.photo = BACKEND_URL + '/images/rides/' + rideData.ride.id + '.jpg';
-        vm.rating = 0;
-        vm.bike = rideData.bike;
-        vm.bike.rating = parseInt(rideData.bike.rating*10)/10;
-        vm.ride = rideData.ride;
-        vm.totalTime = 0;
+        vm.photo;
+        vm.rating;
+        vm.bike;
+        vm.ride;
+        vm.totalTime;
 
         vm.checkout = checkout;
-
-        console.log("CheckoutController", rideData);
 
         init();
 
         function init() {
+
+            if(!rideData) {
+                return;
+            }
+
+            vm.photo = BACKEND_URL + '/images/rides/' + rideData.ride.id + '.jpg';
+            vm.rating = 0;
+            vm.bike = rideData.bike;
+            vm.bike.rating = parseInt(rideData.bike.rating*10)/10;
+            vm.ride = rideData.ride;
+
             var startTime = vm.ride.startTime, stopTime = vm.ride.stopTime;
 
             var time = parseInt((stopTime - startTime) / 1000),

@@ -459,6 +459,9 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
       .stars {
         .col {
           height: 42px;
+          .icon {
+            font-size: 2rem;
+          }
         }
       }
       .marks {
