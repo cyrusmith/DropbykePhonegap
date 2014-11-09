@@ -9,3 +9,4 @@ www/css/
 .sass-cache/
 .idea/
 all.js
+bin/

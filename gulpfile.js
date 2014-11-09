@@ -9,15 +9,60 @@ var sh = require('shelljs');
 var templateCache = require('gulp-angular-templatecache');
 var replace = require('gulp-replace');
 var clean = require('gulp-clean');
+var shell = require('gulp-shell');
+var zip = require('gulp-zip');
+var runSequence = require('run-sequence');
 
 var paths = {
     sass: ['./scss/**/*.scss'],
     templates: ['./www/**/*.tpl.html']
 };
 
+var WAR_DEST = './bin';
+
 gulp.task('default', ['sass', 'templates']);
 
-gulp.task('templates', function () {
+gulp.task('compilewar', function (callback) {
+    runSequence('clearbin', 'requirejs', 'copyfiles', 'buildwar',
+        callback);
+});
+
+gulp.task('requirejs', shell.task([
+    'r.js.cmd -o build.js'
+], {
+    cwd: './www/'
+}));
+
+gulp.task('copyfiles', function (done) {
+
+    gulp.src([
+        './www/css/**',
+        './www/img/**',
+        './www/lib/ionic/fonts/**',
+        './www/all.js',
+        './www/index.html',
+        './www/icon.png',
+        './www/icon@2x.png',
+        './www/config.xml'
+    ], {base: "./www"}).pipe(gulp.dest(WAR_DEST)).on('end', done);
+
+});
+
+gulp.task('clearbin', function () {
+    return gulp.src([
+        WAR_DEST
+    ], {read: false}).pipe(clean({force: true}));
+
+});
+
+gulp.task('buildwar', function () {
+    return gulp.src(WAR_DEST + '/**')
+        .pipe(zip('dropbyke.war'))
+        .pipe(gulp.dest(WAR_DEST));
+
+});
+
+gulp.task('templates', function (done) {
     gulp.src(paths.templates)
         .pipe(templateCache({
             filename: 'dropbike.templates.js',
@@ -25,7 +70,7 @@ gulp.task('templates', function () {
             'module': 'dropbike.templates',
             moduleSystem: 'RequireJS'
         }))
-        .pipe(gulp.dest('www/js/'));
+        .pipe(gulp.dest('www/js/')).on('end', done);
 });
 
 gulp.task('sass', function (done) {
