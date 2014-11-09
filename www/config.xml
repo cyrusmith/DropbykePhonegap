@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<widget xmlns="http://www.w3.org/ns/widgets"
+        xmlns:gap="http://phonegap.com/ns/1.0"
+        id="com.dropbyke.dropbike"
+        versionCode="1"
+        version="0.0.1">
+
+    <!-- versionCode is optional and Android only -->
+
+    <name>Dropbyke</name>
+
+    <description>
+        Dropbyke mobile application
+    </description>
+
+    <author href="http://interosite.ru" email="info@interosite.ru">
+        Alexander Sutyagin
+    </author>
+
+    <gap:platform name="ios"/>
+    <gap:platform name="android"/>
+
+    <preference name="orientation" value="default" />
+
+    <preference name="APP_ID" value="297052723828418" />
+    <preference name="APP_NAME" value="Dropbike" />
+
+    <icon src="icon.png" gap:platform="ios" width="60" height="60" />
+    <icon src="icon@2x.png" gap:platform="ios" width="120" height="120" />
+
+    <icon src="icon.png" gap:platform="android" gap:qualifier="ldpi" />
+    <icon src="icon@2x.png" gap:platform="android" gap:qualifier="mdpi" />
+    <icon src="icon@2x.png" gap:platform="android" gap:qualifier="hdpi" />
+    <icon src="icon@2x.png" gap:platform="android" gap:qualifier="xhdpi" />
+    <icon src="icon@2x.png" gap:platform="android" gap:qualifier="xxhdpi" />
+
+    <gap:plugin name="com.ionic.keyboard" version="1.0.3" />
+    <gap:plugin name="org.apache.cordova.camera" version="0.3.2" />
+    <gap:plugin name="org.apache.cordova.device" version="0.2.12" />
+    <gap:plugin name="org.apache.cordova.geolocation" version="0.3.10" />
+    <gap:plugin name="org.apache.cordova.network-information" version="0.2.13" />
+    <gap:plugin name="org.apache.cordova.file-transfer" version="0.4.7" />
+    <gap:plugin name="org.apache.cordova.inappbrowser" version="0.5.3" />
+    <gap:plugin name="com.phonegap.plugins.facebookconnect" version="0.9.0" />
+
+    <access origin="*" />
+
+</widget>
