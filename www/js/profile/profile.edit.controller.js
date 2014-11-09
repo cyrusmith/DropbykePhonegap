@@ -19,7 +19,7 @@ define([
         init();
 
         function init() {
-            vm.loading = false;;
+            vm.loading = false;
             vm.profile = profile.user;
             vm.profile.photo = BACKEND_URL + '/images/users/' + vm.profile.id + '.jpg?nocache' + (new Date()).getTime();
 

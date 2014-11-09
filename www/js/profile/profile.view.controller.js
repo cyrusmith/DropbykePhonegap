@@ -28,9 +28,12 @@ define([
         }
 
         function logout() {
-            authService.setToken(null);
-            $localStorage.facebook = null;
-            $state.go('app.start');
+            authService.logout()
+                .then(function () {
+                    authService.setToken(null);
+                    $localStorage.facebook = null;
+                    $state.go('app.start');
+                });
         }
 
     }

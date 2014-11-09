@@ -6,14 +6,15 @@ define([
 
     angular.module('dropbike.login').factory('authService', authService);
 
-    authService.$inject = ['$q', '$localStorage', '$state'];
+    authService.$inject = ['$http', '$localStorage', 'BACKEND_URL'];
 
-    function authService($q, $localStorage, $state) {
+    function authService($http, $localStorage, BACKEND_URL) {
 
         return {
             isLoggedIn: isLoggedIn,
             setToken: setToken,
-            getToken: getToken
+            getToken: getToken,
+            logout: logout
         }
 
         function isLoggedIn() {
@@ -26,6 +27,14 @@ define([
 
         function getToken() {
             return $localStorage.auth_token;
+        }
+
+        function logout() {
+            return $http.post(BACKEND_URL + '/api/profile/logout', {}, {
+                headers: {
+                    "Authorization": "Bearer " + getToken()
+                }
+            });
         }
 
     }
