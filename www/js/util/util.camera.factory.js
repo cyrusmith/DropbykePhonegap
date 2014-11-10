@@ -35,13 +35,6 @@ define([
                 }
 
                 var fail = function (error) {
-                    var e = [];
-                    for (var p in error) {
-                        if (error.hasOwnProperty(p)) {
-                            e.push(p + ": " + error[p])
-                        }
-                    }
-
                     if (retries == 0) {
                         retries++
                         setTimeout(function () {
@@ -75,6 +68,7 @@ define([
                 }, {
                     sourceType: src == "gallery" ? navigator.camera.PictureSourceType.PHOTOLIBRARY : navigator.camera.PictureSourceType.CAMERA,
                     quality: 51,
+                    targetWidth: 1200,
                     destinationType: navigator.camera.DestinationType.FILE_URI
                 });
             }

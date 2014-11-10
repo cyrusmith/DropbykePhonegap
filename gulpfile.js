@@ -22,8 +22,8 @@ var WAR_DEST = './bin';
 
 gulp.task('default', ['sass', 'templates']);
 
-gulp.task('compilewar', function (callback) {
-    runSequence('clearbin', 'requirejs', 'copyfiles', 'buildwar',
+gulp.task('compilezip', function (callback) {
+    runSequence('clearbin', 'requirejs', 'copyfiles', 'buildzip',
         callback);
 });
 
@@ -55,9 +55,9 @@ gulp.task('clearbin', function () {
 
 });
 
-gulp.task('buildwar', function () {
+gulp.task('buildzip', function () {
     return gulp.src(WAR_DEST + '/**')
-        .pipe(zip('dropbyke.war'))
+        .pipe(zip('dropbyke.zip'))
         .pipe(gulp.dest(WAR_DEST));
 
 });
