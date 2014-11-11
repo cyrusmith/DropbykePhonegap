@@ -20,6 +20,7 @@ define([
         vm.bounds = null;
         vm.currentTimestamp = rideData.timestamp;
         vm.zoom = 15;
+        vm.path;
 
         init();
 
@@ -40,6 +41,12 @@ define([
             geolocation.getLocation({})
                 .then(function (pos) {
                     vm.currentLocation = [pos.coords.latitude, pos.coords.longitude];
+
+                    vm.path = [
+                        [vm.ride.startLat, vm.ride.startLng],
+                        vm.currentLocation
+                    ];
+
                     updateBounds();
                 }, function (error) {
                     $ionicPopup.show({

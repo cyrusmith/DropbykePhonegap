@@ -1,12 +1,16 @@
 <ion-view title="Access info" hide-back-button="true">
 
     <ion-nav-buttons side="right">
-        <button class="button" ui-sref="app.usagemap">Usage</button>
+        <button class="button" ui-sref="app.usagemap">Usage info</button>
     </ion-nav-buttons>
 
     <ion-content class="usage-content-pane">
         <div class="usage-container">
-            <div class="usage-photo-container" bg-image="vm.ride.photo">
+            <div class="usage-map-container">
+                <google-map markers="vm.markers" location="vm.location" zoom="vm.zoom"
+                            show-location-marker="false"
+                            location-icon="img/ic-pin-small.png" marker-default-icon="img/ic-bike-small.png"/>
+
             </div>
             <div class="title">
                 {{vm.bike.title}} (<i class="ion-ios7-star energized"></i> {{vm.bike.rating}}) ${{vm.bike.priceRate}}/hr
@@ -16,12 +20,14 @@
 
                 <div class="field">
                     <h4><i class="icon ion-ios7-locked"></i> Lock password</h4>
+
                     <p> {{vm.bike.lockPassword}}</p>
                 </div>
 
                 <div class="field">
                     <h4><i class="icon ion-ios7-clock-outline"></i> Access time</h4>
-                    <p> <span timer-elapsed="{{vm.ride.startTime}}" timestamp="vm.currentTimestamp">00:00:00</span></p>
+
+                    <p><span timer-elapsed="{{vm.ride.startTime}}" timestamp="vm.currentTimestamp">00:00:00</span></p>
                 </div>
 
                 <div class="field message">
@@ -34,7 +40,5 @@
         </div>
 
     </ion-content>
-    <div class="bar bar-footer footer-one-button">
-        <button ng-click="vm.call()" class="button button-block button-calm">Call</button>
-    </div>
+
 </ion-view>

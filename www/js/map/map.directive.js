@@ -18,8 +18,9 @@ define([
         return {
             restrict: 'E',
             scope: {
-                markers: '=',
                 location: '=',
+                markers: '=',
+                path: '=',
                 showLocationMarker: '=',
                 zoom: '=',
                 locationIcon: '@',
@@ -34,6 +35,7 @@ define([
                 var _mapContainer = element.children()[0],
                     _map = null,
                     _currentLocationMarker = null,
+                    _currentPath = null,
                     _markers = {};
 
                 mapDataService.mapApi()
@@ -129,6 +131,29 @@ define([
                                 _map.setZoom(scope.zoom || 8);
                             }
 
+                        }
+                    });
+
+                    scope.$watch('path', function (path) {
+                        if (_currentPath) {
+                            _currentPath.setMap(null);
+                            _currentPath = null;
+                        }
+                        if (path && path.length) {
+                            var coords = [];
+                            for (var i = 0; i < path.length; i++) {
+                                coords.push(new google.maps.LatLng(path[i][0], path[i][1]));
+                            }
+
+                            _currentPath = new google.maps.Polyline({
+                                path: coords,
+                                geodesic: true,
+                                strokeColor: '#FF0000',
+                                strokeOpacity: 1.0,
+                                strokeWeight: 2
+                            });
+
+                            _currentPath.setMap(_map);
                         }
                     });
 

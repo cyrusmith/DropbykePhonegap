@@ -128,6 +128,7 @@ define([
             geolocation.getLocation({})
                 .then(function (pos) {
                     vm.currentLocation = [pos.coords.latitude, pos.coords.longitude];
+
                     if (!vm.address) {
                         mapDataService.geodecode(pos.coords)
                             .then(function (address) {
@@ -135,6 +136,16 @@ define([
                                     vm.address = address[0].formatted_address;
                                 }
                             }, function (error) {
+                                $ionicPopup.show({
+                                    title: "Error getting address",
+                                    subTitle: error,
+                                    buttons: [
+                                        {
+                                            text: 'Ok',
+                                            type: 'button-assertive'
+                                        }
+                                    ]
+                                });
                             });
                     }
                 }, function (error) {

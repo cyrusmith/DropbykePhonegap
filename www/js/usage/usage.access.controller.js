@@ -20,21 +20,39 @@ define([
         vm.ride;
         vm.bike;
         vm.currentTimestamp;
+        vm.markers;
+        vm.location;
+        vm.zoom;
 
         vm.call = call;
 
         init();
 
+        console.log('UsageAccessController', rideData);
+
         function init() {
             vm.ride = rideData.ride;
             vm.bike = rideData.bike;
-            vm.bike.rating = parseInt(rideData.bike.rating*10)/10;
+
+            vm.markers = [
+                [vm.bike.lat, vm.bike.lng]
+            ];
+            vm.location = [vm.bike.lat, vm.bike.lng];
+            vm.zoom = 16;
+
+            vm.bike.rating = parseInt(rideData.bike.rating * 10) / 10;
             vm.currentTimestamp = rideData.timestamp;
-            vm.ride.photo = BACKEND_URL + '/images/rides/' + vm.bike.lastRideId + '.jpg';
+            if (vm.bike.lastRideId) {
+                vm.ride.photo = BACKEND_URL + '/images/rides/' + vm.bike.lastRideId + '.jpg';
+            }
+            else {
+                vm.ride.photo = BACKEND_URL + '/images/bikes/' + vm.bike.id + '.jpg';
+            }
+
         }
 
         function call() {
-            if(vm.bike.lastUserPhone) {
+            if (vm.bike.lastUserPhone) {
                 window.open('tel:' + vm.bike.lastUserPhone, '_system');
             }
         }

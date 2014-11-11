@@ -35,12 +35,7 @@ define([
 
             vm.bike = bike.bike;
             vm.bike.rating = parseInt(bike.bike.rating * 10) / 10;
-            if (bike.ride) {
-                vm.bike.photo = BACKEND_URL + '/images/rides/' + bike.ride.id + '.jpg';
-            }
-            else {
-                vm.bike.photo = null;
-            }
+            vm.bike.photo = BACKEND_URL + '/images/bikes/' + vm.bike.id + '.jpg';
 
             vm.location = [vm.bike.lat, vm.bike.lng];
             vm.markers = [
