@@ -6,9 +6,9 @@ define([
 
     angular.module('dropbike.phone').controller('PhoneVerifyCodeController', PhoneVerifyCodeController);
 
-    PhoneVerifyCodeController.$inject = ['$ionicPopup', '$ionicLoading', '$localStorage', '$state', '$log', 'confirmService'];
+    PhoneVerifyCodeController.$inject = ['$ionicPopup', '$ionicLoading', '$localStorage', '$state', '$log', 'confirmService', 'profileDataService'];
 
-    function PhoneVerifyCodeController($ionicPopup, $ionicLoading, $localStorage, $state, $log, confirmService) {
+    function PhoneVerifyCodeController($ionicPopup, $ionicLoading, $localStorage, $state, $log, confirmService, profileDataService) {
 
         var vm = this;
 
@@ -50,7 +50,6 @@ define([
 
         function submit() {
 
-
             if (!vm.code) {
 
                 $ionicPopup.show({
@@ -82,6 +81,12 @@ define([
 
             confirmService.verifyCode(vm.code, $localStorage.phone_verification_key)
                 .then(function (resp) {
+
+                    if ($localStorage.facebook) {
+                        if (!resp.user.editedOnce) {
+                            profileDataService.updateProfile($localStorage.facebook.name, $localStorage.facebook.email);
+                        }
+                    }
 
                     $localStorage.phone = null;
                     $localStorage.phone_verification_key = null;
