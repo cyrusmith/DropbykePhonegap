@@ -238,13 +238,15 @@ $dropbike-field-color: #29404F;
         text-align: center;
         .title {
           text-align: left;
-          padding-left: 0.5rem;
+          padding: .2rem 0;
+          text-overflow: ellipsis;
+          overflow: hidden;
           background: {
-            color: #39444d;
+            color: #637d88;
           }
           white-space: nowrap;
           color: #FFF;
-          font-size: .875em;
+          text-align: center;
         }
         p, h4 {
           margin: 0;
@@ -313,13 +315,15 @@ $dropbike-field-color: #29404F;
     }
     .title {
       text-align: left;
-      padding-left: 0.5rem;
+      padding: .2rem 0;
+      text-overflow: ellipsis;
+      overflow: hidden;
       background: {
-        color: #39444d;
+        color: #637d88;
       }
       white-space: nowrap;
       color: #FFF;
-      font-size: .875em;
+      text-align: center;
     }
 
     .last-user-info {
@@ -432,40 +436,53 @@ $dropbike-field-color: #29404F;
 
   background-color: #33444d;
 
-  .photo {
+  .route-container {
     height: 150px;
+    position: relative;
+    .dropbike-map-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
   }
 
   .title {
     text-align: left;
-    padding-left: 0.5rem;
+    padding: .2rem 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
     background: {
       color: #637d88;
     }
     white-space: nowrap;
     color: #FFF;
-    font-size: .875em;
+    text-align: center;
   }
 
   .info {
+    padding-bottom: 3rem;
     h4 {
       color: #FFF;
       text-align: center;
+      margin-bottom: 0;
     }
 
     .field {
       border-radius: .6rem;
       background: #1D2F3A;
-      height: 2.5rem;
+      height: 2.2rem;
       text-align: center;
       color: white;
-      line-height: 2.5rem;
-      font-size: 1.2rem;
+      line-height: 2.2rem;
+      font-size: 1.1em;
       margin-left: 1rem;
       margin-right: 1rem;
+      margin-bottom: .2rem;
 
       &.field-rating {
-        height: 4.6rem;
+        height: 3.6rem;
       }
     }
 
@@ -478,14 +495,15 @@ $dropbike-field-color: #29404F;
         .col {
           height: 42px;
           .icon {
-            font-size: 2rem;
+            font-size: 1.5rem;
           }
         }
       }
       .marks {
         font-size: .65rem;
         .col {
-          height: 36px;
+          height: 1.2rem;
+          line-height: .5rem;
         }
         .col1 {
         }

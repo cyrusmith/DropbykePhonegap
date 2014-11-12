@@ -11,9 +11,11 @@ define([
 
     angular.module("dropbike.bike").controller("CheckoutController", CheckoutController);
 
-    CheckoutController.$inject = ['rideData', 'usageDataService', 'checkoutDataService', '$localStorage', '$stateParams', '$ionicLoading', '$ionicPopup', '$state', 'BACKEND_URL'];
+    CheckoutController.$inject = ['rideData', 'mapDataService', 'checkoutDataService', '$localStorage', 'geolocation', '$ionicLoading', '$ionicPopup', '$state', 'BACKEND_URL'];
 
-    function CheckoutController(rideData, usageDataService, checkoutDataService, $localStorage, $stateParams, $ionicLoading, $ionicPopup, $state, BACKEND_URL) {
+    function CheckoutController(rideData, mapDataService, checkoutDataService, $localStorage, geolocation, $ionicLoading, $ionicPopup, $state, BACKEND_URL) {
+
+        console.log("CheckoutController", rideData);
 
         var vm = this;
         vm.photo;
@@ -21,6 +23,11 @@ define([
         vm.bike;
         vm.ride;
         vm.totalTime;
+        vm.currentLocation;
+        vm.markers;
+        vm.zoom;
+        vm.path;
+        vm.bounds;
 
         vm.checkout = checkout;
 
@@ -28,15 +35,25 @@ define([
 
         function init() {
 
-            if(!rideData) {
+            if (!rideData) {
                 return;
             }
 
             vm.photo = BACKEND_URL + '/images/rides/' + rideData.ride.id + '.jpg';
             vm.rating = 0;
             vm.bike = rideData.bike;
-            vm.bike.rating = parseInt(rideData.bike.rating*10)/10;
+            vm.bike.rating = parseInt(rideData.bike.rating * 10) / 10;
             vm.ride = rideData.ride;
+
+            vm.zoom = 10;
+            vm.currentLocation = [vm.ride.stopLat, vm.ride.stopLng];
+            vm.markers = [
+                [vm.ride.startLat, vm.ride.startLng]
+            ];
+
+            vm.path = [vm.markers[0], vm.currentLocation];
+
+            updateBounds();
 
             var startTime = vm.ride.startTime, stopTime = vm.ride.stopTime;
 
@@ -46,7 +63,8 @@ define([
                 m = parseInt(time / 60) % 60;
 
             vm.totalTime = nn(h) + ":" + nn(m) + ":" + nn(s);
-            vm.totalPrice = Math.ceil(time * vm.bike.priceRate * 100 / 3600) / 100;
+            vm.totalPrice = vm.ride.sum / 100;
+
         }
 
         function checkout() {
@@ -67,8 +85,10 @@ define([
                     template: '<i class="icon ion-loading-c"></i> Loading...'
                 });
                 checkoutDataService.checkout(vm.ride.id, vm.rating)
+                    .then(function () {
+                        $localStorage.dropLocation = null;
+                    })
                     .finally(function () {
-                        $localStorage.lastRideId = null;
                         $ionicLoading.hide();
                         $state.go('app.search');
                     });
@@ -79,6 +99,44 @@ define([
 
         function nn(num) {
             return num > 9 ? num + "" : "0" + num;
+        }
+
+
+        function updateBounds() {
+
+            if (!vm.currentLocation || !vm.ride) return;
+            var sw = {}, ne = {};
+
+            var curLng = vm.currentLocation[1], curLat = vm.currentLocation[0];
+
+            if (curLng < vm.ride.startLng) {
+                sw.lng = curLng;
+                ne.lng = vm.ride.startLng;
+            }
+            else {
+                sw.lng = vm.ride.startLng;
+                ne.lng = curLng;
+            }
+
+            if (curLat < vm.ride.startLat) {
+                sw.lat = curLat;
+                ne.lat = vm.ride.startLat;
+            }
+            else {
+                sw.lat = vm.ride.startLat;
+                ne.lat = curLat;
+            }
+
+            console.log("Upd bounds to ", {
+                "sw": sw,
+                "ne": ne
+            });
+
+            vm.bounds = {
+                "sw": sw,
+                "ne": ne
+            }
+
         }
 
     }

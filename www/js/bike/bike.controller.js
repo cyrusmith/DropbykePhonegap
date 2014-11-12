@@ -47,7 +47,7 @@ define([
         function getAccess() {
             $ionicPopup.show({
                 title: 'Get bike access',
-                subTitle: 'Once you get access your funds spend time will start',
+                subTitle: 'Bike usage time will start once you get access',
                 buttons: [
                     { text: 'Cancel' },
                     {

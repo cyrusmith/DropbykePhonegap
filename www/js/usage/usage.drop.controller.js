@@ -106,8 +106,7 @@ define([
 
 
             usageDataService.drop(vm.currentLocation[0], vm.currentLocation[1], vm.address, vm.lockPassword, vm.message)
-                .then(function (resp) {
-                    $localStorage.lastRideId = resp.ride.id;
+                .then(function () {
                     $state.go('app.checkout');
                 }, function (error) {
                     $ionicPopup.show({
@@ -128,6 +127,8 @@ define([
             geolocation.getLocation({})
                 .then(function (pos) {
                     vm.currentLocation = [pos.coords.latitude, pos.coords.longitude];
+
+                    $localStorage.dropLocation = vm.currentLocation;
 
                     if (!vm.address) {
                         mapDataService.geodecode(pos.coords)

@@ -2,9 +2,17 @@
 
     <ion-content class="checkout-container">
 
-
-        <div class="photo" bg-image="vm.photo">
+        <div class="route-container">
+            <google-map
+                    markers="vm.markers" location="vm.currentLocation"
+                    show-location-marker="true"
+                    zoom="vm.zoom"
+                    path="vm.path"
+                    location-icon="img/ic-bike-stop-small.png" marker-default-icon="img/ic-start.png"
+                    pan-to-bounds="vm.bounds"
+                    />
         </div>
+
         <div class="title">
             {{vm.bike.title}} (<i class="ion-ios7-star energized"></i> {{vm.bike.rating + ""}})
             ${{vm.bike.priceRate}}/hr
@@ -27,7 +35,7 @@
     </ion-content>
 
     <div class="bar bar-footer footer-one-button">
-        <a class="button button-block button-balanced" ng-click="vm.checkout()">Checkout</a>
+        <a class="button button-block button-balanced" ng-click="vm.checkout()">Submit</a>
     </div>
 
 </ion-view>
