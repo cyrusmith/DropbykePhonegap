@@ -22,6 +22,7 @@ define([
 
     angular.module('dropbike', [
         'ionic',
+        'ngAnimate',
         'geolocation',
         'dropbike.login',
         'dropbike.phone',

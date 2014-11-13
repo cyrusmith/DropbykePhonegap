@@ -18,7 +18,32 @@ define([
         return {
             geocode: geocode,
             geodecode: geodecode,
-            mapApi: mapApiReady
+            mapApi: mapApiReady,
+            checkGPS: checkGPS
+        }
+
+        function checkGPS() {
+
+            var d = $q.defer();
+
+            if (window.cordova && window.GPSChecker) {
+                window.GPSChecker.checkEnabled(function (isEnabled) {
+                    if (isEnabled) {
+                        d.resolve(true)
+                    }
+                    else {
+                        d.resolve(false);
+                    }
+                }, function () {
+                    d.resolve(false);
+                });
+            }
+            else {
+                d.resolve(false);
+            }
+
+            return d.promise;
+
         }
 
         function geocode(address) {

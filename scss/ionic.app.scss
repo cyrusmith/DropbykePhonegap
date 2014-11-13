@@ -36,6 +36,28 @@ $dropbike-field-color: #29404F;
     font-size: 2rem;
   }
 
+  .location-error {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: .1rem;
+    text-align: center;
+    background-color: rgba(255, 0, 0, 0.5);
+    color: #FFF;
+    z-index: 2;
+  }
+
+  .location-error {
+    -webkit-transition:all linear 0.5s;
+    transition:all linear 0.5s;
+  }
+
+  .location-error.ng-hide {
+    opacity:0;
+  }
+
+
 }
 
 .footer-one-button {
@@ -236,7 +258,7 @@ $dropbike-field-color: #29404F;
     text-overflow: ellipsis;
     overflow: hidden;
     background: {
-      color: #637d88;
+      color: $dropbike-field-color;
     }
     white-space: nowrap;
     color: #FFF;
@@ -313,7 +335,7 @@ $dropbike-field-color: #29404F;
       text-overflow: ellipsis;
       overflow: hidden;
       background: {
-        color: #637d88;
+        color: $dropbike-field-color;
       }
       white-space: nowrap;
       color: #FFF;
@@ -494,7 +516,7 @@ $dropbike-field-color: #29404F;
     text-overflow: ellipsis;
     overflow: hidden;
     background: {
-      color: #637d88;
+      color: $dropbike-field-color;
     }
     white-space: nowrap;
     color: #FFF;

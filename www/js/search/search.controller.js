@@ -17,6 +17,7 @@ define([
         vm.mapBounds;
         vm.zoom;
         vm.address;
+        vm.locationError;
 
         vm.setAddress = setAddress;
         vm.getCurrentLocation = getCurrentLocation;
@@ -50,6 +51,17 @@ define([
                 }
             }
             else {
+
+                mapDataService.checkGPS()
+                    .then(function(isEnabled) {
+                        if(!isEnabled) {
+                            vm.locationError = "Please enable GPS";
+                        }
+                        else {
+                            vm.locationError = null;
+                        }
+                    });
+
                 geolocation.getLocation({})
                     .then(function (pos) {
                         vm.currentLocation = [pos.coords.latitude, pos.coords.longitude];
@@ -123,6 +135,17 @@ define([
             $ionicLoading.show({
                 template: '<i class="icon ion-loading-c"></i> Fetching you location...'
             });
+
+            mapDataService.checkGPS()
+                .then(function(isEnabled) {
+                    if(!isEnabled) {
+                        vm.locationError = "Please enable GPS";
+                    }
+                    else {
+                        vm.locationError = null;
+                    }
+                });
+
             geolocation.getLocation({})
                 .then(function (pos) {
                     vm.currentLocation = [pos.coords.latitude, pos.coords.longitude];

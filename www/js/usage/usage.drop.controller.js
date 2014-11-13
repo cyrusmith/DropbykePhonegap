@@ -9,9 +9,9 @@ define([
 
     angular.module("dropbike.usage").controller('UsageDropController', UsageDropController);
 
-    UsageDropController.$inject = ['rideData', '$localStorage', '$ionicPopup', '$state', 'geolocation', 'mapDataService', 'usageDataService', 'cameraUtil', 'BACKEND_URL'];
+    UsageDropController.$inject = ['rideData', '$localStorage', '$ionicPopup', '$state', 'geolocation', 'mapDataService', 'usageDataService', 'cameraUtil', '$timeout', 'BACKEND_URL'];
 
-    function UsageDropController(rideData, $localStorage, $ionicPopup, $state, geolocation, mapDataService, usageDataService, cameraUtil, BACKEND_URL) {
+    function UsageDropController(rideData, $localStorage, $ionicPopup, $state, geolocation, mapDataService, usageDataService, cameraUtil, $timeout, BACKEND_URL) {
 
         var vm = this;
         vm.currentLocation;
@@ -125,10 +125,27 @@ define([
         }
 
         function getCurrentLocation() {
+
+            mapDataService.checkGPS()
+                .then(function (isEnabled) {
+                    if (!isEnabled) {
+                        vm.locationError = "Please enable GPS to drop bike";
+
+                        if (!window.cordova) {
+                            $timeout(function () {
+                                vm.locationError = null;
+                            }, 3000);
+                        }
+
+                    }
+                    else {
+                        vm.locationError = null;
+                    }
+                });
+
             geolocation.getLocation({})
                 .then(function (pos) {
                     vm.currentLocation = [pos.coords.latitude, pos.coords.longitude];
-                    vm.locationError = null;
                     $localStorage.dropLocation = vm.currentLocation;
 
                     if (!vm.address) {

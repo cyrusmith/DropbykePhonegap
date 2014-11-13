@@ -15,6 +15,7 @@ call cordova plugin add org.apache.cordova.geolocation
 call cordova plugin add org.apache.cordova.network-information
 call cordova plugin add org.apache.cordova.file-transfer
 call cordova plugin add org.apache.cordova.inappbrowser
+call cordova plugin add https://github.com/cyrusmith/cordova-gps-checker.git
 call cordova -d plugin add d:\tmp\phonegap-facebook-plugin --variable APP_ID="%FB_APP_ID%" --variable APP_NAME="Dropbike"
 
 4) Copy contents of www folder to assets folder of android project

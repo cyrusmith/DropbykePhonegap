@@ -11,9 +11,9 @@ define([
 
     angular.module("dropbike.bike").controller("BikeController", BikeController);
 
-    BikeController.$inject = ['bike', 'usageDataService', 'geolocation', '$ionicPopup', '$state', 'BACKEND_URL'];
+    BikeController.$inject = ['bike', 'mapDataService', 'usageDataService', 'geolocation', '$ionicPopup', '$state', '$timeout', 'BACKEND_URL'];
 
-    function BikeController(bike, usageDataService, geolocation, $ionicPopup, $state, BACKEND_URL) {
+    function BikeController(bike, mapDataService, usageDataService, geolocation, $ionicPopup, $state, $timeout, BACKEND_URL) {
 
         var vm = this;
 
@@ -50,17 +50,32 @@ define([
             })
                 .then(function (pos) {
                     vm.location = [pos.coords.latitude, pos.coords.longitude];
-                    vm.locationError = null;
                 }, function (error) {
                     vm.location = null;
-                    vm.locationError = "Current location not found. Please enable GPS."
+                });
+
+            mapDataService.checkGPS()
+                .then(function (isEnabled) {
+                    if (!isEnabled) {
+                        vm.locationError = "Please enable GPS to access bike";
+
+                        if (!window.cordova) {
+                            $timeout(function () {
+                                vm.locationError = null;
+                            }, 3000);
+                        }
+
+                    }
+                    else {
+                        vm.locationError = null;
+                    }
                 });
 
         }
 
         function getAccess() {
 
-            if(!vm.location) {
+            if (!vm.location || vm.locationError) {
                 return;
             }
 

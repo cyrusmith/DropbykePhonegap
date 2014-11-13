@@ -9,9 +9,9 @@ define([
 
     angular.module("dropbike.usage").controller('UsageMapController', UsageMapController);
 
-    UsageMapController.$inject = ['rideData', 'geolocation', '$localStorage', '$state', 'BACKEND_URL'];
+    UsageMapController.$inject = ['rideData', 'geolocation', 'mapDataService', '$timeout', '$state'];
 
-    function UsageMapController(rideData, geolocation, $localStorage, $state, BACKEND_URL) {
+    function UsageMapController(rideData, geolocation, mapDataService, $timeout, $state) {
 
         var vm = this;
         vm.ride = null;
@@ -82,6 +82,24 @@ define([
         }
 
         function getCurrentLocation() {
+
+            mapDataService.checkGPS()
+                .then(function (isEnabled) {
+                    if (!isEnabled) {
+                        vm.locationError = "Please enable GPS to drop bike";
+
+                        if (!window.cordova) {
+                            $timeout(function () {
+                                vm.locationError = null;
+                            }, 3000);
+                        }
+
+                    }
+                    else {
+                        vm.locationError = null;
+                    }
+                });
+
             geolocation.getLocation({})
                 .then(function (pos) {
 
@@ -91,8 +109,6 @@ define([
                         [vm.ride.startLat, vm.ride.startLng],
                         vm.currentLocation
                     ];
-
-                    vm.locationError = null;
 
                     updateBounds();
                 }, function (error) {
