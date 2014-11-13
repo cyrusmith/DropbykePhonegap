@@ -23,7 +23,7 @@ var WAR_DEST = './bin';
 gulp.task('default', ['watch', 'sass', 'templates']);
 
 gulp.task('compilezip', function (callback) {
-    runSequence('clearbin', 'requirejs', 'copyfiles', 'buildzip',
+    runSequence('clearbin', 'sass', 'templates', 'requirejs', 'copyfiles', 'buildzip',
         callback);
 });
 
