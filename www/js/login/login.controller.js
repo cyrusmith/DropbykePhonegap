@@ -51,13 +51,33 @@ define([
                 template: '<i class="icon ion-loading-c"></i> Loading...'
             });
 
-            facebook.login()
-                .then(function (res) {
-                    alert("Resolve " + res);
-                    // $state.go('app.phoneconfirm');
+            facebook.getLoginStatus().then(function (res) {
+                alert("Already logged in " + JSON.stringify(res));
+                return true;
+            },function () {
+                alert("Need to login");
+                facebook.login()
+                    .then(function (res) {
+                        alert("Logged in " + JSON.stringify(res));
+                        return true;
+                    }, function (err) {
+                        alert("Failed to logged in " + JSON.stringify(err));
+                        return false;
+                    })
+            }).then(function (res) {
+                    if (res === true) {
+                        alert("Finally logged in. Post update.")
 
-                },function (err) {
-                    alert("Reject " + err);
+                        facebook.postUpdate("Message 123", "description 123", "name 123", "http://link.com", "http://soleimageurl.com")
+                            .then(function (postId) {
+                                alert("Posted " + postId);
+                            }, function () {
+                                alert("Failed to post");
+                            });
+                    }
+                    else {
+                        alert("Finally not logged in")
+                    }
                 }).
                 finally(function () {
                     $ionicLoading.hide();
