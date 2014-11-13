@@ -6,9 +6,9 @@ define([
 
     angular.module('dropbike.login').service('facebook', facebook);
 
-    facebook.$inject = ['$q', 'FACEBOOK_ID'];
+    facebook.$inject = ['$q', '$localStorage', 'FACEBOOK_ID', 'FACEBOOK_REDIRECT_URL'];
 
-    function facebook($q, FACEBOOK_ID) {
+    function facebook($q, $localStorage, FACEBOOK_ID, FACEBOOK_REDIRECT_URL) {
 
         init();
 
@@ -20,20 +20,51 @@ define([
 
         function init() {
             FacebookInAppBrowser.settings.appId = FACEBOOK_ID;
-            FacebookInAppBrowser.settings.redirectUrl = 'http://ec2-54-69-186-125.us-west-2.compute.amazonaws.com:8080/';
+            FacebookInAppBrowser.settings.redirectUrl = FACEBOOK_REDIRECT_URL;
             FacebookInAppBrowser.settings.permissions = 'public_profile,user_photos,email,publish_actions';
         }
 
         function getLoginStatus() {
             var d = $q.defer();
-            FacebookInAppBrowser.getInfo(function (res) {
-                if (res === false) {
-                    d.reject(false);
+
+            alert("window.cordova && window.facebookConnectPlugin " + window.cordova + " " + window.facebookConnectPlugin);
+
+            if (window.cordova) {
+
+                if (window.facebookConnectPlugin) {
+                    window.facebookConnectPlugin.getLoginStatus(function (res) {
+                        alert("facebookConnectPlugin.getLoginStatus " + JSON.stringify(res));
+                        if (res.status && res.status == "connected" && res.authResponse && res.authResponse.accessToken) {
+                            //Set some data for inappbrowser plugin
+                            window.localStorage.setItem('facebookAccessToken', res.authResponse.accessToken);
+                            window.localStorage.setItem('uid', res.authResponse.userID);
+                            d.resolve(res);
+                        }
+                        else {
+                            d.reject(false);
+                        }
+
+                    }, function (res) {
+                        alert("facebookConnectPlugin.getLoginStatus fail " + JSON.stringify(res));
+                        d.reject(false);
+                    });
                 }
                 else {
-                    d.resolve(res);
+                    if (FacebookInAppBrowser.getInfo(function (res) {
+                        alert("FacebookInAppBrowser.getInfo " + JSON.stringify(res));
+                        if (res === false) {
+                            d.reject(false);
+                        }
+                        else {
+                            d.resolve(res);
+                        }
+                    }) === false) {
+                        d.reject(false);
+                    }
                 }
-            });
+
+            }
+
             return d.promise;
         }
 
@@ -41,40 +72,75 @@ define([
 
             var d = $q.defer();
 
-            FacebookInAppBrowser.login({
-                send: function () {
-                    console.log('login opened');
-                },
-                success: function (access_token) {
-                    console.log('done, access token: ' + access_token);
-                },
-                denied: function () {
-                    d.reject('user denied');
-                    console.log('user denied');
-                },
-                timeout: function () {
-                    console.log('a timeout has occurred, probably a bad internet connection');
-                    d.reject('a timeout has occurred, probably a bad internet connection');
-                },
-                complete: function (access_token) {
-                    console.log('window closed');
-                    if (access_token) {
-                        console.log(access_token);
-                    } else {
-                        console.log('no access token');
-                        d.reject('no access token');
-                    }
-                },
-                userInfo: function (userInfo) {
-                    if (userInfo) {
-                        d.resolve(userInfo);
-                        console.log(JSON.stringify(userInfo));
-                    } else {
-                        d.reject('no user info');
-                        console.log('no user info');
-                    }
+            if (window.cordova) {
+
+                if (window.facebookConnectPlugin) {
+
+                    alert("window.facebookConnectPlugin login");
+
+                    facebookConnectPlugin.login(['public_profile', 'user_photos', 'email'], function (res) {
+                            alert("facebookConnectPlugin.login READ success " + JSON.stringify(res));
+
+                            facebookConnectPlugin.login(['publish_actions'], function (res) {
+                                alert("facebookConnectPlugin.login MANAGE success " + JSON.stringify(res));
+
+                                facebookConnectPlugin.api()
+
+                                window.localStorage.setItem('facebookAccessToken', res.authResponse.accessToken);
+                                window.localStorage.setItem('uid', res.authResponse.userID);
+
+                                d.resolve(res);
+                            }, function (err) {
+                                alert("facebookConnectPlugin.login NAMAGE fail " + JSON.stringify(err));
+                                d.reject(err);
+                            });
+
+                        }, function (err) {
+                            alert("facebookConnectPlugin.login fail " + JSON.stringify(err));
+                            d.reject(err);
+                        }
+                    )
                 }
-            });
+                else {
+                    alert("FacebookInAppBrowser.login");
+                    FacebookInAppBrowser.login({
+                        send: function () {
+                            alert('login opened');
+                        },
+                        success: function (access_token) {
+                            alert('done, access token: ' + access_token);
+                        },
+                        denied: function () {
+                            alert('user denied');
+                            d.reject('user denied');
+                        },
+                        timeout: function () {
+                            alert('a timeout has occurred, probably a bad internet connection');
+                            d.reject('a timeout has occurred, probably a bad internet connection');
+                        },
+                        complete: function (access_token) {
+                            alert('window closed ' + access_token);
+                            if (access_token) {
+                                alert(access_token);
+                            } else {
+                                alert('no access token');
+                                d.reject('no access token');
+                            }
+                        },
+                        userInfo: function (userInfo) {
+                            alert("userInfo " + JSON.stringify(userInfo));
+                            if (userInfo) {
+                                $localStorage.facebook = userInfo;
+                                d.resolve(userInfo);
+                            } else {
+                                d.reject('no user info');
+                            }
+                        }
+                    });
+
+                }
+
+            }
 
             return d.promise;
         }
