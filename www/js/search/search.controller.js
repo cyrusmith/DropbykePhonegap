@@ -19,7 +19,7 @@ define([
         vm.address;
 
         vm.setAddress = setAddress;
-        vm.applyCurrentLocation = applyCurrentLocation;
+        vm.getCurrentLocation = getCurrentLocation;
         vm.onMarkerClick = onMarkerClick;
 
         /**
@@ -119,7 +119,7 @@ define([
             });
         }
 
-        function applyCurrentLocation() {
+        function getCurrentLocation() {
             $ionicLoading.show({
                 template: '<i class="icon ion-loading-c"></i> Fetching you location...'
             });

@@ -5,19 +5,16 @@
     </ion-nav-buttons>
 
     <ion-nav-buttons side="right">
-        <button class="button button-icon icon ion-android-locate" ng-click="vm.getCurrentLocation()">
-        </button>
-    </ion-nav-buttons>
-
-    <ion-nav-buttons side="right">
-        <a class="button button-energized" ng-click="vm.drop()">Drop bike</a>
+        <a class="button button-energized" ng-click="vm.drop()" ng-disabled="!vm.isReadyToDrop()">Drop bike</a>
     </ion-nav-buttons>
 
 
     <ion-content>
         <div class="usage-drop-container">
 
-            <div class="map">
+            <div class="map dropbike-map">
+                <p ng-show="vm.locationError" class="location-error"><i class="icon ion-alert-circled"></i> {{vm.locationError}}</p>
+                <span class="dropbike-location"><i class="icon ion-android-locate" ng-click="vm.getCurrentLocation()"></i></span>
                 <google-map
                         location="vm.currentLocation"
                         show-location-marker="true"
@@ -33,26 +30,30 @@
                 </label>
             </div>
             <div class="photo" bg-image="vm.photo">
+                <div class="prompt" ng-hide="vm.ride.hasPhoto">Please take photo of locked bike to help next user find it</div>
                 <div class="takephoto">
-                    <button class="button" ng-click="vm.pickPhoto()"><i class="icon" ng-class="{'ion-camera': !vm.loading, 'ion-ios7-reloading': vm.loading}"></i> Take photo</button>
+                    <button class="button" ng-click="vm.pickPhoto()" ng-class="{'ion-camera': !vm.loading, 'ion-ios7-reloading': vm.loading}"></button>
                 </div>
-            </div>
-
-            <div class="list list-inset">
-                <label class="item item-input">
-                    <i class="icon ion-locked placeholder-icon assertive"></i>
-                    <input type="text" placeholder="Lock password" ng-model="vm.lockPassword">
-                </label>
             </div>
 
             <div class="message">
                 <label class="item-input">
-                    <textarea placeholder="Massage to next user" ng-model="vm.message"></textarea>
+                    <textarea placeholder="Please leave message for next user to help him find bike" ng-model="vm.message"></textarea>
                 </label>
             </div>
 
         </div>
 
     </ion-content>
+
+
+    <div class="bar bar-footer footer-one-button">
+        <div class="list list-inset">
+            <label class="item item-input">
+                <i class="icon ion-steam placeholder-icon"></i>
+                <input type="text" placeholder="Enter distance in kilometes" type="number" ng-model="vm.distance">
+            </label>
+        </div>
+    </div>
 
 </ion-view>

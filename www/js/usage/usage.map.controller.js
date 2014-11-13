@@ -21,6 +21,9 @@ define([
         vm.currentTimestamp = rideData.timestamp;
         vm.zoom = 15;
         vm.path;
+        vm.locationError;
+
+        vm.getCurrentLocation = getCurrentLocation;
 
         init();
 
@@ -37,29 +40,7 @@ define([
                 [vm.ride.startLat, vm.ride.startLng]
             ];
 
-
-            geolocation.getLocation({})
-                .then(function (pos) {
-                    vm.currentLocation = [pos.coords.latitude, pos.coords.longitude];
-
-                    vm.path = [
-                        [vm.ride.startLat, vm.ride.startLng],
-                        vm.currentLocation
-                    ];
-
-                    updateBounds();
-                }, function (error) {
-                    $ionicPopup.show({
-                        title: error,
-                        buttons: [
-                            {
-                                text: 'Ok',
-                                type: 'button-assertive'
-                            }
-                        ]
-                    });
-                });
-
+            getCurrentLocation();
 
         }
 
@@ -98,6 +79,25 @@ define([
                 "ne": ne
             }
 
+        }
+
+        function getCurrentLocation() {
+            geolocation.getLocation({})
+                .then(function (pos) {
+
+                    vm.currentLocation = [pos.coords.latitude, pos.coords.longitude];
+
+                    vm.path = [
+                        [vm.ride.startLat, vm.ride.startLng],
+                        vm.currentLocation
+                    ];
+
+                    vm.locationError = null;
+
+                    updateBounds();
+                }, function (error) {
+                    vm.locationError = error;
+                });
         }
 
     }

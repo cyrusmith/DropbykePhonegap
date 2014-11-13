@@ -14,13 +14,13 @@ var zip = require('gulp-zip');
 var runSequence = require('run-sequence');
 
 var paths = {
-    sass: ['./scss/**/*.scss'],
+    sass: ['./scss/*'],
     templates: ['./www/**/*.tpl.html']
 };
 
 var WAR_DEST = './bin';
 
-gulp.task('default', ['sass', 'templates']);
+gulp.task('default', ['watch', 'sass', 'templates']);
 
 gulp.task('compilezip', function (callback) {
     runSequence('clearbin', 'requirejs', 'copyfiles', 'buildzip',
@@ -86,14 +86,8 @@ gulp.task('sass', function (done) {
 });
 
 gulp.task('watch', function () {
-    gulp.watch(paths.sass, {
-        interval: 10
-    }, ['sass']);
-    gulp.watch(paths.templates, {
-        interval: 1,
-        debounceDelay: 1,
-        mode: 'watch'
-    }, ['templates']);
+    gulp.watch(paths.sass, ['sass']);
+    gulp.watch(paths.templates, ['templates']);
 });
 
 gulp.task('install', ['git-check'], function () {

@@ -26,6 +26,18 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 $dropbike-bg-dark: #506a80;
 $dropbike-field-color: #29404F;
 
+.dropbike-map {
+  position: relative;
+  .dropbike-location {
+    position: absolute;
+    right: 1rem;
+    bottom: 1.5rem;
+    z-index: 1;
+    font-size: 2rem;
+  }
+
+}
+
 .footer-one-button {
   padding: .1rem .5rem;
   .button {
@@ -35,6 +47,16 @@ $dropbike-field-color: #29404F;
   }
   .button-block {
     width: 100%;
+  }
+
+  .list {
+    margin: 0;
+    display: block;
+    width: 100%;
+    label {
+      padding: .1rem;
+      padding-left: .5rem;
+    }
   }
 }
 
@@ -185,91 +207,63 @@ $dropbike-field-color: #29404F;
 
 .bike-pane-content {
 
-  position: absolute;
-  top: 44px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-
-  .bike-info {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 44px;
-
-    .map-container {
-
+  .map-container {
+    height: 11rem;
+    position: relative;
+    .location-error {
       position: absolute;
-      width: 100%;
-      height: 50%;
-
-      .dropbike-map-container {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-      }
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: .1rem;
+      text-align: center;
+      background-color: rgba(255, 0, 0, 0.5);
+      color: #FFF;
+      z-index: 2;
     }
-
-    .photo-container {
+    .dropbike-map-container {
       position: absolute;
-      width: 100%;
-      height: 50%;
-      top: 50%;
-      .photo {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 70%;
-        background-color: #39444d;
-        img {
-          width: 100%;
-        }
-      }
-      .location {
-        position: absolute;
-        top: 70%;
-        left: 0;
-        right: 0;
-        height: 50;
-        text-align: center;
-        .title {
-          text-align: left;
-          padding: .2rem 0;
-          text-overflow: ellipsis;
-          overflow: hidden;
-          background: {
-            color: #637d88;
-          }
-          white-space: nowrap;
-          color: #FFF;
-          text-align: center;
-        }
-        p, h4 {
-          margin: 0;
-        }
-        p {
-          color: #10b667;
-          margin-top: .5rem;
-        }
-      }
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
     }
-
   }
 
-  .footer-container {
-    position: absolute;
-    height: 44px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-
-    .button {
-      margin-top: 0;
+  .title {
+    text-align: left;
+    padding: .2rem 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    background: {
+      color: #637d88;
     }
+    white-space: nowrap;
+    color: #FFF;
+    text-align: center;
+  }
+
+  .photo {
+    height: 11rem;
+    background-color: $dropbike-bg-dark;
+  }
+
+  .location {
+    p, h4 {
+      text-align: center;
+      margin: 0;
+    }
+    p {
+      margin-top: .5rem;
+    }
+
+    h4 {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    padding-bottom: 3rem;
+
   }
 
 }
@@ -344,6 +338,18 @@ $dropbike-field-color: #29404F;
           line-height: 2.2rem;
           font-size: 1.2rem;
         }
+
+        .text {
+          height: 100px;
+          border-radius: 0.6rem;
+          background: #29404F;
+          height: 2.2rem;
+          color: white;
+          line-height: 2.2rem;
+          font-size: 1em;
+          text-indent: .5em;
+        }
+
       }
     }
   }
@@ -361,6 +367,17 @@ $dropbike-field-color: #29404F;
     left: 0;
     right: 0;
     bottom: 80px;
+    .location-error {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: .1rem;
+      text-align: center;
+      background-color: rgba(255, 0, 0, 0.5);
+      color: #FFF;
+      z-index: 2;
+    }
     .dropbike-map-container {
       position: absolute;
       top: 0;
@@ -397,9 +414,24 @@ $dropbike-field-color: #29404F;
 }
 
 .usage-drop-container {
+  padding-bottom: 3rem;
   .map {
+    position: relative;
     height: 200px;
     width: 100%;
+
+    .location-error {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: .1rem;
+      text-align: center;
+      background-color: rgba(255, 0, 0, 0.5);
+      color: #FFF;
+      z-index: 2;
+    }
+
     .dropbike-map-container {
       height: 200px;
       width: 100%;
@@ -411,14 +443,22 @@ $dropbike-field-color: #29404F;
   }
 
   .photo {
-    height: 150px;
+    padding: .5rem;
     position: relative;
     background-color: #456;
+    .prompt {
+      text-align: center;
+      padding: .5rem;
+      color: #FFF;
+    }
     .takephoto {
-      position: absolute;
       bottom: .5rem;
       text-align: center;
       width: 100%;
+      button {
+        font-size: 2rem;
+      }
+
     }
 
   }

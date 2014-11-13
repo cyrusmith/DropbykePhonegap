@@ -35,9 +35,9 @@ define([
                 });
         }
 
-        function drop(lat, lng, address, lockPassword, message) {
+        function drop(lat, lng, address, lockPassword, message, distance) {
             return $http.post(BACKEND_URL + '/api/rides/stop/', {
-                lat: lat, lng: lng, address: address, lockPassword: lockPassword, message: message
+                lat: lat, lng: lng, address: address, lockPassword: lockPassword, message: message, distance: distance
             }, {
                 headers: {
                     "Authorization": "Bearer " + authService.getToken()

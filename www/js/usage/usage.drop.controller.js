@@ -19,6 +19,7 @@ define([
         vm.ride;
         vm.photo;
         vm.message;
+        vm.distance;
         vm.lockPassword;
         vm.address;
         vm.loading;
@@ -26,6 +27,7 @@ define([
         vm.pickPhoto = pickPhoto;
         vm.drop = drop;
         vm.getCurrentLocation = getCurrentLocation;
+        vm.isReadyToDrop = isReadyToDrop;
 
         init();
 
@@ -36,7 +38,6 @@ define([
             vm.ride = rideData.ride;
             vm.photo = null;
             vm.message = null;
-            vm.lockPassword = rideData.bike.lockPassword;
             vm.address = null;
             vm.loading = false;
 
@@ -81,8 +82,8 @@ define([
                 errors.push('Photo not set');
             }
 
-            if (!vm.lockPassword) {
-                errors.push('Lock password not set');
+            if (!vm.message) {
+                errors.push('Message not set');
             }
 
             if (!vm.currentLocation || !vm.currentLocation[0] || !vm.currentLocation[1]) {
@@ -105,7 +106,7 @@ define([
             }
 
 
-            usageDataService.drop(vm.currentLocation[0], vm.currentLocation[1], vm.address, vm.lockPassword, vm.message)
+            usageDataService.drop(vm.currentLocation[0], vm.currentLocation[1], vm.address, vm.lockPassword, vm.message, vm.distance)
                 .then(function () {
                     $state.go('app.checkout');
                 }, function (error) {
@@ -127,7 +128,7 @@ define([
             geolocation.getLocation({})
                 .then(function (pos) {
                     vm.currentLocation = [pos.coords.latitude, pos.coords.longitude];
-
+                    vm.locationError = null;
                     $localStorage.dropLocation = vm.currentLocation;
 
                     if (!vm.address) {
@@ -137,30 +138,18 @@ define([
                                     vm.address = address[0].formatted_address;
                                 }
                             }, function (error) {
-                                $ionicPopup.show({
-                                    title: "Error getting address",
-                                    subTitle: error,
-                                    buttons: [
-                                        {
-                                            text: 'Ok',
-                                            type: 'button-assertive'
-                                        }
-                                    ]
-                                });
+                                vm.locationError = "Error getting address. Please enter manually.";
                             });
                     }
                 }, function (error) {
-                    $ionicPopup.show({
-                        title: error,
-                        buttons: [
-                            {
-                                text: 'Ok',
-                                type: 'button-assertive'
-                            }
-                        ]
-                    });
+                    vm.currentLocation = null;
+                    vm.locationError = "Current location not found. Please enable GPS.";
                 });
 
+        }
+
+        function isReadyToDrop() {
+            return !vm.locationError && !!vm.address && !!vm.message && (!!vm.ride.hasPhoto || !window.cordova);
         }
 
     }

@@ -6,9 +6,9 @@ define([
 
     angular.module('dropbike.login').service('facebook', facebook);
 
-    facebook.$inject = ['$q', '$log', '$interval', 'FACEBOOK_ID'];
+    facebook.$inject = ['$q', '$log', '$localStorage', '$interval', 'FACEBOOK_ID'];
 
-    function facebook($q, $log, $interval, FACEBOOK_ID) {
+    function facebook($q, $log, $localStorage, $interval, FACEBOOK_ID) {
 
         $log.log("facebookId", FACEBOOK_ID);
 
@@ -17,7 +17,16 @@ define([
         init();
 
         return {
-            getApi: getApi
+            getApi: getApi,
+            postUpdate: function () {
+                if (!$localStorage.facebook) {
+                    return;
+                }
+                getApi()
+                    .then(function () {
+                        facebookConnectPlugin.api('/' + $localStorage.facebook.id + '/feed');
+                    });
+            }
         };
 
         function init() {

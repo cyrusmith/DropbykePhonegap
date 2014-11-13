@@ -11,9 +11,9 @@ define([
 
     angular.module("dropbike.bike").controller("BikeController", BikeController);
 
-    BikeController.$inject = ['bike', 'usageDataService', '$localStorage', '$stateParams', '$ionicPopup', '$state', 'BACKEND_URL'];
+    BikeController.$inject = ['bike', 'usageDataService', 'geolocation', '$ionicPopup', '$state', 'BACKEND_URL'];
 
-    function BikeController(bike, usageDataService, $localStorage, $stateParams, $ionicPopup, $state, BACKEND_URL) {
+    function BikeController(bike, usageDataService, geolocation, $ionicPopup, $state, BACKEND_URL) {
 
         var vm = this;
 
@@ -21,6 +21,8 @@ define([
         vm.location;
         vm.markers;
         vm.zoom;
+        vm.location;
+        vm.locationError;
 
         vm.getAccess = getAccess;
 
@@ -42,9 +44,26 @@ define([
                 [vm.bike.lat, vm.bike.lng]
             ];
             vm.zoom = 17;
+
+            geolocation.getLocation({
+                enableHighAccuracy: true
+            })
+                .then(function (pos) {
+                    vm.location = [pos.coords.latitude, pos.coords.longitude];
+                    vm.locationError = null;
+                }, function (error) {
+                    vm.location = null;
+                    vm.locationError = "Current location not found. Please enable GPS."
+                });
+
         }
 
         function getAccess() {
+
+            if(!vm.location) {
+                return;
+            }
+
             $ionicPopup.show({
                 title: 'Get bike access',
                 subTitle: 'Bike usage time will start once you get access',

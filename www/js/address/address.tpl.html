@@ -11,5 +11,12 @@
                 {{res.address}} ({{res.lat}} | {{res.lng}})
             </li>
         </ul>
+        <h4 class="padding-left" ng-show="vm.history">Search history</h4>
+        <ul class="list">
+            <li class="item" ng-repeat="item in vm.history | limitTo: 20" ng-click="vm.selectAddress(item)">
+                {{item.address}} ({{item.lat}} | {{item.lng}})
+            </li>
+        </ul>
+
     </ion-content>
 </ion-view>

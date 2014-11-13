@@ -4,36 +4,34 @@
         <button class="button" ui-sref="app.search"> Cancel</button>
     </ion-nav-buttons>
 
-    <div class="bike-pane-content">
+    <ion-content class="bike-pane-content">
 
-        <div class="bike-info">
-            <div class="map-container">
-               <google-map markers="vm.markers" location="vm.location" zoom="vm.zoom"
-                            show-location-marker="false"
-                            location-icon="img/ic-pin-small.png" marker-default-icon="img/ic-bike-small.png"/>
-            </div>
-
-            <div class="photo-container">
-                <div class="photo" bg-image="vm.bike.photo">
-
-                </div>
-                <div class="location">
-                    <div class="title">
-                        {{vm.bike.title}} (<i class="ion-ios7-star energized"></i> {{vm.bike.rating + ""}}) ${{vm.bike.priceRate}}/hr
-                    </div>
-                    <p class="">BIKE LOCATION</p>
-                    <h4>{{vm.bike.address}}</h4>
-                </div>
-            </div>
+        <div class="map-container">
+            <p ng-show="vm.locationError" class="location-error"><i class="icon ion-alert-circled"></i> {{vm.locationError}}</p>
+            <google-map markers="vm.markers" location="vm.location" zoom="vm.zoom"
+                        show-location-marker="false"
+                        location-icon="img/ic-pin-small.png" marker-default-icon="img/ic-bike-small.png"/>
+        </div>
+        <div class="title">
+            {{vm.bike.title}} (<i class="ion-ios7-star energized"></i> {{vm.bike.rating + ""}})
+            ${{vm.bike.priceRate}}/hr
         </div>
 
-        <div class="footer-container">
-
-            <button class="button button-block button-balanced ion-flag" ng-click="vm.getAccess()">
-                Get access
-            </button>
+        <div class="photo" bg-image="vm.bike.photo">
 
         </div>
+
+        <div class="location">
+            <p class="balanced">BIKE LOCATION</p>
+            <h4>{{vm.bike.address}}</h4>
+        </div>
+
+    </ion-content>
+
+    <div class="bar bar-footer footer-one-button">
+        <button class="button button-block button-balanced ion-flag" ng-click="vm.getAccess()" ng-disabled="!vm.location">
+            Get access
+        </button>
     </div>
 
 </ion-view>

@@ -5,11 +5,13 @@
     </ion-nav-buttons>
 
     <ion-nav-buttons side="right">
-        <a class="button button-energized" ui-sref="app.usagedrop">Drop bike</a>
+        <a class="button button-energized" ui-sref="app.usagedrop" ng-disabled="vm.locationError">Drop bike</a>
     </ion-nav-buttons>
 
     <div class="usage-map-container">
-        <div class="map">
+        <div class="map dropbike-map">
+            <p ng-show="vm.locationError" class="location-error"><i class="icon ion-alert-circled"></i> {{vm.locationError}}</p>
+            <span class="dropbike-location"><i class="icon ion-android-locate" ng-click="vm.getCurrentLocation()"></i></span>
             <google-map
                     markers="vm.markers" location="vm.currentLocation"
                     show-location-marker="true"

@@ -71,7 +71,7 @@ define([
 
             return facebook.getApi().then(function (fbApi) {
                 var deferred = $q.defer();
-                fbApi.login(["public_profile", "user_photos", "email"], function succes(response) {
+                fbApi.login(["public_profile", "user_photos", "email"], function success(response) {
                     $log.log("login response", response);
                     deferred.resolve(response);
                 }, function failure(res) {

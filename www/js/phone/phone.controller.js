@@ -48,7 +48,7 @@ define([
                 }, function () {
                     $ionicLoading.hide();
                     $ionicPopup.show({
-                        title: 'Failed to send sms',
+                        title: 'Sending sms failed',
                         buttons: [
                             {
                                 text: 'Ok',

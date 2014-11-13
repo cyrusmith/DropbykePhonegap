@@ -9,15 +9,16 @@ define([
 
     angular.module("dropbike.address").controller('AddressController', AddressController);
 
-    AddressController.$inject = ['$timeout', '$ionicPopup', 'mapDataService', '$scope', '$state', '$localStorage'];
+    AddressController.$inject = ['$timeout', '$ionicPopup', 'mapDataService', '$scope', '$state', '$localStorage', 'addressDataService'];
 
-    function AddressController($timeout, $ionicPopup, mapDataService, $scope, $state, $localStorage) {
+    function AddressController($timeout, $ionicPopup, mapDataService, $scope, $state, $localStorage, addressDataService) {
 
         var vm = this;
 
         vm.address = "";
         vm.results = [];
         vm.selectAddress = selectAddress;
+        vm.history = addressDataService.getSearchHistory();
 
         $scope.$watch('vm.address', scheduleSearch);
 
@@ -54,6 +55,7 @@ define([
                         type: 'button-positive',
                         onTap: function(e) {
                             $localStorage.selectedLocation = addr;
+                            addressDataService.addToSearchHistory(addr);
                             $state.go('app.search');
                         }
                     }

@@ -31,6 +31,15 @@ define([
                     }
                 });
 
+                if (attrs.rating) {
+
+                    scope.$watch('rating', function (value) {
+                        console.log(attrs.rating, value)
+                        updateSelection(value);
+                    });
+
+                }
+
                 function updateSelection(pos) {
                     for (var i = 0; i < 5; i++) {
                         var icon = stars.eq(i - 1).children();

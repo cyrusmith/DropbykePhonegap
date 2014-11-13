@@ -10,6 +10,8 @@ define([
     angular.module("dropbike.address", []);
 
     require([
-        "address/address.controller"]);
+        "address/address.controller",
+        "address/address.dataservice.factory"
+    ]);
 
 });
