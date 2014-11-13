@@ -4,7 +4,8 @@ require.config({
         'angular': '../lib/ionic/js/ionic.bundle',
         'domReady': '../lib/requirejs-domready/domReady',
         'ngStorage': '../lib/ngstorage/ngStorage',
-        'facebook': '../lib/facebook.inappbrowser'
+        'facebookInappbrowser': '../lib/facebook.inappbrowser',
+        'facebookConnectPlugin': '../lib/facebookConnectPlugin'
     },
 
     urlArgs: "bust=" + (new Date()).getTime(),
@@ -13,8 +14,11 @@ require.config({
         'angular': {
             exports: 'angular'
         },
-        'facebook': {
+        'facebookInappbrowser': {
             exports: 'FacebookInAppBrowser'
+        },
+        'facebookConnectPlugin': {
+            exports: 'facebookConnectPlugin'
         }
     }
 

@@ -1,7 +1,9 @@
 define([
     'require',
     'angular',
-    'dropbike.module'
+    'dropbike.module',
+    'facebookConnectPlugin',
+    'facebookInappbrowser'
 ], function (require, angular) {
     'use strict';
 

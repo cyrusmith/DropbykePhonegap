@@ -4,8 +4,7 @@
  * info@interosite.ru
  */
 define([
-    "angular",
-    "facebook"
+    "angular"
 ], function (angular) {
 
     'use strict';
