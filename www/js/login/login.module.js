@@ -5,7 +5,7 @@
  */
 define([
     "angular",
-    "facebookConnectPlugin"
+    "facebook"
 ], function (angular) {
 
     'use strict';

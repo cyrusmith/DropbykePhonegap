@@ -6,104 +6,63 @@ define([
 
     angular.module('dropbike.login').service('facebook', facebook);
 
-    facebook.$inject = ['$q', '$log', '$localStorage', '$interval', 'FACEBOOK_ID'];
+    facebook.$inject = ['$q', 'FACEBOOK_ID'];
 
-    function facebook($q, $log, $localStorage, $interval, FACEBOOK_ID) {
-
-        $log.log("facebookId", FACEBOOK_ID);
-
-        var apiDeferred;
+    function facebook($q, FACEBOOK_ID) {
 
         init();
 
         return {
-            getApi: getApi,
-            postUpdate: function () {
-                if (!$localStorage.facebook) {
-                    return;
-                }
-                getApi()
-                    .then(function () {
-                        facebookConnectPlugin.api('/' + $localStorage.facebook.id + '/feed');
-                    });
-            }
+            login: login
         };
 
         function init() {
-
-            apiDeferred = $q.defer();
-
-            if (!window.cordova) {
-
-                waitForFB()
-                    .then(function () {
-                        $log.log("Facebook loaded");
-                        apiDeferred.resolve(facebookConnectPlugin);
-                        facebookConnectPlugin.browserInit(FACEBOOK_ID);
-                    }, function () {
-                        $log.log("Failed to load facebook");
-                        apiDeferred.reject(null);
-                    })
-            }
-            else {
-                $log.log("Cordova detected. Return plugin immediately: " + facebookConnectPlugin);
-                waitForCordovaPlugin().
-                    then(function () {
-                        apiDeferred.resolve(facebookConnectPlugin);
-                    }, function () {
-                        apiDeferred.reject(null);
-                    });
-
-            }
-
+            FacebookInAppBrowser.settings.appId = FACEBOOK_ID;
+            FacebookInAppBrowser.settings.redirectUrl = 'http://ec2-54-69-186-125.us-west-2.compute.amazonaws.com:8080/';
+            FacebookInAppBrowser.settings.permissions = 'email';
         }
 
-        function getApi() {
-            return apiDeferred.promise;
-        }
+        function login() {
 
-        function waitForFB() {
+            var d = $q.defer();
 
-            var d = $q.defer(),
-                count = 0;
+            FacebookInAppBrowser.login({
+                send: function() {
+                    console.log('login opened');
+                },
+                success: function(access_token) {
+                    console.log('done, access token: ' + access_token);
+                },
+                denied: function() {
+                    d.reject('user denied');
+                    console.log('user denied');
+                },
+                timeout: function(){
+                    console.log('a timeout has occurred, probably a bad internet connection');
+                    d.reject('a timeout has occurred, probably a bad internet connection');
+                },
+                complete: function(access_token) {
+                    console.log('window closed');
+                    if(access_token) {
+                        console.log(access_token);
+                    } else {
+                        console.log('no access token');
+                        d.reject('no access token');
+                    }
+                },
+                userInfo: function(userInfo) {
+                    if(userInfo) {
+                        d.resolve(userInfo);
+                        console.log(JSON.stringify(userInfo));
+                    } else {
+                        d.reject('no user info');
+                        console.log('no user info');
+                    }
+                }
+            });
 
-            var intrvl = $interval(function () {
-                if (count > 100) {
-                    $interval.cancel(intrvl);
-                    d.reject(null);
-                }
-                else if (window.FB) {
-                    $interval.cancel(intrvl);
-                    d.resolve(window.FB)
-                }
-                else {
-                    count++;
-                }
-            }, 100);
             return d.promise;
         }
-
-        function waitForCordovaPlugin() {
-
-            var d = $q.defer(),
-                count = 0;
-
-            var intrvl = $interval(function () {
-                if (count > 100) {
-                    $interval.cancel(intrvl);
-                    d.reject(null);
-                }
-                else if (window.facebookConnectPlugin) {
-                    $interval.cancel(intrvl);
-                    d.resolve(window.facebookConnectPlugin)
-                }
-                else {
-                    count++;
-                }
-            }, 100);
-            return d.promise;
-        }
-
 
     }
 

@@ -51,16 +51,18 @@ define([
                 template: '<i class="icon ion-loading-c"></i> Loading...'
             });
 
-            doLogin().then(function (res) {
-                $log.log("Login res:", res);
-                $state.go('app.phoneconfirm');
+            facebook.login()
+                .then(function (res) {
+                    alert("Resolve " + res);
+                    // $state.go('app.phoneconfirm');
 
-            },function () {
-                $log.log("Login rejected");
-            }).
+                },function (err) {
+                    alert("Reject " + err);
+                }).
                 finally(function () {
                     $ionicLoading.hide();
                 });
+
         }
 
         function doLogin() {
