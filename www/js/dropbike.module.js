@@ -58,6 +58,10 @@ define([
                             event.preventDefault();
                             $state.go('app.start');
                         }
+                        else if (!authService.isPhoneConfirmed()) {
+                            event.preventDefault();
+                            $state.go('app.phoneconfirm');
+                        }
                     }
                     return true;
                 });

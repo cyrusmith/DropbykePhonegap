@@ -11,9 +11,9 @@ define([
 
     angular.module("dropbike.bike").controller("CheckoutController", CheckoutController);
 
-    CheckoutController.$inject = ['rideData', 'mapDataService', 'checkoutDataService', '$localStorage', 'geolocation', '$ionicLoading', '$ionicPopup', '$state', 'BACKEND_URL'];
+    CheckoutController.$inject = ['rideData', 'checkoutDataService', '$localStorage', '$ionicLoading', '$ionicPopup', '$state', 'BACKEND_URL', 'facebook', 'WEBSITE'];
 
-    function CheckoutController(rideData, mapDataService, checkoutDataService, $localStorage, geolocation, $ionicLoading, $ionicPopup, $state, BACKEND_URL) {
+    function CheckoutController(rideData, checkoutDataService, $localStorage, $ionicLoading, $ionicPopup, $state, BACKEND_URL, facebook, WEBSITE) {
 
         console.log("CheckoutController", rideData);
 
@@ -81,16 +81,21 @@ define([
                 });
             }
             else {
+                //TODO check valid checkout
                 $ionicLoading.show({
                     template: '<i class="icon ion-loading-c"></i> Loading...'
                 });
                 checkoutDataService.checkout(vm.ride.id, vm.rating)
                     .then(function () {
                         $localStorage.dropLocation = null;
+                        //message, description, name, link, picture
+                        if (rideData.user.shareFacebook && $localStorage.facebook) {
+                            facebook.postUpdate("I got a ride on Dropbike", "Dropbyke is a bike sharing service", $localStorage.facebook.name, WEBSITE, BACKEND_URL + '/images/rides/' + vm.ride.id + '.jpg');
+                        }
+                        $state.go('app.search');
                     })
                     .finally(function () {
                         $ionicLoading.hide();
-                        $state.go('app.search');
                     });
 
             }

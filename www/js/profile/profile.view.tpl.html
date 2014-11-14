@@ -16,6 +16,7 @@
         <div class="profile-info">
             <div class="line"><i class="icon ion-ios7-email"></i> <a href="mailto:{{vm.profile.email}}">{{vm.profile.email}}</a></div>
             <div class="line"><i class="icon ion-ios7-telephone"></i> {{vm.profile.phone}}</div>
+            <div ng-show="vm.profile.facebookId" class="line"><i class="icon ion-social-facebook"></i> {{vm.profile.shareFacebook ? 'Sharing activity on facebook': 'Not sharing activity'}}</div>
         </div>
 
         <div class="padding">

@@ -6,9 +6,9 @@ define([
 
     angular.module('dropbike.login').service('facebook', facebook);
 
-    facebook.$inject = ['$q', '$localStorage', 'FACEBOOK_ID', 'FACEBOOK_REDIRECT_URL'];
+    facebook.$inject = ['$q', '$http', '$log', '$localStorage', 'authService', 'FACEBOOK_ID', 'FACEBOOK_REDIRECT_URL', 'BACKEND_URL'];
 
-    function facebook($q, $localStorage, FACEBOOK_ID, FACEBOOK_REDIRECT_URL) {
+    function facebook($q, $http, $log, $localStorage, authService, FACEBOOK_ID, FACEBOOK_REDIRECT_URL, BACKEND_URL) {
 
         init();
 
@@ -34,10 +34,9 @@ define([
             if (window.facebookConnectPlugin) {
                 window.facebookConnectPlugin.getLoginStatus(function (res) {
                     if (res.status && res.status == "connected" && res.authResponse && res.authResponse.accessToken) {
-                        //Set some data for inappbrowser plugin
                         window.localStorage.setItem('facebookAccessToken', res.authResponse.accessToken);
                         window.localStorage.setItem('uid', res.authResponse.userID);
-                        d.resolve(res);
+                        d.resolve(true);
                     }
                     else {
                         d.reject(false);
@@ -48,18 +47,18 @@ define([
                 });
             }
             else {
-                if (FacebookInAppBrowser.getInfo(function (res) {
-                    if (res === false) {
+                if (FacebookInAppBrowser.getInfo(function (userInfo) {
+                    if (userInfo === false) {
                         d.reject(false);
                     }
                     else {
-                        d.resolve(res);
+                        $localStorage.facebook = userInfo;
+                        d.resolve(userInfo);
                     }
                 }) === false) {
                     d.reject(false);
                 }
             }
-
 
             return d.promise;
         }
@@ -74,27 +73,30 @@ define([
 
                         facebookConnectPlugin.login(['publish_actions'], function (res) {
 
-                            facebookConnectPlugin.api('/me', null, function (meResp) {
+                            window.localStorage.setItem('facebookAccessToken', res.authResponse.accessToken);
+                            window.localStorage.setItem('uid', res.authResponse.userID);
 
-                                window.localStorage.setItem('facebookAccessToken', res.authResponse.accessToken);
-                                window.localStorage.setItem('uid', res.authResponse.userID);
-
-                                $localStorage.facebook = meResp;
-
-                                facebookConnectPlugin.api("/me/picture?type=large&redirect=0", null, function (picResp) {
-                                    if (picResp && picResp.data && picResp.data.url) {
-                                        $localStorage.facebook = angular.extend({}, $localStorage.facebook, {
-                                            image: picResp.data.url
-                                        });
+                            $http.post(BACKEND_URL + '/api/loginFacebook', {
+                                "uid": res.authResponse.userID,
+                                "token": res.authResponse.accessToken
+                            }).then(function (resp) {
+                                    $log.log("/api/loginFacebook", resp);
+                                    if (resp.data.access_token) {
+                                        authService.setToken(resp.data.access_token);
+                                        d.resolve(resp.data.user_info.user);
                                     }
-                                    d.resolve(true);
+                                    else {
+                                        d.reject(false);
+                                    }
                                 }, function (err) {
-                                    d.resolve(true);
+                                    $log.error("/api/loginFacebook", err);
+                                    if (err.data.error) {
+                                        d.reject(err.data.error);
+                                    }
+                                    else {
+                                        d.reject(false);
+                                    }
                                 });
-
-                            }, function (err) {
-                                d.reject(err);
-                            });
 
                         }, function (err) {
                             d.reject(err);
@@ -106,6 +108,7 @@ define([
                 )
             }
             else {
+                //TODO
                 FacebookInAppBrowser.login({
                     send: function () {
                     },
@@ -118,18 +121,8 @@ define([
                         d.reject('a timeout has occurred, probably a bad internet connection');
                     },
                     complete: function (access_token) {
-                        if (access_token) {
-                        } else {
-                            d.reject('no access token');
-                        }
                     },
                     userInfo: function (userInfo) {
-                        if (userInfo) {
-                            $localStorage.facebook = userInfo;
-                            d.resolve(userInfo);
-                        } else {
-                            d.reject('no user info');
-                        }
                     }
                 });
 

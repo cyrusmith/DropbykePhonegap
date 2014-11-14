@@ -31,7 +31,6 @@ define([
             authService.logout()
                 .then(function () {
                     authService.setToken(null);
-                    $localStorage.facebook = null;
                     $state.go('app.start');
                 });
         }

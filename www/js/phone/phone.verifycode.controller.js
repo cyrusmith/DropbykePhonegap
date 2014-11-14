@@ -6,9 +6,9 @@ define([
 
     angular.module('dropbike.phone').controller('PhoneVerifyCodeController', PhoneVerifyCodeController);
 
-    PhoneVerifyCodeController.$inject = ['$ionicPopup', '$ionicLoading', '$localStorage', '$state', '$log', 'confirmService', 'profileDataService'];
+    PhoneVerifyCodeController.$inject = ['$ionicPopup', '$ionicLoading', '$localStorage', '$state', '$log', 'authService', 'confirmService', 'profileDataService'];
 
-    function PhoneVerifyCodeController($ionicPopup, $ionicLoading, $localStorage, $state, $log, confirmService, profileDataService) {
+    function PhoneVerifyCodeController($ionicPopup, $ionicLoading, $localStorage, $state, $log, authService, confirmService, profileDataService) {
 
         var vm = this;
 
@@ -82,17 +82,13 @@ define([
             confirmService.verifyCode(vm.code, $localStorage.phone_verification_key)
                 .then(function (resp) {
 
-                    if ($localStorage.facebook) {
-                        if (!resp.user.editedOnce) {
-                            profileDataService.updateProfile($localStorage.facebook.name, $localStorage.facebook.email);
-                        }
-                    }
-
                     $localStorage.phone = null;
                     $localStorage.phone_verification_key = null;
 
                     var user = resp.user,
                         ride = resp.ride;
+
+                    authService.setPhoneConfirmed(true);
 
                     if (!user.cardVerified) {
                         $state.go('app.addcard');

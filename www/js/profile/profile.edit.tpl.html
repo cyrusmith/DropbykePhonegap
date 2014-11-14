@@ -11,20 +11,29 @@
             </div>
         </div>
 
-        <div class="list">
-            <label class="item item-stacked-label">
+        <ul class="list">
+            <li class="item item-stacked-label">
                 <span class="input-label">Name</span>
                 <input type="text" placeholder="Name" ng-model="vm.profile.name">
-            </label>
-            <label class="item item-input item-stacked-label">
+            </li>
+            <li class="item item-input item-stacked-label">
                 <span class="input-label">Email</span>
                 <input type="text" formnovalidate placeholder="Email" ng-model="vm.profile.email">
-            </label>
-            <label class="item item-input item-stacked-label">
+            </li>
+            <li class="item item-input item-stacked-label">
                 <span class="input-label">Phone</span>
                 <input type="tel" formnovalidate placeholder="Phone" ng-model="vm.profile.phone" disabled>
-            </label>
-        </div>
+            </li>
+            <li class="item item-toggle" ng-show="vm.profile.facebookId">
+                <i class="icon ion-social-facebook"></i> Share activity on Facebook
+                <label class="toggle toggle-balanced">
+                    <input type="checkbox" ng-checked="vm.profile.shareFacebook" ng-model="vm.profile.shareFacebook">
+                    <div class="track">
+                        <div class="handle"></div>
+                    </div>
+                </label>
+            </li>
+        </ul>
 
 
     </ion-content>

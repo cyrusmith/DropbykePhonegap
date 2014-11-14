@@ -14,11 +14,21 @@ define([
             isLoggedIn: isLoggedIn,
             setToken: setToken,
             getToken: getToken,
+            isPhoneConfirmed: isPhoneConfirmed,
+            setPhoneConfirmed: setPhoneConfirmed,
             logout: logout
         }
 
         function isLoggedIn() {
             return !!$localStorage.auth_token;
+        }
+
+        function setPhoneConfirmed(isPhoneConfirmed) {
+            $localStorage.isPhoneConfirmed = isPhoneConfirmed;
+        }
+
+        function isPhoneConfirmed() {
+            return !!$localStorage.isPhoneConfirmed;
         }
 
         function setToken(token) {

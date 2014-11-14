@@ -30,6 +30,14 @@ define([
                 }
             ).then(function success(resp) {
                     $log.log("getProfile success", resp);
+                    if (resp.data.user) {
+                        if (resp.data.user.phone) {
+                            authService.setPhoneConfirmed(true);
+                        }
+                        else {
+                            authService.setPhoneConfirmed(false);
+                        }
+                    }
                     return resp.data;
                 }, function fail(resp) {
                     $log.log("getProfile fail", resp);
@@ -37,10 +45,11 @@ define([
                 });
         }
 
-        function updateProfile(name, email) {
+        function updateProfile(name, email, shareFacebook) {
             return $http.post(BACKEND_URL + '/api/profile', {
                     name: name,
-                    email: email
+                    email: email,
+                    shareFacebook: !!shareFacebook
                 }, {
                     headers: {
                         "Authorization": "Bearer " + authService.getToken()

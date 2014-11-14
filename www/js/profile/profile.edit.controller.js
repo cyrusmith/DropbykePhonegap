@@ -40,7 +40,7 @@ define([
             $ionicLoading.show({
                 template: '<i class="icon ion-loading-c"></i> Loading...'
             });
-            profileDataService.updateProfile(vm.profile.name, vm.profile.email)
+            profileDataService.updateProfile(vm.profile.name, vm.profile.email, vm.profile.shareFacebook)
                 .then(function () {
                     if ($localStorage.facebook) {
                         $localStorage.facebook.name = null;
