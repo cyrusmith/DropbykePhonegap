@@ -81,6 +81,7 @@ define([
                         $state.go('app.phoneconfirm');
                     }
                     else {
+                        authService.setPhoneConfirmed(true);
                         $state.go('app.search');
                     }
                 }).

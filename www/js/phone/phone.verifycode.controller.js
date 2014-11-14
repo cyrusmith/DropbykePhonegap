@@ -90,15 +90,19 @@ define([
 
                     authService.setPhoneConfirmed(true);
 
-                    if (!user.cardVerified) {
-                        $state.go('app.addcard');
-                    }
-                    else if (ride) {
-                        $state.go('app.usageaccess');
+                    if (user.cards && user.cards.length) {
+                        authService.setHasPayment(true);
+                        if (ride) {
+                            $state.go('app.usageaccess');
+                        }
+                        else {
+                            $state.go('app.search');
+                        }
                     }
                     else {
-                        $state.go('app.search');
+                        $state.go('app.editcard');
                     }
+
 
                 }, function () {
                     $ionicPopup.show({

@@ -15,6 +15,7 @@ define([
             scope.$watch(attrs.bgImage, function (url) {
                 element.css({
                     'background-position': '50% 50%',
+                    'background-repeat': 'no-repeat',
                     'background-image': 'url(' + url + ')',
                     'background-size': '100% auto'
                 });

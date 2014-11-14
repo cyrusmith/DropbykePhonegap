@@ -81,18 +81,38 @@ define([
                 });
             }
             else {
-                //TODO check valid checkout
                 $ionicLoading.show({
                     template: '<i class="icon ion-loading-c"></i> Loading...'
                 });
                 checkoutDataService.checkout(vm.ride.id, vm.rating)
                     .then(function () {
-                        $localStorage.dropLocation = null;
-                        //message, description, name, link, picture
-                        if (rideData.user.shareFacebook && $localStorage.facebook) {
-                            facebook.postUpdate("I got a ride on Dropbike", "Dropbyke is a bike sharing service", $localStorage.facebook.name, WEBSITE, BACKEND_URL + '/images/rides/' + vm.ride.id + '.jpg');
-                        }
-                        $state.go('app.search');
+                        $ionicPopup.show({
+                            title: 'Checkout successful',
+                            buttons: [
+                                {
+                                    text: 'Ok',
+                                    type: 'button-balanced'
+                                }
+                            ]
+                        }).then(function () {
+                                $localStorage.dropLocation = null;
+                                if (rideData.user.facebookId && rideData.user.shareFacebook) {
+                                    facebook.postUpdate("I got a ride on Dropbike", "Dropbyke is a bike sharing service", rideData.user.name, WEBSITE, BACKEND_URL + '/images/rides/' + vm.ride.id + '.jpg');
+                                }
+                                $state.go('app.search');
+
+                            });
+                    }, function (resp) {
+                        $ionicPopup.show({
+                            title: 'Checkout error',
+                            subTitle: resp.data.error ? resp.data.error : '',
+                            buttons: [
+                                {
+                                    text: 'Ok',
+                                    type: 'button-assertive'
+                                }
+                            ]
+                        });
                     })
                     .finally(function () {
                         $ionicLoading.hide();

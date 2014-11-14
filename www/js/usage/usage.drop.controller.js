@@ -48,27 +48,7 @@ define([
         }
 
         function pickPhoto() {
-            if (vm.loading) return;
-            vm.loading = true;
-            cameraUtil.pickAndUpload("camera", BACKEND_URL + "/api/rides/photo")
-                .then(function () {
-                    vm.photo = BACKEND_URL + '/images/rides/' + vm.ride.id + '.jpg?nocache=' + (new Date().getTime());
-                    vm.ride.hasPhoto = true;
-                }, function (error) {
-                    $ionicPopup.show({
-                        title: 'Error uploading photo',
-                        subTitle: error,
-                        buttons: [
-                            {
-                                text: 'Ok',
-                                type: 'button-assertive'
-                            }
-                        ]
-                    })
-                })
-                .finally(function () {
-                    vm.loading = false;
-                });
+            $state.go('app.usagephoto');
         }
 
         function drop() {

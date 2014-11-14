@@ -114,37 +114,6 @@ define([
 
     }]);
 
-    angular.module('dropbike.card').config(['$stateProvider', function ($stateProvider) {
-
-        $stateProvider
-            .state('app.addcard', {
-                url: "/addcard",
-                views: {
-                    'menuContent': {
-                        templateUrl: "js/card/card.data.tpl.html",
-                        controller: 'CardController as vm'
-                    }
-                }
-            });
-
-        $stateProvider
-            .state('app.editcard', {
-                url: "/editcard",
-                views: {
-                    'menuContent': {
-                        templateUrl: "js/card/card.data.tpl.html",
-                        controller: 'CardEditController as vm',
-                        resolve: {
-                            profile: ['profileDataService', function (profileDataService) {
-                                return profileDataService.getProfile();
-                            }]
-                        }
-                    }
-                }
-            });
-
-    }]);
-
 
     angular.module('dropbike.offline').config(['$stateProvider', function ($stateProvider) {
 
@@ -303,10 +272,26 @@ define([
                 }
             });
 
+        $stateProvider
+            .state('app.usagephoto', {
+                url: "/usagephoto",
+                views: {
+                    'menuContent': {
+                        templateUrl: "js/usage/usage.photo.tpl.html",
+                        controller: 'UsagePhotoController as vm',
+                        resolve: {
+                            rideData: ['profileDataService', function (profileDataService) {
+                                return profileDataService.getProfile();
+                            }]
+                        }
+                    }
+                }
+            });
+
     }]);
 
 
-    angular.module('dropbike.profile').config(['$stateProvider', function ($stateProvider) {
+    angular.module('dropbike.checkout').config(['$stateProvider', function ($stateProvider) {
 
         $stateProvider
             .state('app.checkout', {
@@ -344,7 +329,8 @@ define([
 
     }]);
 
-    angular.module('dropbike.profile').config(['$stateProvider', function ($stateProvider) {
+    angular.module('dropbike.payments').config(['$stateProvider', function ($stateProvider) {
+
         $stateProvider
             .state('app.payments', {
                 url: "/payments",
@@ -360,6 +346,21 @@ define([
                     }
                 }
             });
+
+        $stateProvider.state('app.editcard', {
+            url: "/card/:cardId",
+            views: {
+                'menuContent': {
+                    templateUrl: "js/payments/payments.card.tpl.html",
+                    controller: 'PaymentsCardController as vm',
+                    resolve: {
+                        profile: ['profileDataService', function (profileDataService) {
+                            return profileDataService.getProfile();
+                        }]
+                    }
+                }
+            }
+        });
     }]);
 
     angular.module('dropbike.profile').config(['$stateProvider', function ($stateProvider) {

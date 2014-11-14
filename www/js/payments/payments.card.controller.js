@@ -4,12 +4,12 @@ define([
 
     'use strict';
 
-    angular.module('dropbike.card').controller('CardEditController', CardEditController);
-    CardEditController.$inject = ['profile', 'authService', '$ionicPopup', '$ionicLoading', '$state', 'cardService'];
+    angular.module('dropbike.payments').controller('PaymentsCardController', PaymentsCardController);
+    PaymentsCardController.$inject = ['profile', 'authService', '$ionicPopup', '$ionicLoading', '$state', '$stateParams', 'paymentsDataService'];
 
-    function CardEditController(profile, authService, $ionicPopup, $ionicLoading, $state, cardService) {
+    function PaymentsCardController(profile, authService, $ionicPopup, $ionicLoading, $state, $stateParams, paymentsDataService) {
 
-        console.log("CardEditController", profile);
+        console.log("CardEditController", profile, $stateParams);
 
         var vm = this;
 
@@ -25,10 +25,17 @@ define([
 
         function init() {
 
-            vm.number = profile.user.cardNumber;
-            vm.name = profile.user.cardName;
-            vm.expire = profile.user.cardExpire;
-            vm.cvc = profile.user.cardCVC;
+            var cardId = $stateParams.cardId;
+
+            for (var i = 0; i < profile.cards.length; i++) {
+                if (cardId == profile.cards[i].id) {
+                    vm.number = profile.cards[i].number;
+                    vm.name = profile.cards[i].name;
+                    vm.expire = profile.cards[i].expire;
+                    vm.cvc = profile.cards[i].cvc;
+                    break;
+                }
+            }
 
         }
 
@@ -71,7 +78,7 @@ define([
                 template: '<i class="icon ion-loading-c"></i> Wait...'
             });
 
-            cardService.addCard(
+            paymentsDataService.editCard(
                     vm.number,
                     vm.name,
                     vm.expire,
@@ -86,7 +93,18 @@ define([
                                 type: 'button-balanced'
                             }
                         ]
-                    });
+                    }).then(function () {
+                            if (!authService.isHasPayment()) {
+                                authService.setHasPayment(true);
+                                $state.go('app.search');
+                            }
+                            else {
+                                $state.go('app.payments');
+                            }
+
+                        });
+
+
                 }, function (resp) {
                     $ionicLoading.hide();
 

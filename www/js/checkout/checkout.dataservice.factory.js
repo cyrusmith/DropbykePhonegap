@@ -41,13 +41,7 @@ define([
                 headers: {
                     "Authorization": "Bearer " + authService.getToken()
                 }
-            }).then(function (response) {
-                    $log.log("Checkout complete", response);
-                    return response.data;
-                }, function (error) {
-                    $log.error("Checkout error", error);
-                    return null;
-                });
+            });
         }
     }
 

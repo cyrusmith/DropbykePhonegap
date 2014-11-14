@@ -30,7 +30,6 @@ define([
         function logout() {
             authService.logout()
                 .then(function () {
-                    authService.setToken(null);
                     $state.go('app.start');
                 });
         }

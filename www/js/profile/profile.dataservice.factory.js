@@ -37,6 +37,13 @@ define([
                         else {
                             authService.setPhoneConfirmed(false);
                         }
+
+                        if (resp.data.user.cards && resp.data.user.cards.length) {
+                            authService.setHasPayment(true);
+                        }
+                        else {
+                            authService.setHasPayment(false);
+                        }
                     }
                     return resp.data;
                 }, function fail(resp) {

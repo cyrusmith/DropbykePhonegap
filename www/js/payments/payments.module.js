@@ -8,7 +8,9 @@ define([
 
     require([
         "payments/payments.controller",
-        "payments/payments.dataservice.factory"
+        "payments/payments.card.controller",
+        "payments/payments.dataservice.factory",
+        "payments/payments.hidecardnumber.filter"
     ]);
 
 });

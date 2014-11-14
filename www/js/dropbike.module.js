@@ -2,7 +2,6 @@ define([
     "angular",
     "login/login.module",
     "phone/phone.module",
-    "card/card.module",
     "offline/offline.module",
     "search/search.module",
     "util/util.module",
@@ -26,7 +25,6 @@ define([
         'geolocation',
         'dropbike.login',
         'dropbike.phone',
-        'dropbike.card',
         'dropbike.offline',
         'dropbike.search',
         'dropbike.address',
@@ -53,7 +51,8 @@ define([
 
                 $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
 
-                    if (["app.start", "app.phoneconfirm", "app.phoneverifycode", "app.offline"].indexOf(toState.name) === -1) {
+                    if (["app.start", "app.phoneconfirm", "app.phoneverifycode", "app.offline", "app.payments", "app.editcard"].indexOf(toState.name) === -1) {
+
                         if (!authService.isLoggedIn()) {
                             event.preventDefault();
                             $state.go('app.start');
@@ -61,6 +60,9 @@ define([
                         else if (!authService.isPhoneConfirmed()) {
                             event.preventDefault();
                             $state.go('app.phoneconfirm');
+                        } else if (!authService.isHasPayment()) {
+                            event.preventDefault();
+                            $state.go('app.editcard');
                         }
                     }
                     return true;

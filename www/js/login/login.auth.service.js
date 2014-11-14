@@ -16,11 +16,21 @@ define([
             getToken: getToken,
             isPhoneConfirmed: isPhoneConfirmed,
             setPhoneConfirmed: setPhoneConfirmed,
+            isHasPayment: isHasPayment,
+            setHasPayment: setHasPayment,
             logout: logout
         }
 
         function isLoggedIn() {
             return !!$localStorage.auth_token;
+        }
+
+        function isHasPayment() {
+            return !!$localStorage.isHasPayment;
+        }
+
+        function setHasPayment(isHasPayment) {
+            $localStorage.isHasPayment = !!isHasPayment;
         }
 
         function setPhoneConfirmed(isPhoneConfirmed) {
@@ -44,7 +54,12 @@ define([
                 headers: {
                     "Authorization": "Bearer " + getToken()
                 }
-            });
+            })
+                .finally(function () {
+                    setToken(null);
+                    setPhoneConfirmed(false);
+                    setHasPayment(false);
+                });
         }
 
     }

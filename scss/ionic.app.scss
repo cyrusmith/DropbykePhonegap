@@ -49,15 +49,23 @@ $dropbike-field-color: #29404F;
   }
 
   .location-error {
-    -webkit-transition:all linear 0.5s;
-    transition:all linear 0.5s;
+    -webkit-transition: all linear 0.5s;
+    transition: all linear 0.5s;
   }
 
   .location-error.ng-hide {
-    opacity:0;
+    opacity: 0;
   }
 
+}
 
+.usage-photo-container {
+  position: absolute;
+  top: 2.7rem;
+  left: 0;
+  right: 0;
+  bottom: 2.5rem;
+  background-color: $dropbike-field-color;
 }
 
 .footer-one-button {
@@ -80,6 +88,13 @@ $dropbike-field-color: #29404F;
       padding-left: .5rem;
     }
   }
+
+  &.take-photo {
+    button {
+      font-size: 1em;
+    }
+  }
+
 }
 
 .db-login-page {
@@ -467,7 +482,7 @@ $dropbike-field-color: #29404F;
   .photo {
     padding: .5rem;
     position: relative;
-    background-color: #456;
+    background-color: $dropbike-field-color;
     .prompt {
       text-align: center;
       padding: .5rem;
