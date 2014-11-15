@@ -18,9 +18,9 @@ define([
         var vm = this;
 
         vm.bike;
-        vm.location;
         vm.markers;
         vm.zoom;
+        vm.bikeLocation;
         vm.location;
         vm.locationError;
 
@@ -39,20 +39,18 @@ define([
             vm.bike.rating = parseInt(bike.bike.rating * 10) / 10;
             vm.bike.photo = BACKEND_URL + '/images/bikes/' + vm.bike.id + '.jpg';
 
-            vm.location = [vm.bike.lat, vm.bike.lng];
+            vm.bikeLocation = [vm.bike.lat, vm.bike.lng];
             vm.markers = [
                 [vm.bike.lat, vm.bike.lng]
             ];
             vm.zoom = 17;
 
-            geolocation.getLocation({
-                enableHighAccuracy: true
-            })
+            geolocation.getLocation({})
                 .then(function (pos) {
                     vm.location = [pos.coords.latitude, pos.coords.longitude];
-                }, function (error) {
+                }, function () {
                     vm.location = null;
-                });
+                })
 
             mapDataService.checkGPS()
                 .then(function (isEnabled) {
