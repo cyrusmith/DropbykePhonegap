@@ -23,11 +23,10 @@ define([
                 template: '<i class="icon ion-loading-c"></i> Wait...'
             });
 
-            confirmService.submitSMS($localStorage.phone)
+            confirmService.submitSMS()
                 .then(function (result) {
                     $ionicLoading.hide();
                     $log.log("submitSMS result", result);
-                    $localStorage.phone_verification_key = result.data.request_key;
                     $state.go('app.phoneverifycode')
                 }, function () {
                     $ionicLoading.hide();
@@ -65,25 +64,8 @@ define([
                 return;
             }
 
-            if (!$localStorage.phone_verification_key) {
-                $ionicPopup.show({
-                    title: 'Set your phone number first',
-                    buttons: [
-                        {
-                            text: 'Ok',
-                            type: 'button-assertive'
-                        }
-                    ]
-                });
-                $state.go('app.phoneconfirm');
-                return;
-            }
-
-            confirmService.verifyCode(vm.code, $localStorage.phone_verification_key)
+            confirmService.verifyCode(vm.code)
                 .then(function (resp) {
-
-                    $localStorage.phone = null;
-                    $localStorage.phone_verification_key = null;
 
                     var user = resp.user,
                         ride = resp.ride;
@@ -104,9 +86,9 @@ define([
                     }
 
 
-                }, function () {
+                }, function (error) {
                     $ionicPopup.show({
-                        title: '<span class="assertive"><i class="ion-alert-circled"></i>Invalid code</span>',
+                        title: '<span class="assertive"><i class="ion-alert-circled"></i>' + (error ? error : 'Invalid code') + '</span>',
                         buttons: [
                             {
                                 text: 'Ok',

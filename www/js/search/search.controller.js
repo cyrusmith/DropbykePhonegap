@@ -133,7 +133,7 @@ define([
 
         function getCurrentLocation() {
             $ionicLoading.show({
-                template: '<i class="icon ion-loading-c"></i> Fetching you location...'
+                template: '<i class="icon ion-loading-c"></i> Getting your location...'
             });
 
             mapDataService.checkGPS()

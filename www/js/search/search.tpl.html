@@ -7,7 +7,7 @@
     <div class="search-pane-content">
 
         <div class="map-container dropbike-map">
-            <span class="dropbike-location"><i class="icon ion-android-locate" ng-click="vm.getCurrentLocation()"></i></span>
+            <a class="dropbike-location" ng-click="vm.getCurrentLocation()"><i class="icon ion-android-locate"></i></a>
             <p ng-show="vm.locationError" class="location-error"><i class="icon ion-alert-circled"></i> {{vm.locationError}}</p>
             <google-map
                     api-key="vm.apiKey" markers="vm.markers" location="vm.currentLocation" zoom="vm.zoom"

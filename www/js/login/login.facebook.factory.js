@@ -135,7 +135,7 @@ define([
         function postUpdate(message, description, name, link, picture) {
             var d = $q.defer();
 
-            d.resolve(); return d.promise;
+            //d.resolve();return d.promise;
 
             if (!FacebookInAppBrowser) {
                 d.reject();

@@ -22,13 +22,18 @@ var WAR_DEST = './bin';
 
 gulp.task('default', ['watch', 'sass', 'templates']);
 
+gulp.task('compile', function (callback) {
+    runSequence('clearbin', 'sass', 'templates', 'requirejs', 'copyfiles',
+        callback);
+});
+
 gulp.task('compilezip', function (callback) {
     runSequence('clearbin', 'sass', 'templates', 'requirejs', 'copyfiles', 'buildzip',
         callback);
 });
 
 gulp.task('requirejs', shell.task([
-    'r.js.cmd -o build.js'
+    'r.js.cmd -o build.js optimize=none'
 ], {
     cwd: './www/'
 }));

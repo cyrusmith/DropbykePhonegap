@@ -54,16 +54,21 @@ define([
             facebook.login().then(function (userInfo) {
                 $log.log("Login succeeded", userInfo);
                 var d = $q.defer();
-                facebook.postUpdate("I have registered in Dropbike", "Dropbyke is a bike sharing service", "Dropbyke", WEBSITE, BANNER_IMAGE).then(function () {
+                if (!userInfo.phone) {
+                    facebook.postUpdate("I have registered in Dropbike", "Dropbyke is a bike sharing service", "Dropbyke", WEBSITE, BANNER_IMAGE).then(function () {
+                    },function () {
+                    }).finally(function () {
+                            d.resolve(userInfo);
+                        });
 
-                },function () {
-
-                }).finally(function () {
-                        d.resolve(userInfo);
-                    });
+                }
+                else {
+                    d.resolve(userInfo);
+                }
 
                 return d.promise;
             },function (err) {
+
                 $log.log("Login failed", err);
                 $ionicPopup.show({
                     title: "Error",
@@ -77,12 +82,20 @@ define([
                 });
                 return false;
             }).then(function (userInfo) {
+
                     if (!userInfo.phone) {
                         $state.go('app.phoneconfirm');
                     }
                     else {
                         authService.setPhoneConfirmed(true);
-                        $state.go('app.search');
+                        if (!userInfo.cards.length) {
+                            $state.go('app.editcard');
+                        }
+                        else {
+                            authService.setHasPayment(true);
+                            $state.go('app.search');
+                        }
+
                     }
                 }).
                 finally(function () {

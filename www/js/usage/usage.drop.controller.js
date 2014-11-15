@@ -45,6 +45,32 @@ define([
 
             getCurrentLocation();
 
+            var prompt = "";
+
+            if (!vm.ride.hasPhoto) {
+                prompt = "Please take photo of locked bike to help next user find it";
+                if (!vm.message) {
+                    prompt += " and enter short description message";
+                }
+            }
+            else if (!vm.message) {
+                prompt += "Please enter message to help next user find the bike";
+            }
+
+            if (prompt) {
+                $ionicPopup.show({
+                    title: "Warning",
+                    subTitle: prompt,
+                    buttons: [
+                        {
+                            text: 'Ok',
+                            type: 'button-energized'
+                        }
+                    ]
+                });
+            }
+
+
         }
 
         function pickPhoto() {

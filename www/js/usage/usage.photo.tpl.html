@@ -8,7 +8,10 @@
     </div>
 
     <div class="bar bar-footer footer-one-button take-photo">
-        <button class="button button-block" ng-class="{'ion-camera': !vm.loading, 'ion-ios7-reloading': vm.loading}" ng-click="vm.takePhoto()">Take photo of the bike</button>
+        <button class="button button-block" ng-click="vm.takePhoto()"><i class="icon ion-camera"
+                                                                         ng-class="{'ion-camera': !vm.loading, 'ion-ios7-reloading': vm.loading}"></i> Take
+            photo of the bike
+        </button>
     </div>
 
 </ion-view>
