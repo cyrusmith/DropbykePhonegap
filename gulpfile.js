@@ -48,6 +48,11 @@ gulp.task('copyfiles', function (done) {
         './www/index.html',
         './www/icon.png',
         './www/icon@2x.png',
+        './www/icon-hdpi.png',
+        './www/icon-mdpi.png',
+        './www/icon-xhdpi.png',
+        './www/icon-xxhdpi.png',
+        './www/icon-xxxhdpi.png',
         './www/config.xml'
     ], {base: "./www"}).pipe(gulp.dest(WAR_DEST)).on('end', done);
 

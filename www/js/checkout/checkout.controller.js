@@ -97,9 +97,14 @@ define([
                         }).then(function () {
                                 $localStorage.dropLocation = null;
                                 if (rideData.user.facebookId && rideData.user.shareFacebook) {
-                                    facebook.postUpdate("I got a ride on Dropbike", "Dropbyke is a bike sharing service", rideData.user.name, WEBSITE, BACKEND_URL + '/images/rides/' + vm.ride.id + '.jpg');
+                                    facebook.postUpdate("I got a ride on Dropbike", "Dropbyke is a bike sharing service", rideData.user.name, WEBSITE, BACKEND_URL + '/images/rides/' + vm.ride.id + '.jpg')
+                                        .finally(function () {
+                                            $state.go('app.search');
+                                        });
                                 }
-                                $state.go('app.search');
+                                else {
+                                    $state.go('app.search');
+                                }
 
                             });
                     }, function (resp) {
