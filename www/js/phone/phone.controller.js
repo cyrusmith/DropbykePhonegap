@@ -42,10 +42,10 @@ define([
                     $ionicLoading.hide();
                     $log.log("submitSMS result", result);
                     $state.go('app.phoneverifycode')
-                }, function () {
+                }, function (error) {
                     $ionicLoading.hide();
                     $ionicPopup.show({
-                        title: 'Sending sms failed',
+                        title: error ? error : 'Sending sms failed',
                         buttons: [
                             {
                                 text: 'Ok',

@@ -48,7 +48,7 @@ define([
                     return resp.data;
                 }, function fail(resp) {
                     $log.log("getProfile fail", resp);
-                    $q.reject(resp);
+                    return $q.reject(resp);
                 });
         }
 

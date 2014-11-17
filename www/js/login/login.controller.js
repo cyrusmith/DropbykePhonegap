@@ -23,6 +23,7 @@ define([
         init();
 
         function init() {
+
             if (authService.getToken()) {
                 $ionicLoading.show({
                     template: '<i class="icon ion-loading-c"></i> Loading...'
@@ -34,6 +35,9 @@ define([
                         }
                     }, function (resp) {
                         $log.log("Not logged in");
+                        authService.setToken(null);
+                        authService.setPhoneConfirmed(false);
+                        authService.setHasPayment(false);
                     })
                     .finally(function () {
                         $ionicLoading.hide();

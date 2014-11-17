@@ -36,10 +36,10 @@ define([
                         if (resp.data.request_key) {
                             $log.log("submitSMS success", resp);
                             $localStorage.phone_verification_key = resp.data.request_key;
-                            deferred.resolve(resp);
+                            deferred.resolve($localStorage.phone_verification_key);
                         }
                         else {
-                            deferred.reject("Failed to send SMS");
+                            deferred.reject(resp.data.error ? resp.data.error : "Failed to send SMS");
                         }
                     }, function fail(resp) {
                         $log.log("submitSMS fail", resp);
@@ -66,25 +66,26 @@ define([
                 deferred.reject("Code expired. Resend SMS.");
             }
             else {
+
                 $http.post(BACKEND_URL + apiPath, {
                     "code": code,
                     "phone": $localStorage.phone,
                     "verify_key": $localStorage.phone_verification_key
-                }, params).then(function success(resp) {
-                        $log.log("verifyCode success", resp);
+                }, params).then(function (resp) {
+                        $localStorage.phone_verification_key = null;
                         if (!!resp.data.access_token) {
                             authService.setToken(resp.data.access_token);
                         }
                         $localStorage.phone = null;
                         deferred.resolve(resp.data.user_info);
-                    },function fail(resp) {
+                    },function (resp) {
+                        alert(JSON.stringify(resp));
                         $log.log("verifyCode fail", resp);
-                        deferred.reject("Failed to verify code");
+                        deferred.reject(resp.data.error ? resp.data.error : "Failed to verify code");
                     }).finally(function () {
-                        $localStorage.phone_verification_key = null;
+
                     });
             }
-
 
             return deferred.promise;
         }
