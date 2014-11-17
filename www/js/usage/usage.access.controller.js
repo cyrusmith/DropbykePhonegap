@@ -9,9 +9,9 @@ define([
 
     angular.module("dropbike.usage").controller('UsageAccessController', UsageAccessController);
 
-    UsageAccessController.$inject = ['rideData', '$state', 'BACKEND_URL'];
+    UsageAccessController.$inject = ['rideData', 'BACKEND_URL'];
 
-    function UsageAccessController(rideData, $state, BACKEND_URL) {
+    function UsageAccessController(rideData, BACKEND_URL) {
 
         console.log("UsageAccessController", rideData);
 
@@ -23,6 +23,7 @@ define([
         vm.markers;
         vm.location;
         vm.zoom;
+        vm.photo;
 
         vm.call = call;
 
@@ -43,10 +44,10 @@ define([
             vm.bike.rating = parseInt(rideData.bike.rating * 10) / 10;
             vm.currentTimestamp = rideData.timestamp;
             if (vm.bike.lastRideId) {
-                vm.ride.photo = BACKEND_URL + '/images/rides/' + vm.bike.lastRideId + '.jpg';
+                vm.photo = BACKEND_URL + '/images/rides/' + vm.bike.lastRideId + '.jpg';
             }
             else {
-                vm.ride.photo = BACKEND_URL + '/images/bikes/' + vm.bike.id + '.jpg';
+                vm.photo = BACKEND_URL + '/images/bikes/' + vm.bike.id + '.jpg';
             }
 
         }

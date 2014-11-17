@@ -9,9 +9,9 @@ define([
 
     angular.module("dropbike.usage").controller('UsageMapController', UsageMapController);
 
-    UsageMapController.$inject = ['rideData', 'geolocation', 'mapDataService', '$timeout', '$state'];
+    UsageMapController.$inject = ['rideData', '$localStorage', '$ionicLoading', 'mapDataService', '$state'];
 
-    function UsageMapController(rideData, geolocation, mapDataService, $timeout, $state) {
+    function UsageMapController(rideData, $localStorage, $ionicLoading, mapDataService, $state) {
 
         var vm = this;
         vm.ride = null;
@@ -28,6 +28,8 @@ define([
         init();
 
         function init() {
+
+            $localStorage.dropBikePageHolder = null;
 
             vm.ride = rideData.ride;
 
@@ -82,28 +84,15 @@ define([
         }
 
         function getCurrentLocation() {
-
-            mapDataService.checkGPS()
-                .then(function (isEnabled) {
-                    if (!isEnabled) {
-                        vm.locationError = "Please enable GPS to drop bike";
-
-                        if (!window.cordova) {
-                            $timeout(function () {
-                                vm.locationError = null;
-                            }, 3000);
-                        }
-
-                    }
-                    else {
-                        vm.locationError = null;
-                    }
-                });
-
-            geolocation.getLocation({})
+            $ionicLoading.show({
+                template: '<i class="icon ion-loading-c"></i> Getting your location...'
+            });
+            mapDataService.getLocation()
                 .then(function (pos) {
 
-                    vm.currentLocation = [pos.coords.latitude, pos.coords.longitude];
+                    vm.locationError = null;
+
+                    vm.currentLocation = [pos.latitude, pos.longitude];
 
                     vm.path = [
                         [vm.ride.startLat, vm.ride.startLng],
@@ -111,9 +100,16 @@ define([
                     ];
 
                     updateBounds();
-                }, function (error) {
+
+                },function (error) {
                     vm.locationError = error;
+                    vm.currentLocation = null;
+                    vm.path = null;
+                }).finally(function () {
+                    $ionicLoading.hide();
                 });
+
+
         }
 
     }

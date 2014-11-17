@@ -11,9 +11,9 @@ define([
 
     angular.module("dropbike.bike").controller("BikeController", BikeController);
 
-    BikeController.$inject = ['bike', 'mapDataService', 'usageDataService', 'geolocation', '$ionicPopup', '$state', '$timeout', 'BACKEND_URL'];
+    BikeController.$inject = ['bike', 'mapDataService', 'usageDataService', '$ionicPopup', '$ionicLoading', '$state', 'BACKEND_URL'];
 
-    function BikeController(bike, mapDataService, usageDataService, geolocation, $ionicPopup, $state, $timeout, BACKEND_URL) {
+    function BikeController(bike, mapDataService, usageDataService, $ionicPopup, $ionicLoading, $state, BACKEND_URL) {
 
         var vm = this;
 
@@ -24,6 +24,7 @@ define([
         vm.location;
         vm.locationError;
 
+        vm.getLocation = getLocation;
         vm.getAccess = getAccess;
 
         init();
@@ -45,28 +46,25 @@ define([
             ];
             vm.zoom = 17;
 
-            geolocation.getLocation({})
+            getLocation();
+
+        }
+
+        function getLocation() {
+
+            $ionicLoading.show({
+                template: '<i class="icon ion-loading-c"></i> Getting your location...'
+            });
+
+            mapDataService.getExactLocation()
                 .then(function (pos) {
-                    vm.location = [pos.coords.latitude, pos.coords.longitude];
-                }, function () {
+                    vm.location = [pos.latitude, pos.longitude];
+                    vm.locationError = null;
+                },function (error) {
                     vm.location = null;
-                })
-
-            mapDataService.checkGPS()
-                .then(function (isEnabled) {
-                    if (!isEnabled) {
-                        vm.locationError = "Please enable GPS to access bike";
-
-                        if (!window.cordova) {
-                            $timeout(function () {
-                                vm.locationError = null;
-                            }, 3000);
-                        }
-
-                    }
-                    else {
-                        vm.locationError = null;
-                    }
+                    vm.locationError = error;
+                }).finally(function () {
+                    $ionicLoading.hide();
                 });
 
         }

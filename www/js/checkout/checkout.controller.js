@@ -87,7 +87,7 @@ define([
                 checkoutDataService.checkout(vm.ride.id, vm.rating)
                     .then(function () {
                         $ionicPopup.show({
-                            title: 'Checkout successful',
+                            title: 'Thank you for using Dropbyke!',
                             buttons: [
                                 {
                                     text: 'Ok',

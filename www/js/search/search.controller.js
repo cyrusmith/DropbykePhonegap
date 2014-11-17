@@ -6,9 +6,9 @@ define([
 
     angular.module('dropbike.phone').controller('SearchController', SearchController);
 
-    SearchController.$inject = ['profile', 'geolocation', 'searchDataService', 'mapDataService', '$q', '$ionicPopup', '$ionicLoading', '$timeout', '$log', '$state', '$scope', '$localStorage'];
+    SearchController.$inject = ['searchDataService', 'mapDataService', '$ionicLoading', '$timeout', '$log', '$state', '$scope', '$localStorage'];
 
-    function SearchController(profile, geolocation, searchDataService, mapDataService, $q, $ionicPopup, $ionicLoading, $timeout, $log, $state, $scope, $localStorage) {
+    function SearchController(searchDataService, mapDataService, $ionicLoading, $timeout, $log, $state, $scope, $localStorage) {
 
         var vm = this;
 
@@ -51,48 +51,18 @@ define([
                 }
             }
             else {
-
-                mapDataService.checkGPS()
-                    .then(function(isEnabled) {
-                        if(!isEnabled) {
-                            vm.locationError = "Please enable GPS";
-                        }
-                        else {
-                            vm.locationError = null;
-                        }
-                    });
-
-                geolocation.getLocation({})
-                    .then(function (pos) {
-                        vm.currentLocation = [pos.coords.latitude, pos.coords.longitude];
-                        mapDataService.geodecode(pos.coords)
-                            .then(function (address) {
-                                if (address.length) {
-                                    vm.address = address[0].formatted_address;
-                                }
-                            });
-                    }, function (error) {
-                        $ionicPopup.show({
-                            title: error,
-                            buttons: [
-                                {
-                                    text: 'Ok',
-                                    type: 'button-assertive'
-                                }
-                            ]
-                        });
-                    })
-                    .finally(function () {
+                doGetLocation().
+                    finally(function () {
                         for (var i = 0; i < _bikes.length; i++) {
                             vm.markers.push([_bikes[i].lat, _bikes[i].lng]);
                         }
                     });
+
             }
 
             $scope.$watch('vm.mapBounds', function (bounds) {
                 scheduleUpdate();
             });
-
 
         }
 
@@ -132,49 +102,29 @@ define([
         }
 
         function getCurrentLocation() {
+            doGetLocation();
+        }
+
+        function doGetLocation() {
             $ionicLoading.show({
                 template: '<i class="icon ion-loading-c"></i> Getting your location...'
             });
-
-            mapDataService.checkGPS()
-                .then(function(isEnabled) {
-                    if(!isEnabled) {
-                        vm.locationError = "Please enable GPS";
-                    }
-                    else {
-                        vm.locationError = null;
-                    }
-                });
-
-            geolocation.getLocation({})
+            return mapDataService.getLocation()
                 .then(function (pos) {
-                    vm.currentLocation = [pos.coords.latitude, pos.coords.longitude];
-                    $localStorage.selectedLocation = null;
-                    return pos.coords;
-                }, function (error) {
-                    $ionicPopup.show({
-                        title: error,
-                        buttons: [
-                            {
-                                text: 'Ok',
-                                type: 'button-assertive'
+                    vm.locationError = null;
+                    vm.currentLocation = [pos.latitude, pos.longitude];
+                    mapDataService.geodecode(pos)
+                        .then(function (address) {
+                            if (address.length && !vm.address) {
+                                vm.address = address[0].formatted_address;
                             }
-                        ]
-                    });
-                })
-                .then(function (location) {
-                    return mapDataService.geodecode(location);
-                }).then(function (address) {
-                    if (address.length) {
-                        vm.address = address[0].formatted_address;
-                    }
-
-                },function (error) {
-                    console.error(error);
-                }).finally(function () {
+                        });
                     $ionicLoading.hide();
+                }, function (error) {
+                    $ionicLoading.hide();
+                    vm.locationError = error;
+                    vm.currentLocation = null;
                 });
-            ;
         }
 
     }

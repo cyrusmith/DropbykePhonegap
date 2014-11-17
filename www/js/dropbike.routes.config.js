@@ -250,7 +250,7 @@ define([
                                 var d = $q.defer();
                                 profileDataService.getProfile()
                                     .then(function (resp) {
-                                        if (resp.ride) {
+                                        if (resp && resp.ride) {
                                             if (!resp.ride.stopTime) {
                                                 d.resolve(resp);
                                             }

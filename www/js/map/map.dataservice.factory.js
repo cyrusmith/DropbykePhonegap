@@ -11,15 +11,68 @@ define([
 
     angular.module('map').factory('mapDataService', mapDataService);
 
-    mapDataService.$inject = ['$q', '$http', '$window', '$interval', '$rootScope', 'dropbikeUtil', 'GOOGLE_API_KEY'];
+    mapDataService.$inject = ['$q', 'geolocation', '$window', '$interval', '$rootScope', 'dropbikeUtil', 'GOOGLE_API_KEY', 'GEO_ACCURACY'];
 
-    function mapDataService($q, $http, $window, $interval, $rootScope, dropbikeUtil, GOOGLE_API_KEY) {
+    function mapDataService($q, geolocation, $window, $interval, $rootScope, dropbikeUtil, GOOGLE_API_KEY, GEO_ACCURACY) {
 
         return {
             geocode: geocode,
             geodecode: geodecode,
             mapApi: mapApiReady,
-            checkGPS: checkGPS
+            checkGPS: checkGPS,
+            getLocation: getLocation,
+            getExactLocation: getExactLocation
+        }
+
+        function getLocation() {
+            var d = $q.defer();
+
+            geolocation.getLocation({
+                enableHighAccuracy: true,
+                maximumAge: 180000
+            }).then(function (pos) {
+                    d.resolve({
+                        latitude: pos.coords.latitude,
+                        longitude: pos.coords.longitude
+                    });
+                }, function (error) {
+                    d.reject(error);
+                });
+
+            return d.promise;
+        }
+
+        function getExactLocation() {
+            var d = $q.defer();
+
+            checkGPS()
+                .then(function (isGPSEnabled) {
+                    if (!isGPSEnabled && window.cordova) {
+                        d.reject("GPS is not enabled");
+                        return;
+                    }
+                    geolocation.getLocation({
+                        enableHighAccuracy: true,
+                        maximumAge: 0,
+                        timeout: 60000
+                    }).then(function (pos) {
+                            if (pos.coords.accuracy <= GEO_ACCURACY) {
+                                d.resolve({
+                                    latitude: pos.coords.latitude,
+                                    longitude: pos.coords.longitude
+                                });
+                            }
+                            else {
+                                d.reject("Location is not accurate. Make sure you're getting location from GPS.");
+                            }
+                        }, function (error) {
+                            d.reject(error);
+                        });
+                }, function () {
+                    d.reject("GPS not enabled");
+                });
+
+            return d.promise;
         }
 
         function checkGPS() {
@@ -39,7 +92,7 @@ define([
                 });
             }
             else {
-                d.resolve(false);
+                d.resolve(true);
             }
 
             return d.promise;

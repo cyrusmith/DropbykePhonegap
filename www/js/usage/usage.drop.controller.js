@@ -9,9 +9,9 @@ define([
 
     angular.module("dropbike.usage").controller('UsageDropController', UsageDropController);
 
-    UsageDropController.$inject = ['rideData', '$localStorage', '$ionicPopup', '$state', 'geolocation', 'mapDataService', 'usageDataService', 'cameraUtil', '$timeout', 'BACKEND_URL'];
+    UsageDropController.$inject = ['rideData', '$localStorage', '$ionicPopup', '$ionicLoading', '$state', 'mapDataService', 'usageDataService', '$timeout', 'BACKEND_URL'];
 
-    function UsageDropController(rideData, $localStorage, $ionicPopup, $state, geolocation, mapDataService, usageDataService, cameraUtil, $timeout, BACKEND_URL) {
+    function UsageDropController(rideData, $localStorage, $ionicPopup, $ionicLoading, $state, mapDataService, usageDataService, $timeout, BACKEND_URL) {
 
         var vm = this;
         vm.currentLocation;
@@ -43,24 +43,25 @@ define([
 
             vm.photo = BACKEND_URL + '/images/rides/' + vm.ride.id + '.jpg?nocache=' + (new Date().getTime());
 
-            getCurrentLocation();
-
-            var prompt = "";
-
-            if (!vm.ride.hasPhoto) {
-                prompt = "Please take photo of locked bike to help next user find it";
-                if (!vm.message) {
-                    prompt += " and enter short description message";
-                }
-            }
-            else if (!vm.message) {
-                prompt += "Please enter message to help next user find the bike";
+            if ($localStorage.dropBikePageHolder) {
+                vm.message = $localStorage.dropBikePageHolder.message;
+                vm.currentLocation = $localStorage.dropBikePageHolder.currentLocation;
+                $localStorage.dropBikePageHolder = null;
             }
 
-            if (prompt) {
+            if(!vm.currentLocation) {
+                getCurrentLocation();
+            }
+
+            if (!vm.ride.hasPhoto || !vm.message) {
                 $ionicPopup.show({
                     title: "Warning",
-                    subTitle: prompt,
+                    subTitle: ["<h5>To drop your bike wherever you like please follow the instructions:</h5>",
+                        "<ul>",
+                        "<li>Lock bike at any eligible public place, e.g. public bike stan</li>",
+                        "<li>Take photo of locked bike to help next rider find it</li>",
+                        "<li>Leave message for next rider</li>",
+                        "</ul>"].join(""),
                     buttons: [
                         {
                             text: 'Ok',
@@ -70,14 +71,19 @@ define([
                 });
             }
 
-
         }
 
         function pickPhoto() {
+            $localStorage.dropBikePageHolder = {
+                message: vm.message,
+                currentLocation: vm.currentLocation
+            };
             $state.go('app.usagephoto');
         }
 
         function drop() {
+
+            $localStorage.dropBikePageHolder = null;
 
             var errors = [];
             if (!vm.address) {
@@ -111,7 +117,6 @@ define([
                 return;
             }
 
-
             usageDataService.drop(vm.currentLocation[0], vm.currentLocation[1], vm.address, vm.lockPassword, vm.message, vm.distance)
                 .then(function () {
                     $state.go('app.checkout');
@@ -131,42 +136,35 @@ define([
         }
 
         function getCurrentLocation() {
-
-            mapDataService.checkGPS()
-                .then(function (isEnabled) {
-                    if (!isEnabled) {
-                        vm.locationError = "Please enable GPS to drop bike";
-
-                        if (!window.cordova) {
-                            $timeout(function () {
-                                vm.locationError = null;
-                            }, 3000);
-                        }
-
-                    }
-                    else {
-                        vm.locationError = null;
-                    }
-                });
-
-            geolocation.getLocation({})
+            $ionicLoading.show({
+                template: '<i class="icon ion-loading-c"></i> Getting your location...'
+            });
+            mapDataService.getExactLocation()
                 .then(function (pos) {
-                    vm.currentLocation = [pos.coords.latitude, pos.coords.longitude];
+                    vm.locationError = null;
+
+                    vm.currentLocation = [pos.latitude, pos.longitude];
                     $localStorage.dropLocation = vm.currentLocation;
 
                     if (!vm.address) {
-                        mapDataService.geodecode(pos.coords)
+                        mapDataService.geodecode(pos)
                             .then(function (address) {
                                 if (address.length) {
                                     vm.address = address[0].formatted_address;
                                 }
                             }, function (error) {
-                                vm.locationError = "Error getting address. Please enter manually.";
+                                vm.locationError = "Error getting address. Please update by hand.";
+                                $timeout(function () {
+                                    vm.locationError = null
+                                }, 10000);
                             });
                     }
-                }, function (error) {
-                    vm.currentLocation = null;
-                    vm.locationError = "Current location not found. Please enable GPS.";
+
+
+                },function (error) {
+                    vm.locationError = error;
+                }).finally(function () {
+                    $ionicLoading.hide();
                 });
 
         }

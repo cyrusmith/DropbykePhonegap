@@ -68,6 +68,7 @@ define([
             else {
                 $http.post(BACKEND_URL + apiPath, {
                     "code": code,
+                    "phone": $localStorage.phone,
                     "verify_key": $localStorage.phone_verification_key
                 }, params).then(function success(resp) {
                         $log.log("verifyCode success", resp);

@@ -26,6 +26,17 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 $dropbike-bg-dark: #506a80;
 $dropbike-field-color: #29404F;
 
+.popup-sub-title {
+  ul {
+    li {
+      text-align: left;
+      margin-bottom: .5rem;
+      list-style-type: disc;
+      list-style-position: inside;
+    }
+  }
+}
+
 .dropbike-map {
   position: relative;
   .dropbike-location {
@@ -323,7 +334,7 @@ $dropbike-field-color: #29404F;
   padding: 1rem;
   .line {
     margin-bottom: 1rem;
-    font-size: 1.4rem;
+    font-size: 1rem;
   }
 }
 

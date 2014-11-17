@@ -33,7 +33,7 @@ gulp.task('compilezip', function (callback) {
 });
 
 gulp.task('requirejs', shell.task([
-    'r.js.cmd -o build.js optimize=none'
+    'r.js.cmd -o build.js' //optimize=none
 ], {
     cwd: './www/'
 }));
