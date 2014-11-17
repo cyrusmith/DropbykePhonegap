@@ -39,11 +39,11 @@ define([
                             deferred.resolve(resp);
                         }
                         else {
-                            deferred.reject("SMS not sent");
+                            deferred.reject("Failed to send SMS");
                         }
                     }, function fail(resp) {
                         $log.log("submitSMS fail", resp);
-                        deferred.reject("SMS not sent");
+                        deferred.reject(resp.data.error ? resp.data.error : "Failed to send SMS");
                     });
             }
 
