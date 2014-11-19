@@ -13,7 +13,8 @@ define([
     "checkout/checkout.module",
     "payments/payments.module",
     "dropbike.templates",
-    "bike/bike.module"
+    "bike/bike.module",
+    "sharing/sharing.module"
 ], function (angular) {
 
     'use strict';
@@ -34,6 +35,7 @@ define([
         'dropbike.payments',
         'dropbike.util',
         'dropbike.profile',
+        'dropbike.sharing',
         'map']);
 
     require([
