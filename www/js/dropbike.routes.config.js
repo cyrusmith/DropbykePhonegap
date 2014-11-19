@@ -11,10 +11,10 @@ define([
             $stateProvider
 
                 .state('app', {
-                    url: "/app",
+                    url: "",
                     abstract: true,
-                    templateUrl: "templates/menu.tpl.html",
-                    controller: 'AppCtrl'
+                    templateUrl: "js/menu.tpl.html",
+                    controller: 'AppCtrl as vm'
                 })
 
                 .state('app.search', {
@@ -42,37 +42,9 @@ define([
                             }
                         }
                     }
-                })
-
-                .state('app.browse', {
-                    url: "/browse",
-                    views: {
-                        'menuContent': {
-                            templateUrl: "templates/browse.tpl.html"
-                        }
-                    }
-                })
-                .state('app.playlists', {
-                    url: "/playlists",
-                    views: {
-                        'menuContent': {
-                            templateUrl: "templates/playlists.tpl.html",
-                            controller: 'PlaylistsCtrl'
-                        }
-                    }
-                })
-
-                .state('app.single', {
-                    url: "/playlists/:playlistId",
-                    views: {
-                        'menuContent': {
-                            templateUrl: "templates/playlist.tpl.html",
-                            controller: 'PlaylistCtrl'
-                        }
-                    }
                 });
-            // if none of the above states are matched, use this as the fallback
-            $urlRouterProvider.otherwise('/app/start');
+
+            $urlRouterProvider.otherwise('/start');
         }]);
 
     angular.module('dropbike.login').config(['$stateProvider', function ($stateProvider) {
@@ -81,7 +53,7 @@ define([
             .state('app.start', {
                 url: "/start",
                 views: {
-                    'menuContent': {
+                    '@': {
                         templateUrl: "js/login/login.tpl.html",
                         controller: 'LoginController as vm'
                     }

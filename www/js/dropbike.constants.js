@@ -6,7 +6,7 @@ define([
 
     angular.module('dropbike')
 
-        .constant("GEO_ACCURACY", "50") //meters
+        .constant("GEO_ACCURACY", 50) //meters
 
         .constant("FACEBOOK_ID", "297052723828418")
         .constant("FACEBOOK_REDIRECT_URL", "http://ec2-54-68-46-169.us-west-2.compute.amazonaws.com:8080")

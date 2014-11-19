@@ -13,8 +13,7 @@ define([
     "checkout/checkout.module",
     "payments/payments.module",
     "dropbike.templates",
-    "bike/bike.module",
-    "dropbike.controller"
+    "bike/bike.module"
 ], function (angular) {
 
     'use strict';
@@ -35,15 +34,16 @@ define([
         'dropbike.payments',
         'dropbike.util',
         'dropbike.profile',
-        'map',
-        'dropbike.controllers']);
+        'map']);
 
     require([
         "dropbike.constants",
         "dropbike.config",
         "dropbike.routes.config",
         "dropbike.interceptor",
-        "dropbike.connection.service"
+        "dropbike.connection.service",
+        "dropbike.appstate.factory",
+        "dropbike.controller"
     ], function () {
 
         angular.module('dropbike')

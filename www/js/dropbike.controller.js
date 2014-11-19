@@ -4,54 +4,30 @@ define([
 
     'use strict';
 
-    angular.module('dropbike.controllers', [])
+    angular.module('dropbike').controller('AppCtrl', AppCtrl);
 
-        .controller('AppCtrl', ['$scope', '$ionicModal', '$timeout', function ($scope, $ionicModal, $timeout) {
-            // Form data for the login modal
-            $scope.loginData = {};
+    AppCtrl.$inject = ['$scope', 'appstate'];
 
-            // Create the login modal that we will use later
-            $ionicModal.fromTemplateUrl('templates/login.tpl.html', {
-                scope: $scope
-            }).then(function (modal) {
-                    $scope.modal = modal;
-                });
+    function AppCtrl($scope, appstate) {
+        var vm = this;
 
-            // Triggered in the login modal to close it
-            $scope.closeLogin = function () {
-                $scope.modal.hide();
-            };
+        vm.isSharingMode;
 
-            // Open the login modal
-            $scope.login = function () {
-                $scope.modal.show();
-            };
+        init();
 
-            // Perform the login action when the user submits the login form
-            $scope.doLogin = function () {
-                console.log('Doing login', $scope.loginData);
+        function init() {
+            vm.isSharingMode = appstate.getMode() == 'share';
 
-                // Simulate a login delay. Remove this and replace with your login
-                // code if using a login system
-                $timeout(function () {
-                    $scope.closeLogin();
-                }, 1000);
-            };
-        }])
+            $scope.$watch('vm.isSharingMode', function (value) {
+                if (value === true) {
+                    appstate.setMode('share');
+                }
+                else {
+                    appstate.setMode('default');
+                }
+            });
+        }
 
-        .controller('PlaylistsCtrl', ['$scope', function ($scope) {
-            $scope.playlists = [
-                { title: 'Reggae', id: 1 },
-                { title: 'Chill', id: 2 },
-                { title: 'Dubstep', id: 3 },
-                { title: 'Indie', id: 4 },
-                { title: 'Rap', id: 5 },
-                { title: 'Cowbell', id: 6 }
-            ];
-        }])
-
-        .controller('PlaylistCtrl', ['$scope', '$stateParams', function ($scope, $stateParams) {
-        }]);
-
+    }
 
 });

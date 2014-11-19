@@ -26,6 +26,10 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 $dropbike-bg-dark: #506a80;
 $dropbike-field-color: #29404F;
 
+.sharing-menu-item {
+  padding: 0;
+}
+
 .popup-sub-title {
   ul {
     li {
@@ -136,6 +140,14 @@ $dropbike-field-color: #29404F;
     }
 
   }
+}
+
+.login-bottom-controls {
+  position: absolute;
+  bottom: 0;
+  height: 150px;
+  width: 100%;
+  z-index: 11;
 }
 
 .db-page-phone-confirm,
