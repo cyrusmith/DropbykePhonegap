@@ -30,13 +30,36 @@ $dropbike-field-color: #29404F;
   padding: 0;
 }
 
+.share-bike-edit-location {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  .dropbike-map-container {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  .coords {
+    height: 30px;
+    line-height: 28px;
+    white-space: nowrap;
+    font-size: .75em;
+    color: #555;
+  }
+}
+
 .bike-form-content {
   .photo-container {
     background-color: $dropbike-field-color;
     text-align: center;
     width: 100%;
     height: 8rem;
-    button {
+    a.button {
       margin-top: 4rem;
       font-size: 2rem;
     }
@@ -138,9 +161,9 @@ $dropbike-field-color: #29404F;
 
   background: {
     image: url(../img/loginbg.jpg);
+    size: 100% auto;
     repeat: no-repeat;
     position: 50% 50%;
-    size: auto;
   }
   .db-login-button {
     margin-top: 6rem;

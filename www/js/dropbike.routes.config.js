@@ -93,7 +93,7 @@ define([
             .state('app.offline', {
                 url: "/offline",
                 views: {
-                    'menuContent': {
+                    '@': {
                         templateUrl: "js/offline/offline.tpl.html",
                         controller: 'OfflineController as vm'
                     }

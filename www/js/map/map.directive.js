@@ -19,6 +19,7 @@ define([
             restrict: 'E',
             scope: {
                 location: '=',
+                changeLocation: '=',
                 markers: '=',
                 path: '=',
                 showLocationMarker: '=',
@@ -36,7 +37,8 @@ define([
                     _map = null,
                     _currentLocationMarker = null,
                     _currentPath = null,
-                    _markers = {};
+                    _markers = {},
+                    _allowChangeLocation = false;
 
                 mapDataService.mapApi()
                     .then(function () {
@@ -61,6 +63,27 @@ define([
                             });
                         });
                     });
+
+                    if (attrs.changeLocation && scope.changeLocation) {
+
+                        var start, end;
+
+                        google.maps.event.addListener(_map, 'mousedown', function (event) {
+                            start = Date.now();
+                        });
+
+                        google.maps.event.addListener(_map, 'drag', function (event) {
+                            start = Date.now();
+                        });
+
+                        google.maps.event.addListener(_map, 'mouseup', function (event) {
+                            end = Date.now();
+                            if (end - start > 500) {
+                                scope.location = [event.latLng.lat(), event.latLng.lng()];
+                                scope.$apply();
+                            }
+                        });
+                    }
 
                     if (attrs.panToBounds) {
                         scope.$watch('panToBounds', function (panToBounds) {

@@ -5,14 +5,15 @@
     </ion-nav-buttons>
     -->
 
+
     <ion-nav-buttons side="right">
-        <button class="button button-balanced" ng-click="vm.save()">Save</button>
+        <button class="button button-energized" ng-click="vm.save()">{{vm.id?'Save bike':'Share bike'}}</button>
     </ion-nav-buttons>
 
     <ion-content class="bike-form-content">
 
         <div class="photo-container" bg-image="vm.photo">
-            <button class="button ion-camera" ng-click="vm.pickPhoto()"></button>
+            <a class="button ion-camera" ui-sref="sharing.bike.edit.photo"></a>
         </div>
 
         <div class="form list">
@@ -28,19 +29,19 @@
             </div>
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Name</span>
-                <input type="text" placeholder="John">
+                <input type="text" ng-model="vm.name">
             </label>
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Serial number</span>
-                <input type="text" placeholder="Suhr">
+                <input type="text" ng-model="vm.sku">
             </label>
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Hour rate, $</span>
-                <input type="text" placeholder="john@suhr.com">
+                <input type="text" ng-model="vm.price">
             </label>
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Lock password, $</span>
-                <input type="text" placeholder="john@suhr.com">
+                <input type="text" ng-model="vm.lockPassword">
             </label>
             <a class="coords item item-icon-left item-icon-right" ui-sref="sharing.bike.edit.location">
                 <i class="icon ion-location"></i>
@@ -50,10 +51,10 @@
                 </span>
                 <i class="icon ion-ios7-arrow-right"></i>
             </a>
-            <h4 class="padding">Info from last user</h4>
+            <h4 class="padding">Info to next user</h4>
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Message</span>
-                <textarea placeholder="Comments"></textarea>
+                <textarea ng-model="vm.message"></textarea>
             </label>
             <a class="coords item item-icon-left item-icon-right" ui-sref="sharing.bike.edit.photo">
                 <i class="icon ion-image"></i>
