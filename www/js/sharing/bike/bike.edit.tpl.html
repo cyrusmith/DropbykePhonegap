@@ -1,0 +1,67 @@
+<ion-view title="Bike info" hide-back-button="true">
+
+    <!--    <ion-nav-buttons side="left">
+        <button class="button" ui-sref="sharing.mybikes"> Cancel</button>
+    </ion-nav-buttons>
+    -->
+
+    <ion-nav-buttons side="right">
+        <button class="button button-balanced" ng-click="vm.save()">Save</button>
+    </ion-nav-buttons>
+
+    <ion-content class="bike-form-content">
+
+        <div class="photo-container" bg-image="vm.photo">
+            <button class="button ion-camera" ng-click="vm.pickPhoto()"></button>
+        </div>
+
+        <div class="form list">
+            <div class="item item-toggle">
+                <b>Active</b>
+                <label class="toggle toggle-calm">
+                    <input type="checkbox" ng-checked="vm.sharing">
+
+                    <div class="track">
+                        <div class="handle"></div>
+                    </div>
+                </label>
+            </div>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Name</span>
+                <input type="text" placeholder="John">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Serial number</span>
+                <input type="text" placeholder="Suhr">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Hour rate, $</span>
+                <input type="text" placeholder="john@suhr.com">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Lock password, $</span>
+                <input type="text" placeholder="john@suhr.com">
+            </label>
+            <a class="coords item item-icon-left item-icon-right" ui-sref="sharing.bike.edit.location">
+                <i class="icon ion-location"></i>
+                {{vm.address?vm.address:'Address not set'}}<br>
+                <span class="note">
+                  {{vm.lat?vm.lat:'Coords not set'}} {{vm.lng}}
+                </span>
+                <i class="icon ion-ios7-arrow-right"></i>
+            </a>
+            <h4 class="padding">Info from last user</h4>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Message</span>
+                <textarea placeholder="Comments"></textarea>
+            </label>
+            <a class="coords item item-icon-left item-icon-right" ui-sref="sharing.bike.edit.photo">
+                <i class="icon ion-image"></i>
+                {{vm.userphoto?'Photo is set':'Take photo'}}
+                <i class="icon ion-ios7-arrow-right"></i>
+            </a>
+        </div>
+
+    </ion-content>
+
+</ion-view>

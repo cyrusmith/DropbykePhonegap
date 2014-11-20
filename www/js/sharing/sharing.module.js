@@ -1,6 +1,6 @@
 define([
     "angular",
-    "bike/sharing.bike.module"
+    "sharing/bike/sharing.bike.module"
 ], function (angular) {
 
     'use strict';
@@ -10,7 +10,8 @@ define([
     ]);
 
     require([
-
+        "sharing/sharing.controller",
+        "sharing/sharing.routes.config"
     ]);
 
 });

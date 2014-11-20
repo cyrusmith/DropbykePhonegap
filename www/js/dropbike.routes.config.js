@@ -11,7 +11,7 @@ define([
             $stateProvider
 
                 .state('app', {
-                    url: "",
+                    url: "/usage",
                     abstract: true,
                     templateUrl: "js/menu.tpl.html",
                     controller: 'AppCtrl as vm'
@@ -44,7 +44,7 @@ define([
                     }
                 });
 
-            $urlRouterProvider.otherwise('/start');
+            $urlRouterProvider.otherwise('/usage/start');
         }]);
 
     angular.module('dropbike.login').config(['$stateProvider', function ($stateProvider) {

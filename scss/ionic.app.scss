@@ -30,6 +30,28 @@ $dropbike-field-color: #29404F;
   padding: 0;
 }
 
+.bike-form-content {
+  .photo-container {
+    background-color: $dropbike-field-color;
+    text-align: center;
+    width: 100%;
+    height: 8rem;
+    button {
+      margin-top: 4rem;
+      font-size: 2rem;
+    }
+  }
+
+  .form {
+    .coords {
+      .note {
+        color: #555;
+        font-size: .875em;
+      }
+    }
+  }
+}
+
 .popup-sub-title {
   ul {
     li {
