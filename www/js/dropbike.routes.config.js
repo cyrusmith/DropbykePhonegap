@@ -69,7 +69,7 @@ define([
             .state('app.phoneconfirm', {
                 url: "/phoneconfirm",
                 views: {
-                    'menuContent': {
+                    '@': {
                         templateUrl: "js/phone/phone.confirm.tpl.html",
                         controller: 'PhoneController as vm'
                     }
@@ -77,7 +77,7 @@ define([
             }).state('app.phoneverifycode', {
                 url: "/phoneverifycode",
                 views: {
-                    'menuContent': {
+                    '@': {
                         templateUrl: "js/phone/phone.verifycode.tpl.html",
                         controller: 'PhoneVerifyCodeController as vm'
                     }

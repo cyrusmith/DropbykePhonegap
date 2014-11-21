@@ -14,7 +14,7 @@ define([
         .constant("WEBSITE", "http://dropbyke.com")
         .constant("BANNER_IMAGE", "http://ec2-54-68-46-169.us-west-2.compute.amazonaws.com:8080/DropbikeBackend-0.1/images/banner.jpg")
 
-        .constant('BACKEND_URL', 'http://192.168.1.104:8081/DropbikeBackend') //local
+        .constant('BACKEND_URL', 'http://192.168.1.103:8081/DropbikeBackend') //local
         //.constant('BACKEND_URL', 'http://ec2-54-69-186-125.us-west-2.compute.amazonaws.com:8080/DropbikeBackend-0.1') //dev
         //.constant('BACKEND_URL', 'http://ec2-54-68-46-169.us-west-2.compute.amazonaws.com:8080/DropbikeBackend-0.1') //prod
 

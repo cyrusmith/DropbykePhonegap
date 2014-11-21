@@ -11,7 +11,8 @@ define([
     function SharingBikeEditCtrl(bike, $scope, $log, $state, $ionicPopup, $ionicLoading, sharingBikeDataService, BACKEND_URL) {
 
         var vm = this;
-
+        
+        vm.id;
         vm.photo;
         vm.active;
         vm.name;
@@ -43,6 +44,19 @@ define([
                 vm.lat = bike.lat;
                 vm.lng = bike.lng;
                 vm.message = bike.messageFromLastUser;
+            }
+            else if($scope.biketmp) {
+                vm.id = $scope.biketmp.id;
+                vm.photo = $scope.biketmp.photo;
+                vm.active = $scope.biketmp.active;
+                vm.name = $scope.biketmp.title;
+                vm.sku = $scope.biketmp.sku;
+                vm.price = $scope.biketmp.priceRate;
+                vm.lockPassword = $scope.biketmp.lockPassword;
+                vm.address = $scope.biketmp.address;
+                vm.lat = $scope.biketmp.lat;
+                vm.lng = $scope.biketmp.lng;
+                vm.message = $scope.biketmp.messageFromLastUser;
             }
             $log.log('SharingBikeEditCtrl', bike);
         }

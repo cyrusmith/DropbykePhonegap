@@ -6,26 +6,32 @@ define([
 
     angular.module('dropbike.sharing').controller('SharingCtrl', SharingCtrl);
 
-    SharingCtrl.$inject = ['$scope', 'appstate'];
+    SharingCtrl.$inject = ['$scope', '$state', 'appstate'];
 
-    function SharingCtrl($scope, appstate) {
+    function SharingCtrl($scope, $state, appstate) {
         var vm = this;
 
-        vm.isSharingMode;
+        vm.sharingToggle;
+
+        vm.changeSharingToggle = changeSharingToggle;
 
         init();
 
         function init() {
-            vm.isSharingMode = appstate.getMode() == 'share';
+            vm.sharingToggle = appstate.getMode() == 'share';
+        }
 
-            $scope.$watch('vm.isSharingMode', function (value) {
-                if (value === true) {
-                    appstate.setMode('share');
-                }
-                else {
-                    appstate.setMode('default');
-                }
-            });
+        function changeSharingToggle() {
+            console.log(vm.sharingToggle);
+            if (vm.sharingToggle === true) {
+                appstate.setMode('share');
+                $state.go('sharing.mybikes');
+            }
+            else {
+                appstate.setMode('default');
+                $state.go('app.search');
+            }
+
         }
 
     }

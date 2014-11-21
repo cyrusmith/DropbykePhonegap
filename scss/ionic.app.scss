@@ -187,6 +187,18 @@ $dropbike-field-color: #29404F;
   }
 }
 
+@media all and (orientation: portrait) {
+  .db-login-page {
+
+    background: {
+      image: url(../img/loginbg-port.jpg);
+      size: auto 100%;
+      repeat: no-repeat;
+      position: 50% 50%;
+    }
+  }
+}
+
 .login-bottom-controls {
   position: absolute;
   bottom: 0;

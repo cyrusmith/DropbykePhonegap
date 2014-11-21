@@ -14,7 +14,7 @@
         </header>
         <ion-content class="has-header">
             <ion-list>
-                <ion-item nav-clear menu-close ui-sref="sharing.addbike">
+                <ion-item nav-clear menu-close ui-sref="sharing.bike.edit">
                     <i class="ion-plus"></i> Share bike
                 </ion-item>
 
@@ -34,7 +34,7 @@
                     <div class="item item-toggle">
                         Sharing
                         <label class="toggle toggle-calm">
-                            <input type="checkbox" ng-checked="vm.isSharingMode">
+                            <input type="checkbox" ng-model="vm.sharingToggle" ng-change="vm.changeSharingToggle()">
                             <div class="track">
                                 <div class="handle"></div>
                             </div>

@@ -59,6 +59,14 @@ define([
                             controller: 'SharingBikeLocationCtrl as vm'
                         }
                     }
+                }).state('sharing.mybikes', {
+                    url: "/mybikes",
+                    views: {
+                        "menuContent": {
+                            templateUrl: "js/sharing/mybikes/mybikes.tpl.html",
+                            controller: 'SharingMyBikesCtrl as vm'
+                        }
+                    }
                 });
 
         }]);

@@ -1,12 +1,17 @@
 <ion-view title="Bike info">
 
     <ion-nav-buttons side="right">
-        <button class="button" ng-click="vm.save()">Save</button>
+        <button class="button" ng-click="vm.save()" ng-disabled="!vm.photo">Apply</button>
     </ion-nav-buttons>
 
-    <ion-content class="bike-form-content">
-        phoyo
-    </ion-content>
+    <div class="usage-photo-container" bg-image="vm.photo">
+    </div>
 
+    <div class="bar bar-footer footer-one-button take-photo">
+        <button class="button button-block" ng-click="vm.takePhoto()"><i class="icon ion-camera"
+                                                                         ng-class="{'ion-camera': !vm.loading, 'ion-ios7-reloading': vm.loading}"></i>
+            Pick photo of the bike
+        </button>
+    </div>
 
 </ion-view>

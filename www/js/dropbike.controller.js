@@ -11,22 +11,15 @@ define([
     function AppCtrl($scope, $rootScope, $state, $localStorage, appstate, authService) {
         var vm = this;
 
-        vm.isSharingMode;
+        vm.sharingToggle;
+        vm.changeSharingToggle = changeSharingToggle;
 
         init();
+        changeSharingToggle();
 
         function init() {
-            vm.isSharingMode = appstate.getMode() == 'share';
 
-            $scope.$watch('vm.isSharingMode', function (value) {
-                if (value === true) {
-                    appstate.setMode('share');
-                }
-                else {
-                    appstate.setMode('default');
-                }
-            });
-
+            vm.sharingToggle = appstate.getMode() == 'share';
 
             $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
 
@@ -57,6 +50,19 @@ define([
                     }
                 });
 
+
+        }
+
+        function changeSharingToggle() {
+            console.log(vm.sharingToggle);
+            if (vm.sharingToggle === true) {
+                appstate.setMode('share');
+                $state.go('sharing.mybikes');
+            }
+            else {
+                appstate.setMode('default');
+                $state.go('app.search');
+            }
 
         }
 

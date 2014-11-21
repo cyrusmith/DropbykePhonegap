@@ -15,7 +15,7 @@ var runSequence = require('run-sequence');
 
 var paths = {
     sass: ['./scss/*'],
-    templates: ['./www/js/**/*.tpl.html']
+    templates: ['./www/**/*.tpl.html']
 };
 
 var WAR_DEST = './bin';
