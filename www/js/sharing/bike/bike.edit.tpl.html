@@ -7,20 +7,20 @@
 
 
     <ion-nav-buttons side="right">
-        <button class="button button-energized" ng-click="vm.save()">{{vm.id?'Save bike':'Share bike'}}</button>
+        <button class="button button-energized" ng-click="vm.save()" ng-disabled="!vm.isValid()">{{vm.id?'Save bike':'Share bike'}}</button>
     </ion-nav-buttons>
 
     <ion-content class="bike-form-content">
 
-        <div class="photo-container" bg-image="vm.photo">
-            <a class="button ion-camera" ui-sref="sharing.bike.edit.photo"></a>
+        <div class="photo-container" bg-image="vm.bike.photo">
+            <a class="button ion-camera" ui-sref="sharing.bike.edit.bikephoto"></a>
         </div>
 
         <div class="form list">
             <div class="item item-toggle">
                 <b>Active</b>
                 <label class="toggle toggle-calm">
-                    <input type="checkbox" ng-checked="vm.sharing">
+                    <input type="checkbox" ng-checked="vm.bike.active" ng-model="vm.bike.active">
 
                     <div class="track">
                         <div class="handle"></div>
@@ -29,36 +29,36 @@
             </div>
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Name</span>
-                <input type="text" ng-model="vm.name">
+                <input type="text" ng-model="vm.bike.title">
             </label>
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Serial number</span>
-                <input type="text" ng-model="vm.sku">
+                <input type="text" ng-model="vm.bike.sku">
             </label>
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Hour rate, $</span>
-                <input type="text" ng-model="vm.price">
+                <input type="text" ng-model="vm.bike.priceRate">
             </label>
             <label class="item item-input item-stacked-label">
-                <span class="input-label">Lock password, $</span>
-                <input type="text" ng-model="vm.lockPassword">
+                <span class="input-label">Lock password</span>
+                <input type="text" ng-model="vm.bike.lockPassword">
             </label>
-            <a class="coords item item-icon-left item-icon-right" ui-sref="sharing.bike.edit.location">
+            <a class="coords item item-icon-left item-icon-right" ui-sref="sharing.bike.edit.location" ng-class="{'balanced' : vm.bike.address}">
                 <i class="icon ion-location"></i>
-                {{vm.address?vm.address:'Address not set'}}<br>
+                {{vm.bike.address?vm.bike.address:'Address not set'}}<br>
                 <span class="note">
-                  {{vm.lat?vm.lat:'Coords not set'}} {{vm.lng}}
+                  {{vm.bike.lat ? vm.bike.lat + ' |':'Coords not set'}} {{vm.bike.lng}}
                 </span>
                 <i class="icon ion-ios7-arrow-right"></i>
             </a>
             <h4 class="padding">Info to next user</h4>
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Message</span>
-                <textarea ng-model="vm.message"></textarea>
+                <textarea ng-model="vm.bike.messageFromLastUser"></textarea>
             </label>
-            <a class="coords item item-icon-left item-icon-right" ui-sref="sharing.bike.edit.photo">
+            <a class="item item-icon-left item-icon-right" ui-sref="sharing.bike.edit.userphoto" ng-class="{'balanced' : vm.bike.userPhoto}">
                 <i class="icon ion-image"></i>
-                {{vm.userphoto?'Photo is set':'Take photo'}}
+                {{vm.bike.userPhoto?'Photo for next user is set':'Photo to help next user find the bike'}}
                 <i class="icon ion-ios7-arrow-right"></i>
             </a>
         </div>

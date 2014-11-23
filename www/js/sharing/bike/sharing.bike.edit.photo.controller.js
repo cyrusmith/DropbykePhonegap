@@ -6,9 +6,9 @@ define([
 
     angular.module('dropbike.sharing').controller('SharingBikePhotoCtrl', SharingBikePhotoCtrl);
 
-    SharingBikePhotoCtrl.$inject = ['$scope', '$state', 'cameraUtil'];
+    SharingBikePhotoCtrl.$inject = ['targetField', 'bikeEditFormDataService', '$state', '$ionicPopup', 'cameraUtil', 'BACKEND_URL', '$log'];
 
-    function SharingBikePhotoCtrl($scope, $state, cameraUtil) {
+    function SharingBikePhotoCtrl(targetField, bikeEditFormDataService, $state, $ionicPopup, cameraUtil, BACKEND_URL, $log) {
 
         var vm = this;
 
@@ -17,13 +17,34 @@ define([
         vm.takePhoto = takePhoto;
         vm.save = save;
 
+        var bikeData;
+
         init();
 
         function init() {
-            console.log('SharingBikePhotoCtrl');
+
+            if (!targetField) {
+                throw "Illegal argument: targetField is not set";
+            }
+
+            $log.log("targetField=" + targetField);
+
+            bikeData = bikeEditFormDataService.get();
+            if (bikeData) {
+                if (bikeData[targetField]) {
+                    vm.photo = bikeData[targetField];
+                }
+                else if (bikeData.id) {
+                    vm.photo = BACKEND_URL + '/images/bikes/' + bikeData.id + '.jpg';
+                }
+            }
         }
 
         function takePhoto() {
+            if (!window.cordova) {
+                vm.photo = "file://dummy.jpg";
+                return;
+            }
 
             $ionicPopup.show({
                 title: 'Choose image source',
@@ -63,12 +84,22 @@ define([
 
         function save() {
             if (!vm.photo) {
-                alert('Photo not set');
+                $ionicPopup.show({
+                    title: 'Photo not set',
+                    buttons: [
+                        {
+                            text: 'Ok',
+                            type: 'button-assertive'
+                        }
+                    ]
+                });
             }
             else {
-                $scope.$parent.photo = vm.photo;
+                var obj = {};
+                obj[targetField] = vm.photo;
+                bikeEditFormDataService.merge(obj);
                 $state.go('sharing.bike.edit', {
-                    bikeId: vm.id || 0
+                    bikeId: bikeData.id || 0
                 });
             }
         }

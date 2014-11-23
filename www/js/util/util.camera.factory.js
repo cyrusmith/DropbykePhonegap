@@ -26,7 +26,7 @@ define([
             var d = $q.defer();
 
             if (!window.cordova || !navigator.camera || !window.FileTransfer) {
-                return $q.reject("Camera is app not available");
+                return $q.reject("Camera app is not available");
             }
             else {
                 navigator.camera.getPicture(function onSuccess(fileURI) {

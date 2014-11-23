@@ -6,9 +6,9 @@ define([
 
     angular.module('dropbike.sharing').controller('SharingBikeLocationCtrl', SharingBikeLocationCtrl);
 
-    SharingBikeLocationCtrl.$inject = ['$scope', '$state', 'mapDataService', '$ionicPopup', '$ionicLoading'];
+    SharingBikeLocationCtrl.$inject = ['$scope', '$state', 'bikeEditFormDataService', 'mapDataService', '$ionicPopup', '$ionicLoading'];
 
-    function SharingBikeLocationCtrl($scope, $state, mapDataService, $ionicPopup, $ionicLoading) {
+    function SharingBikeLocationCtrl($scope, $state, bikeEditFormDataService, mapDataService, $ionicPopup, $ionicLoading) {
 
         var vm = this;
         vm.address;
@@ -17,20 +17,48 @@ define([
 
         vm.apply = apply;
 
+        var bikeData;
+
         init();
 
         function init() {
-            console.log('SharingBikeLocationCtrl');
 
-            if ($scope.address) {
-                vm.address = $scope.address;
+            bikeData = bikeEditFormDataService.get();
+            if (bikeData.address && bikeData.lat && bikeData.lng) {
+                vm.address = bikeData.address;
+                if (bikeData.lat && bikeData.lng) {
+                    vm.location = [bikeData.lat, bikeData.lng];
+                }
+            }
+            else {
+                $ionicLoading.show({
+                    template: '<i class="icon ion-loading-c"></i> Getting your location...'
+                });
+
+                mapDataService.getLocation().then(function (pos) {
+                    vm.location = [pos.latitude, pos.longitude];
+                },function (error) {
+                    $ionicPopup.show({
+                        title: error,
+                        buttons: [
+                            {
+                                text: 'Ok',
+                                type: 'button-assertive'
+                            }
+                        ]
+                    });
+                }).finally(function () {
+                        $ionicLoading.hide();
+                    });
             }
 
-            if ($scope.lat && $scope.lng) {
-                vm.location = [$scope.lat, $scope.lng];
-            }
-
+            var locInit = false;
             $scope.$watch('vm.location', function (location) {
+                if (!locInit) {
+                    locInit = true;
+                    return;
+                }
+
                 if (location) {
                     vm.coords = location[0] + ' | ' + location[1];
                     geoDecode({
@@ -39,11 +67,12 @@ define([
                     });
                 }
             });
+
         }
 
         function geoDecode(location) {
             $ionicLoading.show({
-                template: '<i class="icon ion-loading-c"></i> Loading...'
+                template: '<i class="icon ion-loading-c"></i> Getting your address...'
             });
 
             mapDataService.geodecode(location)
@@ -69,10 +98,38 @@ define([
         }
 
         function apply() {
-            $scope.$parent.address = vm.address;
-            $scope.$parent.lat = vm.location[0];
-            $scope.$parent.lng = vm.location[1];
-            $state.go("sharing.bike.edit")
+            if (!vm.address) {
+                $ionicPopup.show({
+                    title: 'Address not set',
+                    buttons: [
+                        {
+                            text: 'Ok',
+                            type: 'button-assertive'
+                        }
+                    ]
+                });
+                return;
+            }
+            if (!vm.location || !vm.location[0] || !vm.location[1]) {
+                $ionicPopup.show({
+                    title: 'Coords not set',
+                    buttons: [
+                        {
+                            text: 'Ok',
+                            type: 'button-assertive'
+                        }
+                    ]
+                });
+                return;
+            }
+            bikeEditFormDataService.merge({
+                address: vm.address,
+                lat: vm.location[0],
+                lng: vm.location[1]
+            });
+            $state.go("sharing.bike.edit", {
+                bikeId: bikeData.id || 0
+            })
         }
 
     }

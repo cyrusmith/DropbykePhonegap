@@ -11,13 +11,14 @@ define([
 
     angular.module('map').factory('sharingBikeDataService', sharingBikeDataService);
 
-    sharingBikeDataService.$inject = ['$q', '$http', 'authService', 'BACKEND_URL'];
+    sharingBikeDataService.$inject = ['$q', '$http', 'authService', 'uploadUtil', 'BACKEND_URL'];
 
-    function sharingBikeDataService($q, $http, authService, BACKEND_URL) {
+    function sharingBikeDataService($q, $http, authService, uploadUtil, BACKEND_URL) {
 
         return {
             getBike: getBike,
-            saveBike: saveBike
+            saveBike: saveBike,
+            isValid: isValid
         }
 
         function getBike(bikeId) {
@@ -47,43 +48,57 @@ define([
                 });
         }
 
-        function saveBike(bike) {
+        function isValid(b) {
+            return b.title && b.sku && b.priceRate && b.lockPassword && b.lat && b.lng && b.address && b.messageFromLastUser;
+        }
 
-            if (!(bike.address && bike.lat && bike.lng)) {
-                return $q.reject("Please set address and coords");
+        function saveBike(bike, fileUri) {
+
+            if (!isValid(bike)) {
+                return $q.reject("Please set all fields correctly");
             }
 
-            if (!(bike.sku && bike.name)) {
-                return $q.reject("Please set serial and bike name");
-            }
+            var url = BACKEND_URL + '/api/share/bikes/';
 
-            if (!(bike.price && bike.lockPassword && bike.message)) {
-                return $q.reject("Please set price per hour, lock password and message to the next user");
-            }
-
-            return $http({
-                url: BACKEND_URL + '/api/share/bike/',
-                method: bike.id ? 'PUT' : 'POST',
-                data: bike,
-                headers: {
+            if (fileUri) {
+                var d = $q.defer();
+                uploadUtil.upload(url, fileUri, "photo", "image/jpeg", bike, {
                     "Authorization": "Bearer " + authService.getToken()
-                }
-            }).then(function (resp) {
-                    if (resp.data.bike) {
-                        return resp.data.bike
+                })
+                    .then(function () {
+                        d.resolve();
+                    }, function (error) {
+                        d.reject(error);
+                    })
+                return d.promise;
+            }
+            else {
+                return $http({
+                    url: url,
+                    method: bike.id ? 'PUT' : 'POST',
+                    data: bike,
+                    headers: {
+                        "Authorization": "Bearer " + authService.getToken()
                     }
-                    else if (resp.data.error) {
-                        return $q.reject(resp.data.error);
-                    }
-                    else {
-                        $q.reject("Failed to save bike info");
-                    }
-                }, function (resp) {
-                    if (resp.data.error) {
-                        return $q.reject(resp.data.error);
-                    }
-                    return $q.reject("Failed to save bike info");
-                });
+                }).then(function (resp) {
+                        if (resp.data.bike) {
+                            return resp.data.bike
+                        }
+                        else if (resp.data.error) {
+                            return $q.reject(resp.data.error);
+                        }
+                        else {
+                            $q.reject("Failed to save bike info");
+                        }
+                    }, function (resp) {
+                        if (resp.data.error) {
+                            return $q.reject(resp.data.error);
+                        }
+                        return $q.reject("Failed to save bike info");
+                    });
+            }
+
+
         }
 
     }

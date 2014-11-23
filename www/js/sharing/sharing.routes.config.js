@@ -33,6 +33,7 @@ define([
                             controller: 'SharingBikeEditCtrl as vm',
                             resolve: {
                                 bike: ['$stateParams', 'sharingBikeDataService', function ($stateParams, sharingBikeDataService) {
+                                    console.log("RESOLVE", $stateParams.bikeId);
                                     if (+$stateParams.bikeId) {
                                         return sharingBikeDataService.getBike(+$stateParams.bikeId)
                                     }
@@ -43,12 +44,30 @@ define([
                             }
                         }
                     }
-                }).state('sharing.bike.edit.photo', {
-                    url: "/photo",
+                }).state('sharing.bike.edit.bikephoto', {
+                    url: "/bikephoto",
                     views: {
                         "@sharing.bike": {
                             templateUrl: "js/sharing/bike/bike.edit.photo.tpl.html",
-                            controller: 'SharingBikePhotoCtrl as vm'
+                            controller: 'SharingBikePhotoCtrl as vm',
+                            resolve: {
+                                targetField: function () {
+                                    return 'newPhoto';
+                                }
+                            }
+                        }
+                    }
+                }).state('sharing.bike.edit.userphoto', {
+                    url: "/userphoto",
+                    views: {
+                        "@sharing.bike": {
+                            templateUrl: "js/sharing/bike/bike.edit.photo.tpl.html",
+                            controller: 'SharingBikePhotoCtrl as vm',
+                            resolve: {
+                                targetField: function () {
+                                    return'userPhoto';
+                                }
+                            }
                         }
                     }
                 }).state('sharing.bike.edit.location', {

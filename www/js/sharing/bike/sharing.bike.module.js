@@ -11,6 +11,7 @@ define([
         "sharing/bike/sharing.bike.edit.controller",
         "sharing/bike/sharing.bike.edit.photo.controller",
         "sharing/bike/sharing.bike.edit.location.controller",
+        "sharing/bike/sharing.bike.edit.formData.factory",
         "sharing/bike/sharing.bike.dataservice.factory"
     ]);
 

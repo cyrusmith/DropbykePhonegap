@@ -6,94 +6,92 @@ define([
 
     angular.module('dropbike.sharing').controller('SharingBikeEditCtrl', SharingBikeEditCtrl);
 
-    SharingBikeEditCtrl.$inject = ['bike', '$scope', '$log', '$state', '$ionicPopup', '$ionicLoading', 'sharingBikeDataService', 'BACKEND_URL'];
+    SharingBikeEditCtrl.$inject = ['bike', 'bikeEditFormDataService', '$scope', '$state', '$ionicPopup', '$ionicLoading', 'sharingBikeDataService', 'BACKEND_URL'];
 
-    function SharingBikeEditCtrl(bike, $scope, $log, $state, $ionicPopup, $ionicLoading, sharingBikeDataService, BACKEND_URL) {
+    function SharingBikeEditCtrl(bike, bikeEditFormDataService, $scope, $state, $ionicPopup, $ionicLoading, sharingBikeDataService, BACKEND_URL) {
 
         var vm = this;
-        
-        vm.id;
-        vm.photo;
-        vm.active;
-        vm.name;
-        vm.sku;
-        vm.price;
-        vm.lockPassword;
-        vm.address;
-        vm.lat;
-        vm.lng;
-        vm.message;
+
+        vm.bike;
 
         vm.save = save;
+        vm.isValid = isValid;
 
         init();
 
         function init() {
 
-            console.log($scope.address);
+            console.log('SharingBikeEditCtrl 1', bike, bikeEditFormDataService.get());
 
-            if (bike) {
-                vm.id = bike.id;
-                vm.photo = BACKEND_URL + '/images/bikes/' + bike.id + '.jpg';
-                vm.active = bike.active;
-                vm.name = bike.title;
-                vm.sku = bike.sku;
-                vm.price = bike.priceRate;
-                vm.lockPassword = bike.lockPassword;
-                vm.address = bike.address;
-                vm.lat = bike.lat;
-                vm.lng = bike.lng;
-                vm.message = bike.messageFromLastUser;
+            var data = bikeEditFormDataService.get();
+
+            if (!data) {
+                if (bike) {
+                    vm.bike = bike;
+                }
+                else {
+                    vm.bike = {};
+                }
             }
-            else if($scope.biketmp) {
-                vm.id = $scope.biketmp.id;
-                vm.photo = $scope.biketmp.photo;
-                vm.active = $scope.biketmp.active;
-                vm.name = $scope.biketmp.title;
-                vm.sku = $scope.biketmp.sku;
-                vm.price = $scope.biketmp.priceRate;
-                vm.lockPassword = $scope.biketmp.lockPassword;
-                vm.address = $scope.biketmp.address;
-                vm.lat = $scope.biketmp.lat;
-                vm.lng = $scope.biketmp.lng;
-                vm.message = $scope.biketmp.messageFromLastUser;
+            else {
+                vm.bike = data;
             }
-            $log.log('SharingBikeEditCtrl', bike);
+
+            if (vm.bike.newPhoto) {
+                vm.bike.photo = vm.bike.newPhoto;
+            }
+            else if (vm.bike.id) {
+                vm.bike.photo = BACKEND_URL + '/images/bikes/' + vm.bike.id + '.jpg';
+            }
+
+            $scope.$watch('vm.bike', function (bike) {
+                console.log(bike);
+                bikeEditFormDataService.merge(bike)
+            }, true);
+
         }
 
         function save() {
+
+            if (!isValid()) {
+                $ionicPopup.show({
+                    title: "Check that all fields are set",
+                    buttons: [
+                        {
+                            type: 'button-assertive',
+                            text: 'Ok'
+                        }
+                    ]
+                });
+                return;
+            }
 
             $ionicLoading.show({
                 template: '<i class="icon ion-loading-c"></i> Loading...'
             });
 
-            sharingBikeDataService.saveBike({
-                active: vm.active,
-                name: vm.name,
-                sku: vm.sku,
-                price: vm.price,
-                lockPassword: vm.lockPassword,
-                address: vm.address,
-                lat: vm.lat,
-                lng: vm.lng,
-                message: vm.message
-            }).then(function () {
-                    $state.go('sharing.mybikes');
-                },function (error) {
-                    $ionicPopup.show({
-                        title: 'Error',
-                        subTitle: error,
-                        buttons: [
-                            {
-                                "type": "button-assertive",
-                                "text": "Ok"
-                            }
-                        ]
-                    });
-                }).finally(function () {
+            sharingBikeDataService.saveBike(vm.bike, vm.bike.newPhoto ? vm.bike.newPhoto : null).then(function (message) {
+                $state.go('sharing.mybikes');
+            },function (error) {
+                $ionicPopup.show({
+                    title: 'Error',
+                    subTitle: error,
+                    buttons: [
+                        {
+                            "type": "button-assertive",
+                            "text": "Ok"
+                        }
+                    ]
+                });
+            }).finally(function () {
                     $ionicLoading.hide();
                 });
         }
+
+        function isValid() {
+            return sharingBikeDataService.isValid(vm.bike) && (!vm.bike.id ? (vm.bike.newPhoto && vm.bike.userPhoto) : true);
+        }
+
 
     }
 

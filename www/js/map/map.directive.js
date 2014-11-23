@@ -30,15 +30,14 @@ define([
                 panToBounds: '=',
                 onMarkerClick: '&'
             },
-            template: '<div class="dropbike-map-container"></div>',
+            template: '<div class="dropbike-map-container" data-tap-disabled="true"></div>',
             link: function (scope, element, attrs) {
 
                 var _mapContainer = element.children()[0],
                     _map = null,
                     _currentLocationMarker = null,
                     _currentPath = null,
-                    _markers = {},
-                    _allowChangeLocation = false;
+                    _markers = {};
 
                 mapDataService.mapApi()
                     .then(function () {
