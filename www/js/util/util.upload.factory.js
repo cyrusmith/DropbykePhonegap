@@ -29,38 +29,38 @@ define([
                 return $q.reject("Photo is empty");
             }
 
-            var retries = 0,
-                d = $q.defer();
+            var d = $q.defer();
 
             function doUpload(fileURI) {
 
                 var win = function (r) {
-                    alert("WIN! = " + r);
-                    retries = 0;
-                    d.resolve(r);
+                    var bike = {};
+                    try {
+                        if (r && r.response) {
+                            var respObj = JSON.parse(r.response);
+                            if (respObj && respObj.bike) {
+                                bike = respObj.bike;
+                            }
+                        }
+                    }
+                    catch (e) {
+                    }
+                    d.resolve(bike);
                 }
 
                 var fail = function (error) {
-                    alert("fail! = " + JSON.stringify(error));
-                    if (retries == 0) {
-                        retries++
-                        setTimeout(function () {
-                            doUpload(fileURI)
-                        }, 1000)
-                    } else {
-                        retries = 0;
-                        var msg = "Failed upload file";
-                        if(error.body) {
-                            try {
-                                var body = JSON.parse(error.body);
-                                if(body && body.error) {
-                                    msg = body.error;
-                                }
+                    var msg = "Failed upload file";
+                    if (error.body) {
+                        try {
+                            var body = JSON.parse(error.body);
+                            if (body && body.error) {
+                                msg = body.error;
                             }
-                            catch(e) {}
                         }
-                        d.reject(msg);
+                        catch (e) {
+                        }
                     }
+                    d.reject(msg);
                 }
 
                 var options = new FileUploadOptions();

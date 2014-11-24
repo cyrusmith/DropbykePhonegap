@@ -44,6 +44,10 @@ define([
                 vm.bike.photo = BACKEND_URL + '/images/bikes/' + vm.bike.id + '.jpg';
             }
 
+            if (!vm.bike.active) {
+                vm.bike.active = false;
+            }
+
             $scope.$watch('vm.bike', function (bike) {
                 console.log(bike);
                 bikeEditFormDataService.merge(bike)
