@@ -30,6 +30,38 @@ $dropbike-field-color: #29404F;
   padding: 0;
 }
 
+.mybikes-pane-content {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  .map-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 40px;
+    .dropbike-map-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+  }
+
+  .footer-container {
+    position: absolute;
+    height: 40px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+}
+
 .share-bike-edit-location {
   position: absolute;
   top: 40px;

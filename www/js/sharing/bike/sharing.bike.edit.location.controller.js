@@ -26,9 +26,7 @@ define([
             bikeData = bikeEditFormDataService.get();
             if (bikeData.address && bikeData.lat && bikeData.lng) {
                 vm.address = bikeData.address;
-                if (bikeData.lat && bikeData.lng) {
-                    vm.location = [bikeData.lat, bikeData.lng];
-                }
+                vm.location = [bikeData.lat, bikeData.lng];
             }
             else {
                 $ionicLoading.show({
@@ -80,7 +78,6 @@ define([
                     if (results && results.length > 0) {
                         vm.address = results[0].formatted_address;
                     }
-                    console.log(results);
                 },function (error) {
                     $ionicPopup.show({
                         title: 'Error',

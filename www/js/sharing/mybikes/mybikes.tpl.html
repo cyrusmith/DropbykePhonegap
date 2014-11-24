@@ -4,8 +4,31 @@
         <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
     </ion-nav-buttons>
 
-    <ion-content>
-        My bikes map
-    </ion-content>
+    <ion-nav-buttons side="right">
+        <a class="button icon" ui-sref="sharing.history">History</a>
+    </ion-nav-buttons>
+
+    <div class="mybikes-pane-content">
+
+        <div class="map-container dropbike-map">
+            <a class="dropbike-location" ng-click="vm.getCurrentLocation()"><i class="icon ion-android-locate"></i></a>
+
+            <p ng-show="vm.locationError" class="location-error"><i class="icon ion-alert-circled"></i>
+                {{vm.locationError}}</p>
+            <google-map markers="vm.markers" location="vm.location" zoom="16"
+                        show-location-marker="false"
+                        marker-default-icon="img/ic-bike-small.png"
+                        marker-state1-icon="img/ic-bike-small-inactive.png"
+                        marker-state2-icon="img/ic-bike-small-locked.png"
+                        bounds="vm.mapBounds"
+                        on-marker-click="vm.onMarkerClick(index)"/>
+        </div>
+
+        <div class="footer-container footer-one-button">
+            <a class="button button-block ion-plus button-energized" ui-sref="sharing.bike.edit">
+                Share bike
+            </a>
+        </div>
+    </div>
 
 </ion-view>

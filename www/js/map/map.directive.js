@@ -26,6 +26,8 @@ define([
                 zoom: '=',
                 locationIcon: '@',
                 markerDefaultIcon: '@',
+                markerState1Icon: '@',
+                markerState2Icon: '@',
                 bounds: '=',
                 panToBounds: '=',
                 onMarkerClick: '&'
@@ -110,8 +112,21 @@ define([
                         if (markers && markers.length) {
                             for (var i = 0; i < markers.length; i++) {
                                 if (markers[i] && markers[i].length) {
-                                    var location = markers[i];
-                                    var marker = addMarker(new google.maps.LatLng(location[0], location[1]), scope.markerDefaultIcon);
+                                    console.log("marker", markers[i]);
+                                    var location = markers[i],
+                                        hasState = location.length > 2,
+                                        icon = scope.markerDefaultIcon;
+
+                                    if(hasState) {
+                                        if(location[2] == "state1" && attrs.markerState1Icon) {
+                                            icon = scope.markerState1Icon;
+                                        }
+                                        else if(location[2] == "state2" && attrs.markerState2Icon){
+                                            icon = scope.markerState2Icon;
+                                        }
+                                    }
+                                    console.log(icon);
+                                    var marker = addMarker(new google.maps.LatLng(location[0], location[1]), icon);
                                     _markers[getMarkerHash(marker)] = {
                                         'marker': marker,
                                         'index': i
