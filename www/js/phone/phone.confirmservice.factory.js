@@ -17,7 +17,7 @@ define([
 
         function submitSMS(phone) {
 
-            var deferred = $q.defer();
+            var d = $q.defer();
 
             if (phone) {
                 $localStorage.phone = phone;
@@ -36,19 +36,19 @@ define([
                         if (resp.data.request_key) {
                             $log.log("submitSMS success", resp);
                             $localStorage.phone_verification_key = resp.data.request_key;
-                            deferred.resolve($localStorage.phone_verification_key);
+                            d.resolve($localStorage.phone_verification_key);
                         }
                         else {
-                            deferred.reject(resp.data.error ? resp.data.error : "Failed to send SMS");
+                            d.reject(resp.data.error ? resp.data.error : "Failed to send SMS");
                         }
                     }, function fail(resp) {
                         $log.log("submitSMS fail", resp);
-                        deferred.reject(resp.data.error ? resp.data.error : "Failed to send SMS");
+                        d.reject(resp.data.error ? resp.data.error : "Failed to send SMS");
                     });
             }
 
 
-            return deferred.promise;
+            return d.promise;
         }
 
         function verifyCode(code) {
@@ -79,7 +79,6 @@ define([
                         $localStorage.phone = null;
                         deferred.resolve(resp.data.user_info);
                     },function (resp) {
-                        alert(JSON.stringify(resp));
                         $log.log("verifyCode fail", resp);
                         deferred.reject(resp.data.error ? resp.data.error : "Failed to verify code");
                     }).finally(function () {

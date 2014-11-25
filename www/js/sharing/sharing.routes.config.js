@@ -30,19 +30,18 @@ define([
                     views: {
                         "": {
                             templateUrl: "js/sharing/bike/bike.edit.tpl.html",
-                            controller: 'SharingBikeEditCtrl as vm',
-                            resolve: {
-                                bike: ['$stateParams', 'sharingBikeDataService', function ($stateParams, sharingBikeDataService) {
-                                    console.log("RESOLVE", $stateParams.bikeId);
-                                    if (+$stateParams.bikeId) {
-                                        return sharingBikeDataService.getBike(+$stateParams.bikeId)
-                                    }
-                                    else {
-                                        return null;
-                                    }
-                                }]
-                            }
+                            controller: 'SharingBikeEditCtrl as vm'
                         }
+                    },
+                    resolve: {
+                        bike: ['$stateParams', 'sharingBikeDataService', function ($stateParams, sharingBikeDataService) {
+                            if (+$stateParams.bikeId) {
+                                return sharingBikeDataService.getBike(+$stateParams.bikeId)
+                            }
+                            else {
+                                return null;
+                            }
+                        }]
                     }
                 }).state('sharing.bike.edit.bikephoto', {
                     url: "/bikephoto",
@@ -53,7 +52,13 @@ define([
                             resolve: {
                                 targetField: function () {
                                     return 'newPhoto';
-                                }
+                                },
+                                initImage: ['$stateParams', 'BACKEND_URL', function ($stateParams, BACKEND_URL) {
+                                    if ($stateParams.bikeId) {
+                                        return BACKEND_URL + '/images/bikes/' + $stateParams.bikeId + '.jpg?nocache=' + Date.now();
+                                    }
+                                    return null;
+                                }]
                             }
                         }
                     }
@@ -65,8 +70,19 @@ define([
                             controller: 'SharingBikePhotoCtrl as vm',
                             resolve: {
                                 targetField: function () {
-                                    return'userPhoto';
-                                }
+                                    return 'userPhoto';
+                                },
+                                initImage: ['$stateParams', 'bike', 'BACKEND_URL', function ($stateParams, bike, BACKEND_URL) {
+                                    if ($stateParams.bikeId && bike && bike.id) {
+                                        if (bike.lastRideId) {
+                                            return BACKEND_URL + '/images/rides/' + bike.lastRideId + '.jpg';
+                                        }
+                                        else {
+                                            return BACKEND_URL + '/images/bikesfirstuser/' + bike.id + '.jpg';
+                                        }
+                                    }
+                                    return null;
+                                }]
                             }
                         }
                     }

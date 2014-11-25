@@ -5,7 +5,7 @@
     </ion-nav-buttons>
 
     <ion-nav-buttons side="right">
-        <button class="button button-energized" ng-click="vm.save()" ng-disabled="!vm.isValid()">{{vm.bike.id?'Save bike':'Share bike'}}</button>
+        <button class="button button-energized" ng-click="vm.save()" ng-disabled="!vm.isValid() || vm.bike.locked">{{vm.bike.id?'Save bike':'Share bike'}}</button>
     </ion-nav-buttons>
 
     <ion-content class="bike-form-content">
@@ -18,7 +18,7 @@
             <div class="item item-toggle">
                 <b>Active</b>
                 <label class="toggle toggle-calm">
-                    <input type="checkbox" ng-checked="vm.bike.active" ng-model="vm.bike.active">
+                    <input type="checkbox" ng-checked="vm.bike.active" ng-model="vm.bike.active" ng-disabled="vm.bike.locked">
 
                     <div class="track">
                         <div class="handle"></div>
@@ -27,19 +27,19 @@
             </div>
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Name</span>
-                <input type="text" ng-model="vm.bike.title">
+                <input type="text" ng-model="vm.bike.title" ng-disabled="vm.bike.locked">
             </label>
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Serial number</span>
-                <input type="text" ng-model="vm.bike.sku">
+                <input type="text" ng-model="vm.bike.sku" ng-disabled="vm.bike.locked">
             </label>
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Hour rate, $</span>
-                <input type="number" ng-model="vm.bike.priceRate">
+                <input type="number" ng-model="vm.bike.priceRate" ng-disabled="vm.bike.locked">
             </label>
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Lock password</span>
-                <input type="text" ng-model="vm.bike.lockPassword">
+                <input type="text" ng-model="vm.bike.lockPassword" ng-disabled="vm.bike.locked">
             </label>
             <a class="coords item item-icon-left item-icon-right" ui-sref="sharing.bike.edit.location"
                ng-class="{'balanced' : vm.bike.address}">
@@ -53,7 +53,7 @@
             <h4 class="padding">Info to next user</h4>
             <label class="item item-input item-stacked-label">
                 <span class="input-label">Message</span>
-                <textarea ng-model="vm.bike.messageFromLastUser"></textarea>
+                <textarea ng-model="vm.bike.messageFromLastUser" ng-disabled="vm.bike.locked"></textarea>
             </label>
             <a class="item item-icon-left item-icon-right" ui-sref="sharing.bike.edit.userphoto"
                ng-class="{'balanced' : vm.bike.userPhoto}">

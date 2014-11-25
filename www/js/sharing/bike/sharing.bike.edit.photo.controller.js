@@ -6,13 +6,14 @@ define([
 
     angular.module('dropbike.sharing').controller('SharingBikePhotoCtrl', SharingBikePhotoCtrl);
 
-    SharingBikePhotoCtrl.$inject = ['targetField', 'bikeEditFormDataService', '$state', '$ionicPopup', 'cameraUtil', 'BACKEND_URL', '$log'];
+    SharingBikePhotoCtrl.$inject = ['targetField', 'initImage', 'bikeEditFormDataService', '$state', '$ionicPopup', 'cameraUtil', 'BACKEND_URL', '$log'];
 
-    function SharingBikePhotoCtrl(targetField, bikeEditFormDataService, $state, $ionicPopup, cameraUtil, BACKEND_URL, $log) {
+    function SharingBikePhotoCtrl(targetField, initImage, bikeEditFormDataService, $state, $ionicPopup, cameraUtil, BACKEND_URL, $log) {
 
         var vm = this;
 
         vm.photo;
+        vm.locked;
 
         vm.takePhoto = takePhoto;
         vm.save = save;
@@ -22,7 +23,7 @@ define([
         init();
 
         function init() {
-
+            console.log("initImage", initImage);
             if (!targetField) {
                 throw "Illegal argument: targetField is not set";
             }
@@ -30,17 +31,21 @@ define([
             $log.log("targetField=" + targetField);
 
             bikeData = bikeEditFormDataService.get();
+            vm.locked = bikeData.locked || (targetField == 'userPhoto' && bikeData.id);
             if (bikeData) {
                 if (bikeData[targetField]) {
                     vm.photo = bikeData[targetField];
                 }
-                else if (bikeData.id) {
-                    vm.photo = BACKEND_URL + '/images/bikes/' + bikeData.id + '.jpg';
+                else if (initImage) {
+                    vm.photo = initImage;
                 }
             }
         }
 
         function takePhoto() {
+            if (vm.locked) {
+                return;
+            }
             if (!window.cordova) {
                 vm.photo = "file://dummy.jpg";
                 return;

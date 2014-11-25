@@ -108,9 +108,20 @@ define([
 
             function onCapturePhoto(fileURI) {
                 var win = function (r) {
+                    var bike = {};
+                    try {
+                        if (r && r.response) {
+                            var respObj = JSON.parse(r.response);
+                            if (respObj && respObj.bike) {
+                                bike = respObj.bike;
+                            }
+                        }
+                    }
+                    catch (e) {
+                    }
                     clearCache();
                     retries = 0;
-                    d.resolve(true);
+                    d.resolve(bike);
                 }
 
                 var fail = function (error) {
@@ -120,9 +131,20 @@ define([
                             onCapturePhoto(fileURI)
                         }, 1000)
                     } else {
+                        var msg = "Failed upload file";
+                        if (error.body) {
+                            try {
+                                var body = JSON.parse(error.body);
+                                if (body && body.error) {
+                                    msg = body.error;
+                                }
+                            }
+                            catch (e) {
+                            }
+                        }
                         retries = 0;
                         clearCache();
-                        d.reject(error);
+                        d.reject(msg);
                     }
                 }
 

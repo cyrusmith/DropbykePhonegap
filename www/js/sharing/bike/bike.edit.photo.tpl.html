@@ -1,14 +1,14 @@
 <ion-view title="Photo">
 
     <ion-nav-buttons side="right">
-        <button class="button" ng-click="vm.save()" ng-disabled="!vm.photo">Apply</button>
+        <button class="button" ng-click="vm.save()" ng-disabled="!vm.photo || vm.locked">Apply</button>
     </ion-nav-buttons>
 
     <div class="usage-photo-container" bg-image="vm.photo">
     </div>
 
     <div class="bar bar-footer footer-one-button take-photo">
-        <button class="button button-block" ng-click="vm.takePhoto()"><i class="icon ion-camera"
+        <button class="button button-block" ng-click="vm.takePhoto()" ng-disabled="vm.locked"><i class="icon ion-camera"
                                                                          ng-class="{'ion-camera': !vm.loading, 'ion-ios7-reloading': vm.loading}"></i>
             Pick photo of the bike
         </button>

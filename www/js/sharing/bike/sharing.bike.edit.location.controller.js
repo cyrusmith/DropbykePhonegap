@@ -14,6 +14,7 @@ define([
         vm.address;
         vm.location;
         vm.coords;
+        vm.locked;
 
         vm.apply = apply;
 
@@ -24,6 +25,7 @@ define([
         function init() {
 
             bikeData = bikeEditFormDataService.get();
+            vm.locked = bikeData.locked;
             if (bikeData.address && bikeData.lat && bikeData.lng) {
                 vm.address = bikeData.address;
                 vm.location = [bikeData.lat, bikeData.lng];
@@ -95,6 +97,9 @@ define([
         }
 
         function apply() {
+            if (vm.locked) {
+                return;
+            }
             if (!vm.address) {
                 $ionicPopup.show({
                     title: 'Address not set',

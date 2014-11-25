@@ -41,16 +41,33 @@ define([
                 vm.bike.photo = vm.bike.newPhoto;
             }
             else if (vm.bike.id) {
-                vm.bike.photo = BACKEND_URL + '/images/bikes/' + vm.bike.id + '.jpg';
+                vm.bike.photo = BACKEND_URL + '/images/bikes/' + vm.bike.id + '.jpg?nocache=' + Date.now();
             }
 
             if (!vm.bike.active) {
                 vm.bike.active = false;
             }
 
+            if (vm.bike.lastRideId) {
+                vm.bike.userPhoto = BACKEND_URL + '/images/rides/' + vm.bike.lastRideId + '.jpg';
+            }
+
             $scope.$watch('vm.bike', function (bike) {
                 bikeEditFormDataService.merge(bike)
             }, true);
+
+            if (vm.bike.locked) {
+                $ionicPopup.show({
+                    title: 'Bike is in use',
+                    subTitle: 'You cannot edit bike until it is dropped',
+                    buttons: [
+                        {
+                            text: 'Ok',
+                            type: 'button-energized'
+                        }
+                    ]
+                })
+            }
 
         }
 
@@ -73,20 +90,29 @@ define([
                 template: '<i class="icon ion-loading-c"></i> Loading...'
             });
 
-            sharingBikeDataService.saveBike(vm.bike, vm.bike.newPhoto ? vm.bike.newPhoto : null).then(function (message) {
-                $state.go('sharing.mybikes');
-            },function (error) {
-                $ionicPopup.show({
-                    title: 'Error',
-                    subTitle: error,
-                    buttons: [
-                        {
-                            "type": "button-assertive",
-                            "text": "Ok"
-                        }
-                    ]
-                });
-            }).finally(function () {
+            sharingBikeDataService.saveBike(vm.bike, vm.bike.newPhoto ? vm.bike.newPhoto : null).then(function (createdBike) {
+                if (!vm.bike.id) {
+                    return sharingBikeDataService.uploadUserPhoto(createdBike.id, vm.bike.userPhoto);
+                }
+                else {
+                    return true;
+                }
+
+            }).then(function () {
+                    $state.go('sharing.mybikes');
+                },function (error) {
+                    $ionicPopup.show({
+                        title: 'Error',
+                        subTitle: error,
+                        buttons: [
+                            {
+                                "type": "button-assertive",
+                                "text": "Ok"
+                            }
+                        ]
+                    });
+
+                }).finally(function () {
                     $ionicLoading.hide();
                 });
         }

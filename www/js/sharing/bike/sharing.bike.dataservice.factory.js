@@ -18,6 +18,7 @@ define([
         return {
             getBike: getBike,
             saveBike: saveBike,
+            uploadUserPhoto: uploadUserPhoto,
             isValid: isValid
         }
 
@@ -52,31 +53,44 @@ define([
             return b.hasOwnProperty('active') && b.title && b.sku && b.priceRate && b.lockPassword && b.lat && b.lng && b.address && b.messageFromLastUser;
         }
 
+        function uploadUserPhoto(bikeId, fileUri) {
+            var d = $q.defer();
+            var url = BACKEND_URL + '/api/share/bike/' + bikeId + '/userphoto';
+            uploadUtil.upload(url, fileUri, "photo", "image/jpeg", {
+                id: bikeId
+            }, {
+                "Authorization": "Bearer " + authService.getToken()
+            })
+                .then(function () {
+                    d.resolve();
+                }, function (error) {
+                    d.reject(error);
+                })
+            return d.promise;
+        }
+
         function saveBike(bike, fileUri) {
 
             if (!isValid(bike)) {
                 return $q.reject("Please set all fields correctly");
             }
 
-            var url = BACKEND_URL + '/api/share/bikes/';
+            var url = BACKEND_URL + '/api/share/bikes/' + (bike.id ? bike.id : '');
 
             if (fileUri) {
                 var d = $q.defer();
                 uploadUtil.upload(url, fileUri, "photo", "image/jpeg", bike, {
                     "Authorization": "Bearer " + authService.getToken()
                 })
-                    .then(function () {
-                        d.resolve();
+                    .then(function (resp) {
+                        d.resolve(resp);
                     }, function (error) {
                         d.reject(error);
                     })
                 return d.promise;
             }
             else {
-                return $http({
-                    url: url,
-                    method: bike.id ? 'PUT' : 'POST',
-                    data: bike,
+                return $http.post(url, bike, {
                     headers: {
                         "Authorization": "Bearer " + authService.getToken()
                     }

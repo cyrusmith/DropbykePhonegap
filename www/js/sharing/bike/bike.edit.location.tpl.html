@@ -1,7 +1,7 @@
 <ion-view title="Bike location">
 
     <ion-nav-buttons side="right">
-        <button class="button" ng-click="vm.apply()">Apply</button>
+        <button class="button" ng-click="vm.apply()" ng-disabled="vm.locked">Apply</button>
     </ion-nav-buttons>
 
     <div class="share-bike-edit-location">
