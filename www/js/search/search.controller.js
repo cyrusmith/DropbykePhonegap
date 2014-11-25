@@ -90,7 +90,6 @@ define([
         }
 
         function onMarkerClick(index) {
-            console.log(index);
             if (!_bikes[index]) {
                 $log.error('Illegal state: unknown bike with index ' + index);
                 return;

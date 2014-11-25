@@ -6,9 +6,9 @@ define([
 
     angular.module('dropbike.sharing.mybikes').controller('SharingMyBikesCtrl', SharingMyBikesCtrl);
 
-    SharingMyBikesCtrl.$inject = ['$scope', '$timeout', '$ionicPopup', '$ionicLoading', 'mapDataService', 'mybikesDataService'];
+    SharingMyBikesCtrl.$inject = ['$scope', '$state', '$timeout', '$ionicPopup', '$ionicLoading', 'mapDataService', 'mybikesDataService'];
 
-    function SharingMyBikesCtrl($scope, $timeout, $ionicPopup, $ionicLoading, mapDataService, mybikesDataService) {
+    function SharingMyBikesCtrl($scope, $state, $timeout, $ionicPopup, $ionicLoading, mapDataService, mybikesDataService) {
 
         var vm = this;
 
@@ -16,6 +16,7 @@ define([
         vm.mapBounds;
 
         vm.getCurrentLocation = getCurrentLocation;
+        vm.onMarkerClick = onMarkerClick;
 
         var _scheduleUpdateTimeout,
             _bikes,
@@ -31,6 +32,16 @@ define([
 
             getCurrentLocation();
 
+        }
+
+        function onMarkerClick(index) {
+            if (!_bikes[index]) {
+                $log.error('Illegal state: unknown bike with index ' + index);
+                return;
+            }
+            $state.go('sharing.bike.edit', {
+                bikeId: _bikes[index].id
+            });
         }
 
         function scheduleUpdate() {

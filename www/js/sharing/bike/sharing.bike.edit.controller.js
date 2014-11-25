@@ -49,7 +49,6 @@ define([
             }
 
             $scope.$watch('vm.bike', function (bike) {
-                console.log(bike);
                 bikeEditFormDataService.merge(bike)
             }, true);
 

@@ -1,13 +1,11 @@
 <ion-view title="Bike info" hide-back-button="true">
 
-    <!--    <ion-nav-buttons side="left">
-        <button class="button" ui-sref="sharing.mybikes"> Cancel</button>
+    <ion-nav-buttons side="left">
+        <button class="button" ui-sref="sharing.mybikes">Cancel</button>
     </ion-nav-buttons>
-    -->
-
 
     <ion-nav-buttons side="right">
-        <button class="button button-energized" ng-click="vm.save()" ng-disabled="!vm.isValid()">{{vm.id?'Save bike':'Share bike'}}</button>
+        <button class="button button-energized" ng-click="vm.save()" ng-disabled="!vm.isValid()">{{vm.bike.id?'Save bike':'Share bike'}}</button>
     </ion-nav-buttons>
 
     <ion-content class="bike-form-content">
@@ -43,7 +41,8 @@
                 <span class="input-label">Lock password</span>
                 <input type="text" ng-model="vm.bike.lockPassword">
             </label>
-            <a class="coords item item-icon-left item-icon-right" ui-sref="sharing.bike.edit.location" ng-class="{'balanced' : vm.bike.address}">
+            <a class="coords item item-icon-left item-icon-right" ui-sref="sharing.bike.edit.location"
+               ng-class="{'balanced' : vm.bike.address}">
                 <i class="icon ion-location"></i>
                 {{vm.bike.address?vm.bike.address:'Address not set'}}<br>
                 <span class="note">
@@ -56,7 +55,8 @@
                 <span class="input-label">Message</span>
                 <textarea ng-model="vm.bike.messageFromLastUser"></textarea>
             </label>
-            <a class="item item-icon-left item-icon-right" ui-sref="sharing.bike.edit.userphoto" ng-class="{'balanced' : vm.bike.userPhoto}">
+            <a class="item item-icon-left item-icon-right" ui-sref="sharing.bike.edit.userphoto"
+               ng-class="{'balanced' : vm.bike.userPhoto}">
                 <i class="icon ion-image"></i>
                 {{vm.bike.userPhoto?'Photo for next user is set':'Photo to help next user find the bike'}}
                 <i class="icon ion-ios7-arrow-right"></i>

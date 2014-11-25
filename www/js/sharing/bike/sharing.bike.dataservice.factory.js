@@ -49,7 +49,7 @@ define([
         }
 
         function isValid(b) {
-            return b.title && b.sku && b.priceRate && b.lockPassword && b.lat && b.lng && b.address && b.messageFromLastUser;
+            return b.hasOwnProperty('active') && b.title && b.sku && b.priceRate && b.lockPassword && b.lat && b.lng && b.address && b.messageFromLastUser;
         }
 
         function saveBike(bike, fileUri) {
