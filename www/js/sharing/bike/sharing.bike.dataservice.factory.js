@@ -61,8 +61,19 @@ define([
             }, {
                 "Authorization": "Bearer " + authService.getToken()
             })
-                .then(function () {
-                    d.resolve();
+                .then(function (resp) {
+                    if(resp.bike) {
+                        d.resolve(resp.bike);
+                    }
+                    else {
+                        if(resp.error) {
+                            d.reject(resp.error);
+                        }
+                        else {
+                            d.reject("Failed to save last user photo");
+                        }
+                    }
+
                 }, function (error) {
                     d.reject(error);
                 })
@@ -77,13 +88,24 @@ define([
 
             var url = BACKEND_URL + '/api/share/bikes/' + (bike.id ? bike.id : '');
 
-            if (fileUri) {
+            if (fileUri && window.cordova) {
                 var d = $q.defer();
                 uploadUtil.upload(url, fileUri, "photo", "image/jpeg", bike, {
                     "Authorization": "Bearer " + authService.getToken()
                 })
                     .then(function (resp) {
-                        d.resolve(resp);
+                        if (resp.bike) {
+                            d.resolve(resp.bike);
+                        }
+                        else {
+                            if (resp.error) {
+                                d.reject(resp.error);
+                            }
+                            else {
+                                d.reject("Failed to save bike");
+                            }
+                        }
+
                     }, function (error) {
                         d.reject(error);
                     })

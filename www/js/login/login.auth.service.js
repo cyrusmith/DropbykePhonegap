@@ -6,9 +6,9 @@ define([
 
     angular.module('dropbike.login').factory('authService', authService);
 
-    authService.$inject = ['$http', '$localStorage', 'BACKEND_URL'];
+    authService.$inject = ['$http', '$localStorage', 'appstate', 'BACKEND_URL'];
 
-    function authService($http, $localStorage, BACKEND_URL) {
+    function authService($http, $localStorage, appstate, BACKEND_URL) {
 
         return {
             isLoggedIn: isLoggedIn,
@@ -59,6 +59,7 @@ define([
                     setToken(null);
                     setPhoneConfirmed(false);
                     setHasPayment(false);
+                    appstate.setMode('default');
                 });
         }
 

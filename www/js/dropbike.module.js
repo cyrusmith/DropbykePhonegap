@@ -51,6 +51,12 @@ define([
         angular.module('dropbike')
             .run(['$ionicPlatform', '$rootScope', '$state', 'authService', '$localStorage', 'ConnectivityService', function ($ionicPlatform, $rootScope, $state, authService, $localStorage, connectivityService) {
 
+                document.addEventListener("deviceready", function () {
+                    if (navigator.splashscreen) {
+                        navigator.splashscreen.hide();
+                    }
+                }, false);
+
                 $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
 
                     if (["app.start", "app.phoneconfirm", "app.phoneverifycode", "app.offline", "app.payments", "app.editcard"].indexOf(toState.name) === -1) {

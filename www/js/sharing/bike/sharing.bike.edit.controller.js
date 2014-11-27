@@ -6,9 +6,9 @@ define([
 
     angular.module('dropbike.sharing').controller('SharingBikeEditCtrl', SharingBikeEditCtrl);
 
-    SharingBikeEditCtrl.$inject = ['bike', 'bikeEditFormDataService', '$scope', '$state', '$ionicPopup', '$ionicLoading', 'sharingBikeDataService', 'BACKEND_URL'];
+    SharingBikeEditCtrl.$inject = ['bike', 'profile', 'bikeEditFormDataService', '$scope', '$state', 'facebook', '$ionicPopup', '$ionicLoading', 'sharingBikeDataService', 'WEBSITE', 'BACKEND_URL'];
 
-    function SharingBikeEditCtrl(bike, bikeEditFormDataService, $scope, $state, $ionicPopup, $ionicLoading, sharingBikeDataService, BACKEND_URL) {
+    function SharingBikeEditCtrl(bike, profile, bikeEditFormDataService, $scope, $state, facebook, $ionicPopup, $ionicLoading, sharingBikeDataService, WEBSITE, BACKEND_URL) {
 
         var vm = this;
 
@@ -91,15 +91,27 @@ define([
             });
 
             sharingBikeDataService.saveBike(vm.bike, vm.bike.newPhoto ? vm.bike.newPhoto : null).then(function (createdBike) {
-                if (!vm.bike.id) {
+                if (!vm.bike.id && window.cordova) {
                     return sharingBikeDataService.uploadUserPhoto(createdBike.id, vm.bike.userPhoto);
                 }
                 else {
-                    return true;
+                    return createdBike;
                 }
 
-            }).then(function () {
-                    $state.go('sharing.mybikes');
+            }).then(function (createdBike) {
+
+                    if (vm.bike.active && profile.user.facebookId && profile.user.shareFacebook) {
+                        facebook.postUpdate("I've shared bike on Dropbyke.com", "Dropbyke is a bike sharing service", profile.user.name, WEBSITE, BACKEND_URL + '/images/bike/' + createdBike.id + '.jpg')
+                            .finally(function () {
+                                bikeEditFormDataService.set(null);
+                                $state.go('sharing.mybikes');
+                            });
+                    }
+                    else {
+                        bikeEditFormDataService.set(null);
+                        $state.go('sharing.mybikes');
+                    }
+
                 },function (error) {
                     $ionicPopup.show({
                         title: 'Error',

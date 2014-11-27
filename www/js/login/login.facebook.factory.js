@@ -23,7 +23,7 @@ define([
             FacebookInAppBrowser.settings.redirectUrl = FACEBOOK_REDIRECT_URL;
             FacebookInAppBrowser.settings.permissions = 'public_profile,user_photos,email,publish_actions';
 
-            if (window.facebookConnectPlugin) {
+            if (window.facebookConnectPlugin && window.facebookConnectPlugin.browserInit) {
                 window.facebookConnectPlugin.browserInit(FACEBOOK_ID);
             }
         }

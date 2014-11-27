@@ -14,7 +14,7 @@ define([
             loadBikes: loadBikes
         }
 
-        function loadBikes(lng1, lng2, lat1, lat2) {
+        function loadBikes(lng1, lng2, lat1, lat2, userLat, userLng) {
 
             var deferred = $q.defer();
 
@@ -26,7 +26,7 @@ define([
                     lng2 = lng1;
                     lng1 = tmp;
                 }
-                query = ['lng1=' + lng1, 'lng2=' + lng2, 'lat1=' + lat1, 'lat2=' + lat2];
+                query = ['lng1=' + lng1, 'lng2=' + lng2, 'lat1=' + lat1, 'lat2=' + lat2, 'userLat=' + userLat, 'userLng=' + userLng];
             }
 
 
@@ -37,7 +37,7 @@ define([
                 }
             ).then(function success(resp) {
                     $log.log("loadBikes success", resp);
-                    deferred.resolve(resp.data.bikes);
+                    deferred.resolve(resp.data);
                 }, function fail(resp) {
                     $log.log("loadBikes fail", resp);
                     deferred.reject(resp);

@@ -15,8 +15,11 @@ define([
         vm.location;
         vm.coords;
         vm.locked;
+        vm.editMode;
 
         vm.apply = apply;
+        vm.edit = edit;
+        vm.set = set;
 
         var bikeData;
 
@@ -24,7 +27,13 @@ define([
 
         function init() {
 
+            vm.editMode = false;
+
             bikeData = bikeEditFormDataService.get();
+            if (!bikeData) {
+                $state.go("sharing.bike.edit");
+                return;
+            }
             vm.locked = bikeData.locked;
             if (bikeData.address && bikeData.lat && bikeData.lng) {
                 vm.address = bikeData.address;
@@ -68,6 +77,36 @@ define([
                 }
             });
 
+            if (!vm.locked) {
+                $ionicPopup.show({
+                    title: "Tap 'Edit' to change location",
+                    buttons: [
+                        {
+                            type: "button-balanced",
+                            text: "Ok"
+                        }
+                    ]
+                });
+            }
+        }
+
+        function edit() {
+            vm.editMode = true;
+            if (!vm.locked) {
+                $ionicPopup.show({
+                    title: "Now touch the map to locate bike",
+                    buttons: [
+                        {
+                            type: "button-balanced",
+                            text: "Ok"
+                        }
+                    ]
+                });
+            }
+        }
+
+        function set() {
+            vm.editMode = false;
         }
 
         function geoDecode(location) {

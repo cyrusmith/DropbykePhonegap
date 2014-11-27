@@ -18,6 +18,7 @@ define([
         vm.zoom;
         vm.address;
         vm.locationError;
+        vm.nearest;
 
         vm.setAddress = setAddress;
         vm.getCurrentLocation = getCurrentLocation;
@@ -39,6 +40,7 @@ define([
             vm.mapBounds = null;
             vm.zoom = 16;
             vm.address = "";
+            vm.locationError = null;
 
             if ($localStorage.selectedLocation) {
                 vm.currentLocation = [$localStorage.selectedLocation.lat, $localStorage.selectedLocation.lng];
@@ -71,9 +73,10 @@ define([
             if (_isUpdating || !vm.mapBounds) return;
             _scheduleUpdateTimeout = $timeout(function () {
                 _isUpdating = true;
-                searchDataService.loadBikes(vm.mapBounds.sw.lng, vm.mapBounds.ne.lng, vm.mapBounds.sw.lat, vm.mapBounds.ne.lat)
+                searchDataService.loadBikes(vm.mapBounds.sw.lng, vm.mapBounds.ne.lng, vm.mapBounds.sw.lat, vm.mapBounds.ne.lat, vm.currentLocation[0], vm.currentLocation[1])
                     .then(function (res) {
-                        _bikes = res;
+                        _bikes = res.bikes;
+                        vm.nearest = res.nearest;
                         vm.markers = [];
                         for (var i = 0; i < _bikes.length; i++) {
                             vm.markers.push([_bikes[i].lat, _bikes[i].lng]);

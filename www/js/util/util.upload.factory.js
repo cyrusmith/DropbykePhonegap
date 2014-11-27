@@ -34,18 +34,15 @@ define([
             function doUpload(fileURI) {
 
                 var win = function (r) {
-                    var bike = {};
+                    var respObject = {};
                     try {
                         if (r && r.response) {
-                            var respObj = JSON.parse(r.response);
-                            if (respObj && respObj.bike) {
-                                bike = respObj.bike;
-                            }
+                            respObject = JSON.parse(r.response);
                         }
                     }
                     catch (e) {
                     }
-                    d.resolve(bike);
+                    d.resolve(respObject);
                 }
 
                 var fail = function (error) {

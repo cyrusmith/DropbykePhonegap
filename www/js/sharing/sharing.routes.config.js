@@ -13,8 +13,13 @@ define([
                 .state('sharing', {
                     url: "/sharing",
                     abstract: true,
-                    templateUrl: "js/sharing/main.tpl.html",
-                    controller: 'SharingCtrl as vm'
+                    templateUrl: "js/menu.tpl.html",
+                    controller: 'SharingCtrl as vm',
+                    resolve: {
+                        profile: ['profileDataService', function (profileDataService) {
+                            return profileDataService.getProfile();
+                        }]
+                    }
                 })
                 .state('sharing.bike', {
                     url: "/bike",

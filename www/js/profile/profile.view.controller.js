@@ -15,18 +15,6 @@ define([
 
         vm.logout = logout;
 
-        if ($localStorage.facebook) {
-            if ($localStorage.facebook.email) {
-                vm.profile.email = $localStorage.facebook.email;
-            }
-            if ($localStorage.facebook.name) {
-                vm.profile.name = $localStorage.facebook.name;
-            }
-            if ($localStorage.facebook.image) {
-                vm.profile.photo = $localStorage.facebook.image;
-            }
-        }
-
         function logout() {
             authService.logout()
                 .then(function () {

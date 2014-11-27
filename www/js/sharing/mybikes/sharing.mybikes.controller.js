@@ -14,6 +14,7 @@ define([
 
         vm.location;
         vm.mapBounds;
+        vm.locationError;
 
         vm.getCurrentLocation = getCurrentLocation;
         vm.onMarkerClick = onMarkerClick;
@@ -25,6 +26,8 @@ define([
         init();
 
         function init() {
+
+            vm.locationError = null;
 
             $scope.$watch('vm.mapBounds', function (bounds) {
                 scheduleUpdate();

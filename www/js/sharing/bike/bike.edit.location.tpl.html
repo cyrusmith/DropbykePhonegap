@@ -1,7 +1,15 @@
 <ion-view title="Bike location">
 
     <ion-nav-buttons side="right">
-        <button class="button" ng-click="vm.apply()" ng-disabled="vm.locked">Apply</button>
+        <button class="button ion-checkmark ion-edit" ng-click="vm.edit()" ng-disabled="vm.locked"
+                ng-hide="vm.editMode"> Edit
+        </button>
+    </ion-nav-buttons>
+
+    <ion-nav-buttons side="right">
+        <button class="button ion-checkmark button-balanced" ng-click="vm.set()" ng-disabled="vm.locked"
+                ng-show="vm.editMode"> Stop edit
+        </button>
     </ion-nav-buttons>
 
     <div class="share-bike-edit-location">
@@ -9,11 +17,18 @@
             <i class="icon ion-location placeholder-icon"></i>
             <input type="text" placeholder="Address" ng-model="vm.address">
         </label>
+
+        <div class="bar-footer footer-one-button">
+            <button class="button button-block button-energized" ng-click="vm.apply()" ng-disabled="vm.locked">
+                Apply
+            </button>
+        </div>
+
         <p class="coords">Coords: {{vm.coords}} </p>
         <google-map location="vm.location" zoom="17"
                     show-location-marker="true"
-                    change-location="true"
-                    location-icon="img/ic-pin-small.png" marker-default-icon="img/ic-bike-small.png"/>
+                    edit-location-mode="vm.editMode"
+                    location-icon="img/ic-pin-red-small.png" marker-default-icon="img/ic-bike-small.png"/>
 
     </div>
 

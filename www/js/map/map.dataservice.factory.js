@@ -29,7 +29,7 @@ define([
 
             geolocation.getLocation({
                 enableHighAccuracy: true,
-                maximumAge: 180000
+                maximumAge: 0
             }).then(function (pos) {
                     d.resolve({
                         latitude: pos.coords.latitude,

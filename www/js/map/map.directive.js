@@ -19,7 +19,7 @@ define([
             restrict: 'E',
             scope: {
                 location: '=',
-                changeLocation: '=',
+                editLocationMode: '=',
                 markers: '=',
                 path: '=',
                 showLocationMarker: '=',
@@ -65,26 +65,20 @@ define([
                         });
                     });
 
-                    if (attrs.changeLocation && scope.changeLocation) {
-
-                        var start, end;
-
-                        google.maps.event.addListener(_map, 'mousedown', function (event) {
-                            start = Date.now();
-                        });
-
-                        google.maps.event.addListener(_map, 'drag', function (event) {
-                            start = Date.now();
-                        });
-
-                        google.maps.event.addListener(_map, 'mouseup', function (event) {
-                            end = Date.now();
-                            if (end - start > 500) {
-                                scope.location = [event.latLng.lat(), event.latLng.lng()];
-                                scope.$apply();
+                    var mouseTimer;
+                    google.maps.event.addListener(_map, 'mousedown', function (evt) {
+                        mouseTimer = setTimeout(function () {
+                            if (attrs.editLocationMode && scope.editLocationMode) {
+                                scope.$apply(function () {
+                                    scope.location = [evt.latLng.lat(), evt.latLng.lng()];
+                                });
                             }
-                        });
-                    }
+                        }, 500);
+                    });
+
+                    google.maps.event.addListener(_map, 'drag', function (evt) {
+                        clearTimeout(mouseTimer);
+                    });
 
                     if (attrs.panToBounds) {
                         scope.$watch('panToBounds', function (panToBounds) {
@@ -117,11 +111,11 @@ define([
                                         hasState = location.length > 2,
                                         icon = scope.markerDefaultIcon;
 
-                                    if(hasState) {
-                                        if(location[2] == "state1" && attrs.markerState1Icon) {
+                                    if (hasState) {
+                                        if (location[2] == "state1" && attrs.markerState1Icon) {
                                             icon = scope.markerState1Icon;
                                         }
-                                        else if(location[2] == "state2" && attrs.markerState2Icon){
+                                        else if (location[2] == "state2" && attrs.markerState2Icon) {
                                             icon = scope.markerState2Icon;
                                         }
                                     }

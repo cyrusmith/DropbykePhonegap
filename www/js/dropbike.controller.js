@@ -49,15 +49,15 @@ define([
                         };
                     }
                 });
-
-
         }
 
         function changeSharingToggle() {
             console.log(vm.sharingToggle);
             if (vm.sharingToggle === true) {
                 appstate.setMode('share');
-                $state.go('sharing.mybikes');
+                if (["app.profileview", "app.profileedit"].indexOf($state.current.name) == -1) {
+                    $state.go('sharing.mybikes');
+                }
             }
             else {
                 appstate.setMode('default');

@@ -12,9 +12,9 @@ define([
 
     angular.module('dropbike.login').controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$q', 'authService', 'profileDataService', '$ionicLoading', '$localStorage', '$log', '$state', 'facebook', 'WEBSITE', 'BANNER_IMAGE'];
+    LoginController.$inject = ['$q', 'authService', 'profileDataService', '$ionicLoading', '$ionicPopup', '$log', '$state', 'facebook', 'WEBSITE', 'BANNER_IMAGE'];
 
-    function LoginController($q, authService, profileDataService, $ionicLoading, $localStorage, $log, $state, facebook, WEBSITE, BANNER_IMAGE) {
+    function LoginController($q, authService, profileDataService, $ionicLoading, $ionicPopup, $log, $state, facebook, WEBSITE, BANNER_IMAGE) {
 
         var vm = this;
         vm.login = login;

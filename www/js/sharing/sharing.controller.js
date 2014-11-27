@@ -6,9 +6,9 @@ define([
 
     angular.module('dropbike.sharing').controller('SharingCtrl', SharingCtrl);
 
-    SharingCtrl.$inject = ['$scope', '$state', 'appstate'];
+    SharingCtrl.$inject = ['$scope', '$state', 'appstate', 'bikeEditFormDataService', '$rootScope'];
 
-    function SharingCtrl($scope, $state, appstate) {
+    function SharingCtrl($scope, $state, appstate, bikeEditFormDataService, $rootScope) {
         var vm = this;
 
         vm.sharingToggle;
@@ -19,6 +19,15 @@ define([
 
         function init() {
             vm.sharingToggle = appstate.getMode() == 'share';
+
+            $rootScope.$on('$stateChangeSuccess',
+                function (event, toState, toParams, fromState, fromParams) {
+                    if (toState.name.indexOf("sharing.bike.edit") == -1) {
+                        console.log("RESET EDIT");
+                        bikeEditFormDataService.set(null);
+                    }
+                });
+
         }
 
         function changeSharingToggle() {

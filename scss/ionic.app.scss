@@ -146,6 +146,14 @@ $dropbike-field-color: #29404F;
     top: 70px;
     left: 0;
     right: 0;
+    bottom: 40px;
+  }
+
+  .bar-footer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 40px;
     bottom: 0;
   }
   .coords {
@@ -210,6 +218,16 @@ $dropbike-field-color: #29404F;
     background-color: rgba(255, 0, 0, 0.5);
     color: #FFF;
     z-index: 2;
+  }
+
+  .botton-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #ddd;
+    z-index: 2;
+    margin: 0;
   }
 
   .location-error {
