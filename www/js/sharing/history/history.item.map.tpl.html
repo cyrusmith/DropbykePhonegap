@@ -1,0 +1,12 @@
+<ion-view title="{{vm.type}} {{vm.time | date : 'short'}}">
+
+    <div class="history-item-map-view">
+        <div class="address">{{vm.address}}</div>
+        <div class="map">
+            <google-map location="vm.location" zoom="17"
+                        show-location-marker="true"
+                        location-icon="img/ic-pin-small.png"/>
+
+        </div>
+    </div>
+</ion-view>

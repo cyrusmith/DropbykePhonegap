@@ -1,0 +1,37 @@
+<ion-view title="{{vm.item.bikeTitle}}" hide-back-button="true">
+
+    <ion-nav-buttons side="left">
+        <a class="button icon" ui-sref="sharing.history.list">History</a>
+    </ion-nav-buttons>
+
+    <ion-content class="history-item-view">
+        <h2 class="padding">{{vm.item.bikeTitle}}</h2>
+
+        <div class="sum">
+            <div>Sum: ${{vm.item.sum}}</div>
+        </div>
+        <div class="list">
+            <div class="item item-button-right">
+                <h3>Started</h3>
+
+                <p class="time">{{vm.item.startTime | date : 'short'}}</p>
+                <p class="address">{{vm.item.startAddress}}</p>
+
+                <a class="button button-positive" ui-sref="sharing.history.item.map({type:'start'})">
+                    <i class="icon ion-location"></i>&nbsp;&nbsp;Map
+                </a>
+            </div>
+            <div class="item item-button-right">
+                <h3>Stopped</h3>
+
+                <p class="time">{{vm.item.stopTime | date : 'short'}}</p>
+                <p class="address">{{vm.item.stopAddress}}</p>
+
+                <a class="button button-positive" ui-sref="sharing.history.item.map({type:'stop'})">
+                    <i class="icon ion-location"></i>&nbsp;&nbsp;Map
+                </a>
+            </div>
+        </div>
+
+    </ion-content>
+</ion-view>

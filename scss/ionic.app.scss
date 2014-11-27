@@ -30,6 +30,78 @@ $dropbike-field-color: #29404F;
   padding: 0;
 }
 
+.hist-item {
+  left: 0;
+  right: 0;
+  h3 {
+    font-weight: bold;
+  }
+  .time {
+    font-size: .875rem;
+  }
+}
+
+.history-item-view {
+  h2 {
+    margin: 0;
+    padding-bottom: 0;
+    padding-left: 16px;
+    font-size: 24px;
+  }
+  .sum {
+    padding: .4rem .875rem;
+    padding-left: 18px;
+  }
+  .list {
+    .item {
+      h3 {
+        font-weight: bold;
+      }
+      p {
+        margin: .1rem 0;
+      }
+      .time {
+        margin-top: .2rem;
+        font-style: italic;
+      }
+      button {
+        margin-top: 1.4rem;
+        font-size: .85rem;
+      }
+    }
+  }
+}
+
+.history-item-map-view {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  .address {
+    position: absolute;
+    top: 0;
+    height: 40px;
+    width: 100%;
+    line-height: 40px;
+    padding-left: 1rem;
+  }
+  .map {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    .dropbike-map-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+  }
+}
+
 .mybikes-pane-content {
   position: absolute;
   top: 40px;
