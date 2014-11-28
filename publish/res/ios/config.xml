@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<widget xmlns="http://www.w3.org/ns/widgets"
+        xmlns:gap="http://phonegap.com/ns/1.0"
+        id="com.dropbyke.dropbike"
+        versionCode="2"
+        version="0.0.2">
+
+    <name>Dropbyke</name>
+
+    <description>
+        Dropbyke mobile application
+    </description>
+
+    <author href="http://interosite.ru" email="info@interosite.ru">
+        Alexander Sutyagin
+    </author>
+
+    <gap:platform name="ios"/>
+
+    <preference name="phonegap-version" value="3.6.3" />
+    <preference name="orientation" value="default" />
+
+    <preference name="APP_ID" value="297052723828418" />
+    <preference name="APP_NAME" value="Dropbike" />
+    
+    <icon src="icondefault.png" />
+
+    <!-- iPhone 6 / 6+ -->
+<!--    <icon src="icon-60@3x.png" gap:platform="ios" width="180" height="180" />-->
+
+    <!-- iPhone / iPod Touch  -->
+    <icon src="icon-60.png" gap:platform="ios" width="60" height="60" />
+    <icon src="icon-60@2x.png" gap:platform="ios" width="120" height="120" />
+
+    <!-- iPad -->
+    <icon src="icon-76.png" gap:platform="ios" width="76" height="76" />
+    <icon src="icon-76@2x.png" gap:platform="ios" width="152" height="152" />
+    
+
+    <!-- iPhone / iPod Touch -->
+    <icon src="icon.png" gap:platform="ios" width="57" height="57" />
+    <icon src="icon@2x.png" gap:platform="ios" width="114" height="114" />
+    
+    <!-- iPad -->
+    <icon src="icon-72.png" gap:platform="ios" width="72" height="72" />
+    <icon src="icon-72@2x.png" gap:platform="ios" width="144" height="144" />
+    
+
+    <icon src="icon-mdpi.png" gap:platform="android" gap:qualifier="mdpi" />
+    <icon src="icon-hdpi.png" gap:platform="android" gap:qualifier="hdpi" />
+    <icon src="icon-xhdpi.png" gap:platform="android" gap:qualifier="xhdpi" />
+    <icon src="icon-xxhdpi.png" gap:platform="android" gap:qualifier="xxhdpi" />
+    <icon src="icon-xxxhdpi.png" gap:platform="android" gap:qualifier="xxxhdpi" />
+
+    <gap:plugin name="com.ionic.keyboard" version="1.0.3" />
+    <gap:plugin name="org.apache.cordova.camera" version="0.3.2" />
+    <gap:plugin name="org.apache.cordova.device" version="0.2.12" />
+    <gap:plugin name="org.apache.cordova.geolocation" version="0.3.10" />
+    <gap:plugin name="org.apache.cordova.network-information" version="0.2.12" />
+    <gap:plugin name="org.apache.cordova.file-transfer" version="0.4.6" />
+    <gap:plugin name="org.apache.cordova.inappbrowser" version="0.5.2" />
+    <gap:plugin name="com.phonegap.plugins.facebookconnect" version="0.9.0">
+        <param name="APP_ID" value="297052723828418" />
+        <param name="APP_NAME" value="Dropbike" />
+    </gap:plugin>
+
+    <access origin="*" />
+
+</widget>
