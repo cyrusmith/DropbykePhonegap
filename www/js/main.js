@@ -4,8 +4,9 @@ require.config({
         'angular': '../lib/ionic/js/ionic.bundle',
         'domReady': '../lib/requirejs-domready/domReady',
         'ngStorage': '../lib/ngstorage/ngStorage',
-        'facebookInappbrowser': '../lib/facebook.inappbrowser',
-        'facebookConnectPlugin': '../lib/facebookConnectPlugin'
+        'facebookInappbrowser': '../lib/inappbrowser/phonegap.facebook.inappbrowser',
+        'facebookConnectPlugin': '../lib/facebookPlugin/index',
+        'requireLib': '../lib/requirejs/require'
     },
 
     urlArgs: "bust=" + (new Date()).getTime(),
@@ -20,8 +21,8 @@ require.config({
         'facebookConnectPlugin': {
             exports: 'facebookConnectPlugin'
         }
-    }
-
+    },
+    include: ['requireLib', 'bootstrap', 'main']
 });
 
 require(['bootstrap']);

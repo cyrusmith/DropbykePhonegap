@@ -6,6 +6,8 @@
     "requirejs": "latest",
     "requirejs-domready": "latest",
     "ngstorage": "*",
-    "sass-mediaqueries": "~1.4.0"
+    "sass-mediaqueries": "~1.4.0",
+	"inappbrowser": "https://github.com/caiovaccaro/phonegap.facebook.inappbrowser.git",
+	"facebookPlugin": "https://raw.githubusercontent.com/Wizcorp/phonegap-facebook-plugin/master/www/js/facebookConnectPlugin.js"
   }
 }
