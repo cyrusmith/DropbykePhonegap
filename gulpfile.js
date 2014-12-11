@@ -27,8 +27,8 @@ gulp.task('compile', function (callback) {
         callback);
 });
 
-gulp.task('compilezip', function (callback) {
-    runSequence('clearbin', 'sass', 'templates', 'requirejs', 'copyfiles', 'buildzip',
+gulp.task('compilewar', function (callback) {
+    runSequence('clearbin', 'sass', 'templates', 'requirejs', 'copyfiles', 'buildwar',
         callback);
 });
 
@@ -65,9 +65,9 @@ gulp.task('clearbin', function () {
 
 });
 
-gulp.task('buildzip', function () {
+gulp.task('buildwar', function () {
     return gulp.src(WAR_DEST + '/**')
-        .pipe(zip('dropbyke.zip'))
+        .pipe(zip('dropbyke.war'))
         .pipe(gulp.dest(WAR_DEST));
 
 });
