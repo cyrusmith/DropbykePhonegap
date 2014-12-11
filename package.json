@@ -19,6 +19,17 @@
     "gulp-zip": "~2.0.2",
     "del": "~0.1.3",
     "gulp": "~3.8.10",
-    "run-sequence": "~1.0.1"
+    "run-sequence": "~1.0.1",
+	"gulp-rename": "latest",
+	"gulp-concat": "latest",
+	"gulp-sass": "latest",
+	"gulp-minify-css": "latest",
+	"gulp-rename": "latest",
+	"shelljs": "latest",
+	"gulp-angular-templatecache": "latest",
+	"gulp-replace": "latest",
+	"gulp-clean": "latest",
+	"gulp-shell": "latest",
+	"gulp-zip": "latest"
   }
 }
