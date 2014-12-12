@@ -84,7 +84,8 @@ define([
                         }
                     ]
                 });
-                return false;
+                return $q.reject(err);
+
             }).then(function (userInfo) {
 
                     if (!userInfo.phone) {

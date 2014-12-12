@@ -342,6 +342,38 @@ $dropbike-field-color: #29404F;
   }
 }
 
+.db-page-phone-confirm {
+  .phoneinput {
+    padding: 0 2rem;
+    .col:first-child {
+      small {
+        text-align: center;
+      }
+    }
+    label {
+      padding-left: 0;
+      display: block;
+      width: 100%;
+      &.input-countrycode {
+        input {
+          text-align: center;
+        }
+      }
+    }
+    input {
+      display: block;
+      padding-right: 0;
+      text-indent: 4px;
+    }
+    small {
+      display: block;
+      line-height: .8rem;
+      padding-top: .5rem;
+      color: #777;
+    }
+  }
+}
+
 .db-page-addcard {
   .title {
     margin-top: 1rem;
@@ -378,7 +410,7 @@ $dropbike-field-color: #29404F;
     repeat: no-repeat;
     position: 50% 50%;
   }
-  ;
+;
   display: inline-block;
   font-family: "Ionicons";
   speak: none;

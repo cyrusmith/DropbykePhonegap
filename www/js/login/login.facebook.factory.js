@@ -69,9 +69,9 @@ define([
 
             if (window.facebookConnectPlugin) {
 
-                facebookConnectPlugin.login(['public_profile', 'user_photos', 'email'], function (res) {
-
-                        facebookConnectPlugin.login(['publish_actions'], function (res) {
+                facebookConnectPlugin.login(['public_profile', 'user_photos', 'email', 'publish_actions'], function (res) {
+                        $log.log(res);
+                        //facebookConnectPlugin.login(['publish_actions'], function (res) {
 
                             window.localStorage.setItem('facebookAccessToken', res.authResponse.accessToken);
                             window.localStorage.setItem('uid', res.authResponse.userID);
@@ -98,9 +98,9 @@ define([
                                     }
                                 });
 
-                        }, function (err) {
+                        /*}, function (err) {
                             d.reject(err);
-                        });
+                        });*/
 
                     }, function (err) {
                         d.reject(err);

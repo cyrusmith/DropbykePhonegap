@@ -10,15 +10,64 @@ define([
 
         var vm = this;
 
-        vm.phone = "";
+        vm.countrycode;
+        vm.phone;
         vm.submit = submit;
+        vm.validateCountryCode = validateCountryCode;
+        vm.validatePhone = validatePhone;
+
+        function validateCountryCode() {
+
+            var code = vm.countrycode + '';
+
+            if (code && code.length > 1) {
+                vm.countrycode = +code.substr(0, 1)
+            }
+        }
+
+        function validatePhone() {
+            var phoneRE = /[^0-9]/;
+            var phone = vm.phone + '';
+            if (phone) {
+                phone = phone.replace(phoneRE, '');
+                if (phone.length > 10) {
+                    phone = phone.substr(0, 10);
+                }
+            }
+            vm.phone = +phone;
+        }
 
         function submit() {
 
-            var phoneRE = /[^0-9]/,
-                phone = (vm.phone + "").replace(phoneRE, '');
+            if (!vm.countrycode) {
+                $ionicPopup.show({
+                    title: 'Country code not set',
+                    buttons: [
+                        {
+                            text: 'Ok',
+                            type: 'button-assertive'
+                        }
+                    ]
+                });
+                return;
+            }
 
-            if (phone.length < 11) {
+            if (!vm.phone) {
+                $ionicPopup.show({
+                    title: 'Phone number not set',
+                    buttons: [
+                        {
+                            text: 'Ok',
+                            type: 'button-assertive'
+                        }
+                    ]
+                });
+                return;
+            }
+
+            var phone = "" + vm.countrycode + vm.phone;
+
+            if (phone.length !== 11) {
 
                 $ionicPopup.show({
                     title: 'Invalid phone number',
