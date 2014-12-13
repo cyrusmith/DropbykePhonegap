@@ -6,9 +6,9 @@ define([
 
     angular.module('dropbike.login').service('facebook', facebook);
 
-    facebook.$inject = ['$q', '$http', '$log', '$localStorage', 'authService', 'FACEBOOK_ID', 'FACEBOOK_REDIRECT_URL', 'BACKEND_URL'];
+    facebook.$inject = ['$q', '$ionicLoading', '$http', '$log', '$localStorage', 'authService', 'FACEBOOK_ID', 'FACEBOOK_REDIRECT_URL', 'BACKEND_URL'];
 
-    function facebook($q, $http, $log, $localStorage, authService, FACEBOOK_ID, FACEBOOK_REDIRECT_URL, BACKEND_URL) {
+    function facebook($q, $ionicLoading, $http, $log, $localStorage, authService, FACEBOOK_ID, FACEBOOK_REDIRECT_URL, BACKEND_URL) {
 
         init();
 
@@ -48,14 +48,14 @@ define([
             }
             else {
                 if (FacebookInAppBrowser.getInfo(function (userInfo) {
-                    if (userInfo === false) {
-                        d.reject(false);
-                    }
-                    else {
-                        $localStorage.facebook = userInfo;
-                        d.resolve(userInfo);
-                    }
-                }) === false) {
+                        if (userInfo === false) {
+                            d.reject(false);
+                        }
+                        else {
+                            $localStorage.facebook = userInfo;
+                            d.resolve(userInfo);
+                        }
+                    }) === false) {
                     d.reject(false);
                 }
             }
@@ -69,41 +69,66 @@ define([
 
             if (window.facebookConnectPlugin) {
 
-                facebookConnectPlugin.login(['public_profile', 'user_photos', 'email', 'publish_actions'], function (res) {
+                facebookConnectPlugin.login(['public_profile', 'user_photos', 'email'], function (res) {
                         $log.log(res);
-                        //facebookConnectPlugin.login(['publish_actions'], function (res) {
+                        facebookConnectPlugin.login(['publish_actions'], function (res) {
 
                             window.localStorage.setItem('facebookAccessToken', res.authResponse.accessToken);
                             window.localStorage.setItem('uid', res.authResponse.userID);
 
+                            $ionicLoading.show({
+                                template: '<i class="icon ion-loading-c"></i> Registering...'
+                            });
                             $http.post(BACKEND_URL + '/api/loginFacebook', {
                                 "uid": res.authResponse.userID,
                                 "token": res.authResponse.accessToken
                             }).then(function (resp) {
-                                    $log.log("/api/loginFacebook", resp);
-                                    if (resp.data.access_token) {
-                                        authService.setToken(resp.data.access_token);
-                                        d.resolve(resp.data.user_info.user);
-                                    }
-                                    else {
-                                        d.reject(false);
-                                    }
-                                }, function (err) {
-                                    $log.error("/api/loginFacebook", err);
-                                    if (err.data.error) {
-                                        d.reject(err.data.error);
-                                    }
-                                    else {
-                                        d.reject(false);
-                                    }
-                                });
+                                $log.log("/api/loginFacebook", resp);
+                                if (resp.data.access_token) {
+                                    authService.setToken(resp.data.access_token);
+                                    d.resolve(resp.data.user_info.user);
+                                }
+                                else {
+                                    d.reject(false);
+                                }
+                            }, function (err) {
+                                $log.error("/api/loginFacebook", err);
+                                if (err.data.error) {
+                                    d.reject(err.data.error);
+                                }
+                                else {
+                                    d.reject(false);
+                                }
+                            }).finally(function () {
+                                $ionicLoading.hide();
+                            });
 
-                        /*}, function (err) {
-                            d.reject(err);
-                        });*/
+                        }, function (err) {
+                            try {
+                                $log.error(JSON.stringify(err));
+                            }
+                            catch (e) {
+                            }
+
+                            var msg = "Login failed";
+                            if (err.errorMessage) {
+                                msg = err.errorMessage;
+                            }
+                            d.reject(msg);
+                        });
 
                     }, function (err) {
-                        d.reject(err);
+                        try {
+                            $log.error(JSON.stringify(err));
+                        }
+                        catch (e) {
+                        }
+                        var msg = "Could not get required permissions";
+                        if (err.errorMessage) {
+                            msg = err.errorMessage;
+                        }
+
+                        d.reject(msg);
                     }
                 )
             }
@@ -143,19 +168,19 @@ define([
                 d.reject();
             }
             else if (FacebookInAppBrowser.post({
-                message: message,
-                description: description,
-                name: name,
-                link: link,
-                picture: picture
-            }, function (resp) {
-                if (resp === false) {
-                    d.reject();
-                }
-                else {
-                    d.resolve(resp);
-                }
-            }) === false) {
+                    message: message,
+                    description: description,
+                    name: name,
+                    link: link,
+                    picture: picture
+                }, function (resp) {
+                    if (resp === false) {
+                        d.reject();
+                    }
+                    else {
+                        d.resolve(resp);
+                    }
+                }) === false) {
                 d.reject();
             }
 

@@ -19,6 +19,10 @@ define([
 
         function resendSMS() {
 
+            if(!$localStorage.phone) {
+                changeNumber();
+            }
+
             $ionicLoading.show({
                 template: '<i class="icon ion-loading-c"></i> Wait...'
             });
@@ -28,10 +32,10 @@ define([
                     $ionicLoading.hide();
                     $log.log("submitSMS result", result);
                     $state.go('app.phoneverifycode')
-                }, function () {
+                }, function (error) {
                     $ionicLoading.hide();
                     $ionicPopup.show({
-                        title: 'Failed to send sms',
+                        title: error,
                         buttons: [
                             {
                                 text: 'Ok',

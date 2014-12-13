@@ -86,7 +86,7 @@ define([
                 template: '<i class="icon ion-loading-c"></i> Wait...'
             });
 
-            confirmService.submitSMS(vm.phone)
+            confirmService.submitSMS(phone)
                 .then(function (result) {
                     $ionicLoading.hide();
                     $log.log("submitSMS result", result);

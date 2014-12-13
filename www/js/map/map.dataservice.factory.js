@@ -54,7 +54,7 @@ define([
                     geolocation.getLocation({
                         enableHighAccuracy: true,
                         maximumAge: 0,
-                        timeout: 60000
+                        timeout: 30000
                     }).then(function (pos) {
                             if (pos.coords.accuracy <= GEO_ACCURACY) {
                                 d.resolve({

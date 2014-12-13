@@ -25,9 +25,9 @@ define([
         function init() {
 
             if (authService.getToken()) {
-                $ionicLoading.show({
+                /*$ionicLoading.show({
                     template: '<i class="icon ion-loading-c"></i> Loading...'
-                });
+                });*/
                 profileDataService.getProfile()
                     .then(function (resp) {
                         if (resp && resp.user) {
@@ -50,10 +50,6 @@ define([
         }
 
         function login() {
-
-            $ionicLoading.show({
-                template: '<i class="icon ion-loading-c"></i> Loading...'
-            });
 
             facebook.login().then(function (userInfo) {
                 $log.log("Login succeeded", userInfo);
