@@ -82,7 +82,7 @@ define([
                 vm.location = [coords.latitude, coords.longitude];
             },function (error) {
                 $ionicPopup.show({
-                    title: error,
+                    title: error.message,
                     buttons: [
                         {
                             text: 'Ok',

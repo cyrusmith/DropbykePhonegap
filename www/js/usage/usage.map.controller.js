@@ -102,7 +102,7 @@ define([
                     updateBounds();
 
                 },function (error) {
-                    vm.locationError = error;
+                    vm.locationError = error.message;
                     vm.currentLocation = null;
                     vm.path = null;
                 }).finally(function () {

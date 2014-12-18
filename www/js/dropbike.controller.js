@@ -15,11 +15,10 @@ define([
         vm.changeSharingToggle = changeSharingToggle;
 
         init();
-        changeSharingToggle();
 
         function init() {
 
-            vm.sharingToggle = appstate.getMode() == 'share';
+            vm.sharingToggle = false;
 
             $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
 
@@ -52,7 +51,7 @@ define([
         }
 
         function changeSharingToggle() {
-            console.log(vm.sharingToggle);
+
             if (vm.sharingToggle === true) {
                 appstate.setMode('share');
                 if (["app.profileview", "app.profileedit"].indexOf($state.current.name) == -1) {

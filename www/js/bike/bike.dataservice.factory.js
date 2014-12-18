@@ -11,11 +11,12 @@ define([
 
     angular.module('dropbike.bike').factory('bikeDataService', bikeDataService);
 
-    bikeDataService.$inject = ['authService', '$http', 'BACKEND_URL', '$log'];
+    bikeDataService.$inject = ['authService', '$q', '$http', 'BACKEND_URL', '$log'];
 
-    function bikeDataService(authService, $http, BACKEND_URL, $log) {
+    function bikeDataService(authService, $q, $http, BACKEND_URL, $log) {
         return {
-            getBike: getBike
+            getBike: getBike,
+            isValidDistance: isValidDistance
         }
 
         function getBike(id) {
@@ -24,12 +25,25 @@ define([
                     "Authorization": "Bearer " + authService.getToken()
                 }
             }).then(function (response) {
-                    $log.log("Bike loaded", response);
-                    return response.data;
-                }, function (error) {
-                    $log.error("Error getting bike", error);
-                    return null;
-                });
+                $log.log("Bike loaded", response);
+                return response.data;
+            }, function (error) {
+                $log.error("Error getting bike", error);
+                return null;
+            });
+        }
+
+        function isValidDistance(bikeId, lat, lng) {
+            return $http.get(BACKEND_URL + '/api/bikes/distancevalid?bikeId=' + bikeId + '&lat=' + lat + '&lng=' + lng, {
+                headers: {
+                    "Authorization": "Bearer " + authService.getToken()
+                }
+            }).then(function (response) {
+                $log.log("Bike loaded", response);
+                return response.data.isValidDistance;
+            }, function (error) {
+                return $q.reject(error.data.error ? error.data.error : "Error getting distance to bike");
+            });
         }
     }
 

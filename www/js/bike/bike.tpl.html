@@ -11,7 +11,8 @@
     <ion-content class="bike-pane-content">
 
         <div class="map-container">
-            <p ng-show="vm.locationError" class="location-error"><i class="icon ion-alert-circled"></i> {{vm.locationError}}</p>
+            <p ng-show="vm.locationError" class="location-error"><i class="icon ion-alert-circled"></i>
+                {{vm.locationError}}</p>
             <google-map markers="vm.markers" location="vm.bikeLocation" zoom="vm.zoom"
                         show-location-marker="false"
                         location-icon="img/ic-pin-small.png" marker-default-icon="img/ic-bike-small.png"/>
@@ -33,7 +34,8 @@
     </ion-content>
 
     <div class="bar bar-footer footer-one-button">
-        <button class="button button-block button-balanced ion-flag" ng-click="vm.getAccess()" ng-disabled="vm.locationError">
+        <button class="button button-block button-balanced ion-flag" ng-click="vm.getAccess()"
+                ng-disabled="vm.locationError || !vm.location || !vm.isValidDistance">
             Get access
         </button>
     </div>

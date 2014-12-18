@@ -30,15 +30,22 @@ define([
                 mapDataService.geocode(vm.address)
                     .then(function (results) {
                         vm.results = [];
-                        for(var i=0; i < results.length; i++) {
+                        for (var i = 0; i < results.length; i++) {
                             vm.results.push({
                                 address: results[i].formatted_address,
                                 lat: results[i].geometry.location.lat(),
                                 lng: results[i].geometry.location.lng()
                             });
                         }
-                    }, function(error) {
-                        console.error(error);
+                    }, function (error) {
+                        $ionicPopup.show({
+                            title: 'Geocode error',
+                            subtitle: error.message || '',
+                            buttons: [{
+                                type: 'button-assertive',
+                                text: 'Ok'
+                            }]
+                        });
                     });
             }, 500);
         }
@@ -49,11 +56,11 @@ define([
                 title: 'Apply selection?',
                 subTitle: 'Location: ' + addr.lat + ", " + addr.lng,
                 buttons: [
-                    { text: 'Cancel' },
+                    {text: 'Cancel'},
                     {
                         text: '<b>Apply</b>',
                         type: 'button-positive',
-                        onTap: function(e) {
+                        onTap: function (e) {
                             $localStorage.selectedLocation = addr;
                             addressDataService.addToSearchHistory(addr);
                             $state.go('app.search');

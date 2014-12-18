@@ -18,7 +18,7 @@ define([
         init();
 
         function init() {
-            vm.sharingToggle = appstate.getMode() == 'share';
+            vm.sharingToggle = true;
 
             $rootScope.$on('$stateChangeSuccess',
                 function (event, toState, toParams, fromState, fromParams) {

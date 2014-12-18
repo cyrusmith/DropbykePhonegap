@@ -9,9 +9,9 @@ define([
 
     angular.module("dropbike.usage").controller('UsageDropController', UsageDropController);
 
-    UsageDropController.$inject = ['rideData', '$localStorage', '$ionicPopup', '$ionicLoading', '$state', 'mapDataService', 'usageDataService', '$timeout', 'BACKEND_URL'];
+    UsageDropController.$inject = ['rideData', '$localStorage', '$ionicPopup', '$ionicLoading', '$state', 'mapDataService', 'mapDataServiceErrorCodes', 'usageDataService', '$timeout', 'BACKEND_URL'];
 
-    function UsageDropController(rideData, $localStorage, $ionicPopup, $ionicLoading, $state, mapDataService, usageDataService, $timeout, BACKEND_URL) {
+    function UsageDropController(rideData, $localStorage, $ionicPopup, $ionicLoading, $state, mapDataService, mapDataServiceErrorCodes, usageDataService, $timeout, BACKEND_URL) {
 
         var vm = this;
         vm.currentLocation;
@@ -23,6 +23,7 @@ define([
         vm.lockPassword;
         vm.address;
         vm.loading;
+        vm.initialized;
 
         vm.pickPhoto = pickPhoto;
         vm.drop = drop;
@@ -40,6 +41,7 @@ define([
             vm.message = null;
             vm.address = null;
             vm.loading = false;
+            vm.initialized = true;
 
             vm.photo = BACKEND_URL + '/images/rides/' + vm.ride.id + '.jpg?nocache=' + (new Date().getTime());
 
@@ -47,10 +49,6 @@ define([
                 vm.message = $localStorage.dropBikePageHolder.message;
                 vm.currentLocation = $localStorage.dropBikePageHolder.currentLocation;
                 $localStorage.dropBikePageHolder = null;
-            }
-
-            if(!vm.currentLocation) {
-                getCurrentLocation();
             }
 
             if (!vm.ride.hasPhoto || !vm.message) {
@@ -68,7 +66,16 @@ define([
                             type: 'button-energized'
                         }
                     ]
+                }).then(function () {
+                    if (!vm.currentLocation) {
+                        getCurrentLocation();
+                    }
                 });
+            }
+            else {
+                if (!vm.currentLocation) {
+                    getCurrentLocation();
+                }
             }
 
         }
@@ -161,8 +168,24 @@ define([
                     }
 
 
-                },function (error) {
-                    vm.locationError = error;
+                }, function (error) {
+                    vm.locationError = error.message;
+
+                    $timeout(function () {
+                        vm.locationError = null;
+                    }, 5000);
+
+                    if (error.code === mapDataServiceErrorCodes.ERROR_LOCATION_ACCURACY) {
+                        $ionicPopup.show({
+                            title: 'Could not get accurate location',
+                            subTitle: 'Make sure you\'re using GPS and try again by pressing <i class="icon ion-android-locate"></i>. You cannot drop bike until your location is got accurate enough.',
+                            buttons: [{
+                                type: 'button-assertive',
+                                text: 'Ok'
+                            }]
+                        });
+                    }
+
                 }).finally(function () {
                     $ionicLoading.hide();
                 });

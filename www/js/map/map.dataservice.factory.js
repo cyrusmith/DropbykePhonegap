@@ -11,9 +11,16 @@ define([
 
     angular.module('map').factory('mapDataService', mapDataService);
 
-    mapDataService.$inject = ['$q', 'geolocation', '$window', '$interval', '$rootScope', 'dropbikeUtil', 'GOOGLE_API_KEY', 'GEO_ACCURACY'];
+    angular.module('map').factory('mapDataServiceErrorCodes', function () {
+        return {
+            "ERROR_LOCATION_ACCURACY": 1,
+            "ERROR_NOGPS": 2
+        }
+    });
 
-    function mapDataService($q, geolocation, $window, $interval, $rootScope, dropbikeUtil, GOOGLE_API_KEY, GEO_ACCURACY) {
+    mapDataService.$inject = ['$q', 'geolocation', '$log', '$window', '$interval', '$rootScope', 'dropbikeUtil', 'mapDataServiceErrorCodes', 'GOOGLE_API_KEY', 'GEO_ACCURACY'];
+
+    function mapDataService($q, geolocation, $log, $window, $interval, $rootScope, dropbikeUtil, mapDataServiceErrorCodes, GOOGLE_API_KEY, GEO_ACCURACY) {
 
         return {
             geocode: geocode,
@@ -31,13 +38,16 @@ define([
                 enableHighAccuracy: true,
                 maximumAge: 0
             }).then(function (pos) {
-                    d.resolve({
-                        latitude: pos.coords.latitude,
-                        longitude: pos.coords.longitude
-                    });
-                }, function (error) {
-                    d.reject(error);
+                d.resolve({
+                    latitude: pos.coords.latitude,
+                    longitude: pos.coords.longitude
                 });
+            }, function (error) {
+                d.reject({
+                    code: 0,
+                    message: error
+                });
+            });
 
             return d.promise;
         }
@@ -48,7 +58,10 @@ define([
             checkGPS()
                 .then(function (isGPSEnabled) {
                     if (!isGPSEnabled && window.cordova) {
-                        d.reject("GPS is not enabled");
+                        d.reject({
+                            code: mapDataServiceErrorCodes.ERROR_NOGPS,
+                            message: "GPS is not enabled"
+                        });
                         return;
                     }
                     geolocation.getLocation({
@@ -56,20 +69,30 @@ define([
                         maximumAge: 0,
                         timeout: 30000
                     }).then(function (pos) {
-                            if (pos.coords.accuracy <= GEO_ACCURACY) {
-                                d.resolve({
-                                    latitude: pos.coords.latitude,
-                                    longitude: pos.coords.longitude
-                                });
-                            }
-                            else {
-                                d.reject("Location is not accurate. Make sure you're getting location from GPS.");
-                            }
-                        }, function (error) {
-                            d.reject(error);
+                        $log.log(pos.coords);
+                        if (pos.coords.accuracy <= GEO_ACCURACY) {
+                            d.resolve({
+                                latitude: pos.coords.latitude,
+                                longitude: pos.coords.longitude
+                            });
+                        }
+                        else {
+                            d.reject({
+                                code: mapDataServiceErrorCodes.ERROR_LOCATION_ACCURACY,
+                                message: "Location is not accurate. Make sure you're getting location from GPS."
+                            });
+                        }
+                    }, function (error) {
+                        d.reject({
+                            code: 0,
+                            message: error
                         });
+                    });
                 }, function () {
-                    d.reject("GPS not enabled");
+                    d.reject({
+                        code: mapDataServiceErrorCodes.ERROR_NOGPS,
+                        message: "GPS not enabled"
+                    });
                 });
 
             return d.promise;
@@ -108,14 +131,20 @@ define([
                 .then(function () {
                     var geocoder = getGeocoder();
                     if (!geocoder) {
-                        deferred.reject("No geocoder");
+                        deferred.reject({
+                            code: 0,
+                            message: "No geocoder"
+                        });
                     }
 
-                    geocoder.geocode({ 'address': address}, function (results, status) {
+                    geocoder.geocode({'address': address}, function (results, status) {
                         if (status == google.maps.GeocoderStatus.OK) {
                             deferred.resolve(results);
                         } else {
-                            deferred.reject('Geocode was not successful for the following reason: ' + status);
+                            deferred.reject({
+                                code: 0,
+                                message: 'Geocode was not successful for the following reason: ' + status
+                            });
                         }
                     });
 
@@ -129,21 +158,30 @@ define([
             var deferred = $q.defer();
 
             if (!location.latitude || !location.longitude) {
-                deferred.reject('Location not set');
+                deferred.reject({
+                    code: 0,
+                    message: 'Location not set'
+                });
             }
             else {
                 mapApiReady()
                     .then(function () {
                         var geocoder = getGeocoder();
                         if (!geocoder) {
-                            deferred.reject("No geocoder");
+                            deferred.reject({
+                                code: 0,
+                                message: "No geocoder"
+                            });
                         }
                         var latlng = new google.maps.LatLng(location.latitude, location.longitude);
                         geocoder.geocode({'latLng': latlng}, function (results, status) {
                             if (status == google.maps.GeocoderStatus.OK) {
                                 deferred.resolve(results);
                             } else {
-                                deferred.reject('Geodecode was not successful for the following reason: ' + status);
+                                deferred.reject({
+                                    code: 0,
+                                    message: 'Geodecode was not successful for the following reason: ' + status
+                                });
                             }
                         });
 
@@ -191,8 +229,8 @@ define([
                 };
 
                 dropbikeUtil.loadScript("http://maps.googleapis.com/maps/api/js?key="
-                    + GOOGLE_API_KEY
-                    + "&sensor=true&&callback=dropbykeMapLoadedCallback");
+                + GOOGLE_API_KEY
+                + "&sensor=true&&callback=dropbykeMapLoadedCallback");
             }
             return d.promise;
         }

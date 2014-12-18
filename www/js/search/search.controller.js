@@ -124,7 +124,7 @@ define([
                     $ionicLoading.hide();
                 }, function (error) {
                     $ionicLoading.hide();
-                    vm.locationError = error;
+                    vm.locationError = error.message;
                     vm.currentLocation = null;
                 });
         }

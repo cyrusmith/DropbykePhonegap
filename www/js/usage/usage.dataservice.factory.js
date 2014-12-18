@@ -19,20 +19,22 @@ define([
             drop: drop
         }
 
-        function startUsage(bikeId) {
+        function startUsage(bikeId, userLat, userLng) {
             return $http.post(BACKEND_URL + '/api/bikes/startusage/', {
-                bikeId: +bikeId
+                bikeId: +bikeId,
+                userLat: userLat,
+                userLng: userLng
             }, {
                 headers: {
                     "Authorization": "Bearer " + authService.getToken()
                 }
             }).then(function (response) {
-                    $log.log("Ride started", response);
-                    return response.data.ride;
-                }, function (resp) {
-                    $log.error("Error start usage");
-                    return $q.reject(resp.data.error ? resp.data.error : "Error start usage");
-                });
+                $log.log("Ride started", response);
+                return response.data.ride;
+            }, function (resp) {
+                $log.error("Error start usage");
+                return $q.reject(resp.data.error ? resp.data.error : "Error start usage");
+            });
         }
 
         function drop(lat, lng, address, lockPassword, message, distance) {
@@ -43,12 +45,12 @@ define([
                     "Authorization": "Bearer " + authService.getToken()
                 }
             }).then(function (response) {
-                    $log.log("Ride stopped", response);
-                    return response.data;
-                }, function (resp) {
-                    $log.error("Error stoppint usage");
-                    return $q.reject(resp.data.error ? resp.data.error : "Error stop usage");
-                });
+                $log.log("Ride stopped", response);
+                return response.data;
+            }, function (resp) {
+                $log.error("Error stoppint usage");
+                return $q.reject(resp.data.error ? resp.data.error : "Error stop usage");
+            });
         }
 
     }
