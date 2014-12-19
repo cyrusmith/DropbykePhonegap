@@ -102,7 +102,7 @@ define([
 
             var d = $q.defer();
 
-            if (window.cordova && window.GPSChecker) {
+            if (false && window.cordova && window.GPSChecker) {
                 window.GPSChecker.checkEnabled(function (isEnabled) {
                     if (isEnabled) {
                         d.resolve(true)

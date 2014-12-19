@@ -45,19 +45,10 @@ define([
             if ($localStorage.selectedLocation) {
                 vm.currentLocation = [$localStorage.selectedLocation.lat, $localStorage.selectedLocation.lng];
                 vm.address = $localStorage.selectedLocation.address;
-            }
-
-            if ($localStorage.selectedLocation) {
-                for (var i = 0; i < _bikes.length; i++) {
-                    vm.markers.push([_bikes[i].lat, _bikes[i].lng]);
-                }
-            }
-            else {
+            } else {
                 doGetLocation().
                     finally(function () {
-                        for (var i = 0; i < _bikes.length; i++) {
-                            vm.markers.push([_bikes[i].lat, _bikes[i].lng]);
-                        }
+                        scheduleUpdate();
                     });
 
             }
@@ -65,6 +56,8 @@ define([
             $scope.$watch('vm.mapBounds', function (bounds) {
                 scheduleUpdate();
             });
+
+            scheduleUpdate();
 
         }
 
@@ -79,8 +72,9 @@ define([
                         vm.nearest = res.nearest;
                         vm.markers = [];
                         for (var i = 0; i < _bikes.length; i++) {
-                            vm.markers.push([_bikes[i].lat, _bikes[i].lng]);
+                            vm.markers.push([_bikes[i].lat, _bikes[i].lng, res.user.id === _bikes[i].user.id ? "state1" : null]);
                         }
+                        console.log(vm.markers);
                     })
                     .finally(function () {
                         _isUpdating = false;

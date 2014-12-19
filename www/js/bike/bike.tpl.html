@@ -35,7 +35,7 @@
 
     <div class="bar bar-footer footer-one-button">
         <button class="button button-block button-balanced ion-flag" ng-click="vm.getAccess()"
-                ng-disabled="vm.locationError || !vm.location || !vm.isValidDistance">
+                ng-disabled="vm.locationError || !vm.location || !vm.isValidDistance || vm.isSameUser">
             Get access
         </button>
     </div>

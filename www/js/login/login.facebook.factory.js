@@ -89,7 +89,7 @@ define([
                                     d.resolve(resp.data.user_info.user);
                                 }
                                 else {
-                                    d.reject(false);
+                                    d.reject("Could not authorize facebook user. Please try again.");
                                 }
                             }, function (err) {
                                 $log.error("/api/loginFacebook", err);
@@ -97,7 +97,7 @@ define([
                                     d.reject(err.data.error);
                                 }
                                 else {
-                                    d.reject(false);
+                                    d.reject("Could not authorize facebook user. Please try again.");
                                 }
                             }).finally(function () {
                                 $ionicLoading.hide();
@@ -110,7 +110,7 @@ define([
                             catch (e) {
                             }
 
-                            var msg = "Login failed";
+                            var msg = "Login failed. Please try again.";
                             if (err.errorMessage) {
                                 msg = err.errorMessage;
                             }
@@ -123,7 +123,7 @@ define([
                         }
                         catch (e) {
                         }
-                        var msg = "Could not get required permissions";
+                        var msg = "Could not get required permissions. Please try again.";
                         if (err.errorMessage) {
                             msg = err.errorMessage;
                         }

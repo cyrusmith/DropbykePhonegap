@@ -69,7 +69,6 @@ define([
                 return d.promise;
             },function (err) {
 
-                $log.log("Login failed", err);
                 $ionicPopup.show({
                     title: "Error",
                     subTitle: err,

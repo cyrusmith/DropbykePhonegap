@@ -23,6 +23,11 @@
     <preference name="APP_ID" value="297052723828418" />
     <preference name="APP_NAME" value="Dropbike" />
     
+	<gap:splash src="splash.png" />
+	
+	<gap:splash src="splash.png" gap:platform="ios" width="320" height="480" />
+	<gap:splash src="splash@2x.png" gap:platform="ios" width="640" height="960" />	
+	
     <icon src="icondefault.png" />
 
     <!-- iPhone 6 / 6+ -->

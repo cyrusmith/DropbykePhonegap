@@ -110,7 +110,7 @@ define([
                                     var location = markers[i],
                                         hasState = location.length > 2,
                                         icon = scope.markerDefaultIcon;
-
+                                    console.log(location, hasState);
                                     if (hasState) {
                                         if (location[2] == "state1" && attrs.markerState1Icon) {
                                             icon = scope.markerState1Icon;

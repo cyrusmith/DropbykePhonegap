@@ -24,6 +24,7 @@ define([
         vm.location;
         vm.locationError;
         vm.isValidDistance;
+        vm.isSameUser;
 
         vm.getLocation = getLocation;
         vm.getAccess = getAccess;
@@ -36,6 +37,8 @@ define([
                 $state.go('app.search');
                 return;
             }
+
+            vm.isSameUser = bike.user.id === bike.bike.user.id;
 
             vm.bike = bike.bike;
             vm.bike.rating = parseInt(bike.bike.rating * 10) / 10;
@@ -109,7 +112,7 @@ define([
 
         function getAccess() {
 
-            if (!vm.location || vm.locationError || !vm.isValidDistance) {
+            if (!vm.location || vm.locationError || !vm.isValidDistance || vm.isSameUser) {
                 return;
             }
 
