@@ -80,6 +80,7 @@ define([
 
             mapDataService.getLocation().then(function (coords) {
                 vm.location = [coords.latitude, coords.longitude];
+                scheduleUpdate();
             },function (error) {
                 $ionicPopup.show({
                     title: error.message,

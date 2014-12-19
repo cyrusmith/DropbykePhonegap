@@ -11,9 +11,9 @@ define([
 
     angular.module("dropbike.bike").controller("BikeController", BikeController);
 
-    BikeController.$inject = ['bike', 'bikeDataService', 'mapDataService', 'mapDataServiceErrorCodes', 'usageDataService', '$ionicPopup', '$ionicLoading', '$state', '$timeout', 'BACKEND_URL'];
+    BikeController.$inject = ['bike', 'bikeDataService', 'mapDataService', 'mapDataServiceErrorCodes', 'usageDataService', '$ionicPopup', '$ionicLoading', '$q', '$state', '$timeout', 'BACKEND_URL'];
 
-    function BikeController(bike, bikeDataService, mapDataService, mapDataServiceErrorCodes, usageDataService, $ionicPopup, $ionicLoading, $state, $timeout, BACKEND_URL) {
+    function BikeController(bike, bikeDataService, mapDataService, mapDataServiceErrorCodes, usageDataService, $ionicPopup, $ionicLoading, $q, $state, $timeout, BACKEND_URL) {
 
         var vm = this;
 
@@ -74,16 +74,7 @@ define([
                         vm.locationError = null;
                     }, 5000);
 
-                    if (error.code === mapDataServiceErrorCodes.ERROR_LOCATION_ACCURACY) {
-                        $ionicPopup.show({
-                            title: 'Could not get accurate location',
-                            subTitle: 'Make sure you\'re using GPS and try again by pressing <i class="icon ion-android-locate"></i>. You cannot get access to bike until your location is accurate enough.',
-                            buttons: [{
-                                type: 'button-assertive',
-                                text: 'Ok'
-                            }]
-                        });
-                    }
+                    return $q.reject(error);
 
                 }).then(function (isValidDistance) {
                     vm.isValidDistance = isValidDistance;
@@ -97,13 +88,31 @@ define([
                         });
                     }
                 }, function (error) {
-                    $ionicPopup.show({
-                        title: error,
-                        buttons: [{
-                            'type': 'button-assertive',
-                            text: 'Ok'
-                        }]
-                    });
+
+                    if (error.code === mapDataServiceErrorCodes.ERROR_LOCATION_ACCURACY) {
+                        $timeout(function () {
+                            $ionicPopup.show({
+                                title: 'Could not get accurate location',
+                                subTitle: 'Make sure you\'re using GPS and try again by pressing <i class="icon ion-android-locate"></i>. You cannot get access to bike until your location is accurate enough.',
+                                buttons: [{
+                                    type: 'button-assertive',
+                                    text: 'Ok'
+                                }]
+                            });
+                        }, 100);
+                    } else {
+                        $timeout(function () {
+                            $ionicPopup.show({
+                                title: error.message,
+                                buttons: [{
+                                    'type': 'button-assertive',
+                                    text: 'Ok'
+                                }]
+                            });
+                        }, 100);
+                    }
+
+
                 }).finally(function () {
                     $ionicLoading.hide();
                 });

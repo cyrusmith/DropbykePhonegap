@@ -48,6 +48,7 @@ define([
             if ($localStorage.dropBikePageHolder) {
                 vm.message = $localStorage.dropBikePageHolder.message;
                 vm.currentLocation = $localStorage.dropBikePageHolder.currentLocation;
+                vm.address = $localStorage.dropBikePageHolder.address;
                 $localStorage.dropBikePageHolder = null;
             }
 
@@ -83,6 +84,7 @@ define([
         function pickPhoto() {
             $localStorage.dropBikePageHolder = {
                 message: vm.message,
+                address: vm.address,
                 currentLocation: vm.currentLocation
             };
             $state.go('app.usagephoto');
@@ -164,6 +166,18 @@ define([
                                 $timeout(function () {
                                     vm.locationError = null
                                 }, 10000);
+                                $timeout(function () {
+                                    $ionicPopup.show({
+                                        title: "Error getting address.",
+                                        subTitle: 'Enter address by hand or try againg pressing <i class="icon ion-android-locate"></i>',
+                                        buttons: [
+                                            {
+                                                text: 'Ok',
+                                                type: 'button-assertive'
+                                            }
+                                        ]
+                                    });
+                                }, 100);
                             });
                     }
 
@@ -176,14 +190,16 @@ define([
                     }, 5000);
 
                     if (error.code === mapDataServiceErrorCodes.ERROR_LOCATION_ACCURACY) {
-                        $ionicPopup.show({
-                            title: 'Could not get accurate location',
-                            subTitle: 'Make sure you\'re using GPS and try again by pressing <i class="icon ion-android-locate"></i>. You cannot drop bike until your location is got accurate enough.',
-                            buttons: [{
-                                type: 'button-assertive',
-                                text: 'Ok'
-                            }]
-                        });
+                        $timeout(function () {
+                            $ionicPopup.show({
+                                title: 'Could not get accurate location',
+                                subTitle: 'Make sure you\'re using GPS and try again by pressing <i class="icon ion-android-locate"></i>. You cannot drop bike until your location is got accurate enough.',
+                                buttons: [{
+                                    type: 'button-assertive',
+                                    text: 'Ok'
+                                }]
+                            });
+                        }, 100);
                     }
 
                 }).finally(function () {
