@@ -108,6 +108,7 @@ define([
             return mapDataService.getLocation()
                 .then(function (pos) {
                     vm.locationError = null;
+                    $localStorage.selectedLocation = null;
                     vm.currentLocation = [pos.latitude, pos.longitude];
                     mapDataService.geodecode(pos)
                         .then(function (address) {
