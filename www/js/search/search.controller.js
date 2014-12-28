@@ -98,6 +98,7 @@ define([
         }
 
         function getCurrentLocation() {
+            vm.address = null;
             doGetLocation();
         }
 

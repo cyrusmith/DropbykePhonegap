@@ -9,66 +9,15 @@ define([
 
     angular.module("dropbike.address").controller('AddressController', AddressController);
 
-    AddressController.$inject = ['$timeout', '$ionicPopup', 'mapDataService', '$scope', '$state', '$localStorage', 'addressDataService'];
+    AddressController.$inject = ['addressControllerDecorator', '$localStorage', '$state', '$scope'];
 
-    function AddressController($timeout, $ionicPopup, mapDataService, $scope, $state, $localStorage, addressDataService) {
+    function AddressController(addressControllerDecorator, $localStorage, $state, $scope) {
 
-        var vm = this;
-
-        vm.address = "";
-        vm.results = [];
-        vm.selectAddress = selectAddress;
-        vm.history = addressDataService.getSearchHistory();
-
-        $scope.$watch('vm.address', scheduleSearch);
-
-        var _timeout = null;
-
-        function scheduleSearch() {
-            $timeout.cancel(_timeout);
-            _timeout = $timeout(function () {
-                mapDataService.geocode(vm.address)
-                    .then(function (results) {
-                        vm.results = [];
-                        for (var i = 0; i < results.length; i++) {
-                            vm.results.push({
-                                address: results[i].formatted_address,
-                                lat: results[i].geometry.location.lat(),
-                                lng: results[i].geometry.location.lng()
-                            });
-                        }
-                    }, function (error) {
-                        $ionicPopup.show({
-                            title: 'Geocode error',
-                            subtitle: error.message || '',
-                            buttons: [{
-                                type: 'button-assertive',
-                                text: 'Ok'
-                            }]
-                        });
-                    });
-            }, 500);
-        }
-
-        function selectAddress(addr) {
-            $ionicPopup.show({
-                template: 'You selected ' + addr.address,
-                title: 'Apply selection?',
-                subTitle: 'Location: ' + addr.lat + ", " + addr.lng,
-                buttons: [
-                    {text: 'Cancel'},
-                    {
-                        text: '<b>Apply</b>',
-                        type: 'button-positive',
-                        onTap: function (e) {
-                            $localStorage.selectedLocation = addr;
-                            addressDataService.addToSearchHistory(addr);
-                            $state.go('app.search');
-                        }
-                    }
-                ]
-            });
-        }
+        addressControllerDecorator(this, function (addr) {
+            console.log(addr);
+            $localStorage.selectedLocation = addr;
+            $state.go('app.search');
+        }, $scope);
 
     }
 

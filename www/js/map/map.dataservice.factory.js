@@ -212,11 +212,17 @@ define([
                 d.resolve();
             }
             else if (isApiScriptAdded()) {
+                var counter = 0;
                 var interval = $interval(function () {
-                    console.log('int');
                     if (checkMapLoaded()) {
                         $interval.cancel(interval);
                         d.resolve();
+                        return;
+                    }
+                    counter++;
+                    if (counter > 50) {
+                        d.reject('Could not load map api');
+                        $interval.cancel(interval);
                     }
                 }, 100);
 

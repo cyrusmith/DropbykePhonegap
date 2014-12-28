@@ -13,7 +13,8 @@
         <div class="usage-drop-container">
 
             <div class="map dropbike-map">
-                <p ng-show="vm.locationError" class="location-error"><i class="icon ion-alert-circled"></i> {{vm.locationError}}</p>
+                <p ng-show="vm.locationError" class="location-error"><i class="icon ion-alert-circled"></i>
+                    {{vm.locationError}}</p>
                 <a class="dropbike-location" ng-click="vm.getCurrentLocation()"><i class="icon ion-android-locate"></i></a>
                 <google-map
                         location="vm.currentLocation"
@@ -23,14 +24,13 @@
                         />
 
             </div>
-            <div class="list list-inset">
-                <label class="item item-input">
-                    <i class="icon ion-ios7-location placeholder-icon balanced"></i>
-                    <input type="text" placeholder="Address" ng-model="vm.address">
-                </label>
-            </div>
+
+            <a ui-sref="app.usagedrop.address" class="button button-block ion-chevron-right icon-right">{{vm.address}} <i ng-show="!vm.address" style="font-style:italic;">Set address</i></a>
+
             <div class="photo" bg-image="vm.photo">
-                <div class="prompt" ng-hide="vm.ride.hasPhoto">Please take photo of locked bike to help next user find it</div>
+                <div class="prompt" ng-hide="vm.ride.hasPhoto">Please take photo of locked bike to help next user find
+                    it
+                </div>
                 <div class="takephoto">
                     <button class="button ion-camera" ng-click="vm.pickPhoto()"></button>
                 </div>
@@ -38,7 +38,8 @@
 
             <div class="message">
                 <label class="item-input">
-                    <textarea placeholder="Please leave message for next user to help him find bike" ng-model="vm.message"></textarea>
+                    <textarea placeholder="Please leave message for next user to help him find bike"
+                              ng-model="vm.message"></textarea>
                 </label>
             </div>
 

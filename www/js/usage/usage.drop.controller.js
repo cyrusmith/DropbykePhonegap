@@ -27,7 +27,7 @@ define([
 
         vm.pickPhoto = pickPhoto;
         vm.drop = drop;
-        vm.getCurrentLocation = getCurrentLocation;
+        vm.getCurrentLocation = resetAddressAndGetCurrentLocation;
         vm.isReadyToDrop = isReadyToDrop;
 
         init();
@@ -39,11 +39,13 @@ define([
             vm.ride = rideData.ride;
             vm.photo = null;
             vm.message = null;
-            vm.address = null;
+            vm.address = $localStorage.selectedAddressFlash ? $localStorage.selectedAddressFlash.address  : null;
             vm.loading = false;
             vm.initialized = true;
 
             vm.photo = BACKEND_URL + '/images/rides/' + vm.ride.id + '.jpg?nocache=' + (new Date().getTime());
+
+            $localStorage.selectedAddressFlash = null;
 
             if ($localStorage.dropBikePageHolder) {
                 vm.message = $localStorage.dropBikePageHolder.message;
@@ -142,6 +144,11 @@ define([
                     });
                 });
 
+        }
+
+        function resetAddressAndGetCurrentLocation() {
+            vm.address = null;
+            getCurrentLocation();
         }
 
         function getCurrentLocation() {

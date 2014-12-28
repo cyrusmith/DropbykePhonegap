@@ -11,6 +11,7 @@ define([
 
     require([
         "address/address.controller",
+        "address/address.controllerdecorator.factory",
         "address/address.dataservice.factory"
     ]);
 

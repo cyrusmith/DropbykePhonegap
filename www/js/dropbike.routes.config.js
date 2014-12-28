@@ -212,7 +212,7 @@ define([
 
         $stateProvider
             .state('app.usagedrop', {
-                url: "/usagedrop/",
+                url: "/usagedrop",
                 views: {
                     'menuContent': {
                         templateUrl: "js/usage/usage.drop.tpl.html",
@@ -240,6 +240,15 @@ define([
                                 return d.promise;
                             }]
                         }
+                    }
+                }
+            })
+            .state('app.usagedrop.address', {
+                url: '/address',
+                views: {
+                    'menuContent@app': {
+                        templateUrl: "js/address/address.tpl.html",
+                        controller: 'UsageDropAddressController as vm'
                     }
                 }
             });
