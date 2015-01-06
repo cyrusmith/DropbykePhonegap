@@ -88,14 +88,10 @@ define([
                     }
                     else {
                         authService.setPhoneConfirmed(true);
-                        if (!userInfo.cards.length) {
-                            $state.go('app.editcard');
-                        }
-                        else {
+                        if (userInfo.cards.length) {
                             authService.setHasPayment(true);
-                            $state.go('app.search');
                         }
-
+                        $state.go('app.search');
                     }
                 }).
                 finally(function () {

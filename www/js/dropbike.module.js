@@ -68,9 +68,6 @@ define([
                         else if (!authService.isPhoneConfirmed()) {
                             event.preventDefault();
                             $state.go('app.phoneconfirm');
-                        } else if (!authService.isHasPayment()) {
-                            event.preventDefault();
-                            $state.go('app.editcard');
                         }
                     }
                     return true;

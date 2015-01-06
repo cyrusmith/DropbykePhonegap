@@ -13,8 +13,6 @@ define([
 
     function UsageAccessController(rideData, BACKEND_URL) {
 
-        console.log("UsageAccessController", rideData);
-
         var vm = this;
 
         vm.ride;
@@ -28,8 +26,6 @@ define([
         vm.call = call;
 
         init();
-
-        console.log('UsageAccessController', rideData);
 
         function init() {
             vm.ride = rideData.ride;

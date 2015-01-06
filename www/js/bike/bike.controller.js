@@ -24,6 +24,7 @@ define([
         vm.location;
         vm.locationError;
         vm.isValidDistance;
+        vm.isHasCards;
         vm.isSameUser;
 
         vm.getLocation = getLocation;
@@ -40,6 +41,8 @@ define([
 
             vm.isSameUser = bike.user.id === bike.bike.user.id;
 
+            vm.isHasCards = bike.user.cards && bike.user.cards.length;
+
             vm.bike = bike.bike;
             vm.bike.rating = parseInt(bike.bike.rating * 10) / 10;
             vm.bike.photo = BACKEND_URL + '/images/bikes/' + vm.bike.id + '.jpg';
@@ -50,7 +53,25 @@ define([
             ];
             vm.zoom = 17;
 
-            getLocation();
+
+            if (vm.isHasCards) {
+                getLocation();
+            }
+            else {
+                $ionicPopup.show({
+                    title: 'Before access bike please add at least one card',
+                    buttons: [{
+                        'type': 'button-balanced',
+                        text: 'Add card',
+                        onTap: function () {
+                            $state.go('app.editcard');
+                        }
+                    }, {
+                        'type': 'button-energized',
+                        text: 'Later'
+                    }]
+                });
+            }
 
         }
 
@@ -121,7 +142,7 @@ define([
 
         function getAccess() {
 
-            if (!vm.location || vm.locationError || !vm.isValidDistance || vm.isSameUser) {
+            if (!vm.location || vm.locationError || !vm.isValidDistance || vm.isSameUser || !vm.isHasCards) {
                 return;
             }
 
