@@ -342,6 +342,10 @@ $dropbike-field-color: #29404F;
   }
 }
 
+.popover-filter {
+  padding: 0;
+}
+
 .db-page-phone-confirm {
   .phoneinput {
     padding: 0 2rem;
@@ -354,10 +358,44 @@ $dropbike-field-color: #29404F;
       padding-left: 0;
       display: block;
       width: 100%;
-      &.input-countrycode {
-        input {
-          text-align: center;
-        }
+    }
+    .input-countrycode {
+
+      height: 47px;
+      text-align: center;
+      line-height: 1em;
+      padding-left: 0;
+      display: block;
+      width: 100%;
+      padding-right: 1em;
+
+      position: relative;
+      overflow: visible;
+
+      .plus {
+        position: absolute;
+        left: -1em;
+        top: 18px;
+      }
+
+      .icon {
+        font-size: 1em;
+        right: 6px;
+        width: 16px;
+      }
+
+      small {
+        display: inline-block;
+        padding: 0;
+      }
+      select {
+        max-width: 100%;
+        width: 100%;
+        padding: 13px 28px 16px 6px;
+        direction: ltr;
+      }
+      input {
+        text-align: center;
       }
     }
     input {

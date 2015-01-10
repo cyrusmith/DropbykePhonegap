@@ -5,24 +5,83 @@ define([
     'use strict';
 
     angular.module('dropbike.phone').controller('PhoneController', PhoneController);
-    PhoneController.$inject = ['$ionicPopup', '$ionicLoading', '$log', '$state', 'confirmService'];
-    function PhoneController($ionicPopup, $ionicLoading, $log, $state, confirmService) {
+    PhoneController.$inject = ['$ionicPopup', '$ionicPopover', '$scope', '$ionicLoading', '$ionicScrollDelegate', '$log', '$state', 'confirmService', 'CALLING_CODES'];
+    function PhoneController($ionicPopup, $ionicPopover, $scope, $ionicLoading, $ionicScrollDelegate, $log, $state, confirmService, CALLING_CODES) {
 
         var vm = this;
 
-        vm.countrycode;
+        vm.countrycode = '1';
         vm.phone;
+        vm.callingCodes;
+        vm.countryFilterText;
         vm.submit = submit;
-        vm.validateCountryCode = validateCountryCode;
         vm.validatePhone = validatePhone;
+        vm.openCodeSelector = openCodeSelector;
+        vm.onSelectCode = onSelectCode;
+        vm.filterCountries = filterCountries;
+        vm.isReady = isReady;
 
-        function validateCountryCode() {
+        vm.test1 = function () {
+            alert('sdsd')
+        }
 
-            var code = vm.countrycode + '';
+        var _popover;
 
-            if (code && code.length > 1) {
-                vm.countrycode = +code.substr(0, 1)
+        init();
+
+        function init() {
+
+            vm.callingCodes = CALLING_CODES.slice(0);
+            vm.countryFilterText = '';
+            $scope.vm = vm;
+
+            $ionicPopover.fromTemplateUrl('js/phone/callingcodes.popover.tpl.html', {
+                scope: $scope
+            }).then(function (popover) {
+                _popover = popover;
+            });
+
+            $scope.$on('$destroy', function () {
+                _popover.remove();
+            });
+
+            $scope.$on('popover.hidden', function () {
+                vm.countryFilterText = '';
+                filterCountries();
+            });
+
+        }
+
+        function filterCountries() {
+
+            vm.callingCodes = CALLING_CODES.slice(0);
+
+            vm.countryFilterText = vm.countryFilterText.replace(/[^a-z]/, '');
+
+            if (vm.countryFilterText.length < 1) {
+                return;
             }
+
+            vm.callingCodes = vm.callingCodes.filter(function (el) {
+                var srch = vm.countryFilterText.toLowerCase(),
+                    text = el.country.toLowerCase();
+
+                return text.indexOf(srch) === 0;
+
+            });
+
+            $ionicScrollDelegate.scrollTop();
+        }
+
+        function openCodeSelector($event) {
+            vm.countryFilterText = '';
+            filterCountries();
+            _popover.show($event);
+        }
+
+        function onSelectCode(codeInfo) {
+            vm.countrycode = codeInfo.code;
+            _popover.hide();
         }
 
         function validatePhone() {
@@ -30,11 +89,15 @@ define([
             var phone = vm.phone + '';
             if (phone) {
                 phone = phone.replace(phoneRE, '');
-                if (phone.length > 10) {
-                    phone = phone.substr(0, 10);
-                }
             }
             vm.phone = +phone;
+        }
+
+        function isReady() {
+            validatePhone();
+            if (!vm.phone || !vm.countrycode) return false;
+            var phone = "" + vm.countrycode + vm.phone;
+            return phone.length > 6
         }
 
         function submit() {
@@ -67,7 +130,7 @@ define([
 
             var phone = "" + vm.countrycode + vm.phone;
 
-            if (phone.length !== 11) {
+            if (phone.length < 3) {
 
                 $ionicPopup.show({
                     title: 'Invalid phone number',

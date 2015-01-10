@@ -40,6 +40,7 @@ define([
 
     require([
         "dropbike.constants",
+        "dropbike.callingcodes.constants",
         "dropbike.config",
         "dropbike.routes.config",
         "dropbike.interceptor",

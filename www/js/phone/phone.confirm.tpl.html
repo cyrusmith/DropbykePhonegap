@@ -10,16 +10,19 @@
 
             <div class="row">
                 <div class="col">
-                    <label class="item item-input input-countrycode">
-                        <input type="number" formnovalidate ng-model="vm.countrycode" size="1" ng-keyup="vm.validateCountryCode()">
-                    </label>
-                    <small>Country code<br>(1 digit)</small>
+
+                    <a class="item item-icon-right input-countrycode" ng-click="vm.openCodeSelector($event)">
+                        <span class="plus">&plus;</span>
+                        <i class="icon ion-arrow-down-b"></i> <small>{{vm.countrycode}}</small>
+                    </a>
+
+                    <small>Country code<br></small>
                 </div>
                 <div class="col col-75">
                     <label class="item item-input">
                         <input type="number" formnovalidate ng-model="vm.phone" ng-keyup="vm.validatePhone()">
                     </label>
-                    <small>Phone number (10 digits)</small>
+                    <small>Local phone number</small>
                 </div>
             </div>
 
@@ -28,7 +31,7 @@
         <div class="list list-inset">
 
             <div class="padding-top">
-                <button class="button button-calm button-block" ng-click="vm.submit()">
+                <button class="button button-calm button-block" ng-click="vm.submit()" ng-disabled="!vm.isReady()">
                     Next
                 </button>
             </div>

@@ -78,15 +78,13 @@ define([
 
                     if (user.cards && user.cards.length) {
                         authService.setHasPayment(true);
-                        if (ride) {
-                            $state.go('app.usageaccess');
-                        }
-                        else {
-                            $state.go('app.search');
-                        }
+                    }
+
+                    if (ride) {
+                        $state.go('app.usageaccess');
                     }
                     else {
-                        $state.go('app.editcard');
+                        $state.go('app.search');
                     }
 
 

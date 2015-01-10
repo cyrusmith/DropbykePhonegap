@@ -1,0 +1,18 @@
+<ion-popover-view>
+    <ion-header-bar>
+        <div style="width:100%;">
+            <label class="popover-filter item-input icon-right">
+                <i class="icon ion-search placeholder-icon"></i>
+                <input type="text" placeholder="Search country" ng-model="vm.countryFilterText" ng-change="vm.filterCountries()">
+            </label>
+        </div>
+    </ion-header-bar>
+    <ion-content>
+        <ion-list>
+            <ion-item ng-repeat="item in vm.callingCodes" ng-click="vm.onSelectCode(item)">
+                {{item.country}}<br>
+                <small>{{item.code}}</small>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-popover-view>
