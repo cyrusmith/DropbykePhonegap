@@ -56,6 +56,9 @@ define([
                     if (navigator.splashscreen) {
                         navigator.splashscreen.hide();
                     }
+                    document.addEventListener("backbutton", function (e) {
+                        e.preventDefault();
+                    }, false);
                 }, false);
 
                 $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {

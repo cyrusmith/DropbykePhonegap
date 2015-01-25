@@ -6,9 +6,9 @@ define([
 
     angular.module('dropbike.sharing').controller('SharingBikeEditCtrl', SharingBikeEditCtrl);
 
-    SharingBikeEditCtrl.$inject = ['bike', 'profile', 'bikeEditFormDataService', '$scope', '$state', 'facebook', '$ionicPopup', '$ionicLoading', 'sharingBikeDataService', 'WEBSITE', 'BACKEND_URL'];
+    SharingBikeEditCtrl.$inject = ['bike', 'profile', 'bikeEditFormDataService', '$scope', '$state', 'appstate', 'facebook', '$ionicPopup', '$ionicLoading', 'sharingBikeDataService', 'WEBSITE', 'BACKEND_URL'];
 
-    function SharingBikeEditCtrl(bike, profile, bikeEditFormDataService, $scope, $state, facebook, $ionicPopup, $ionicLoading, sharingBikeDataService, WEBSITE, BACKEND_URL) {
+    function SharingBikeEditCtrl(bike, profile, bikeEditFormDataService, $scope, $state, appstate, facebook, $ionicPopup, $ionicLoading, sharingBikeDataService, WEBSITE, BACKEND_URL) {
 
         var vm = this;
 
@@ -21,7 +21,10 @@ define([
 
         function init() {
 
-            console.log('SharingBikeEditCtrl 1', bike, bikeEditFormDataService.get());
+            if (appstate.getMode() !== 'share') {
+                $state.go('app.search');
+                return;
+            }
 
             var data = bikeEditFormDataService.get();
 

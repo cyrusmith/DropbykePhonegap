@@ -22,7 +22,7 @@ define([
         vm.isReady = isReady;
 
         vm.test1 = function () {
-            alert('sdsd')
+
         }
 
         var _popover;

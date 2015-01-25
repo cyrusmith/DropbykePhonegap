@@ -6,9 +6,9 @@ define([
 
     angular.module('dropbike.sharing').controller('SharingBikeLocationCtrl', SharingBikeLocationCtrl);
 
-    SharingBikeLocationCtrl.$inject = ['$scope', '$state', 'bikeEditFormDataService', 'mapDataService', '$ionicPopup', '$ionicLoading'];
+    SharingBikeLocationCtrl.$inject = ['$scope', '$state', 'appstate', 'bikeEditFormDataService', 'mapDataService', '$ionicPopup', '$ionicLoading'];
 
-    function SharingBikeLocationCtrl($scope, $state, bikeEditFormDataService, mapDataService, $ionicPopup, $ionicLoading) {
+    function SharingBikeLocationCtrl($scope, $state, appstate, bikeEditFormDataService, mapDataService, $ionicPopup, $ionicLoading) {
 
         var vm = this;
         vm.address;
@@ -26,6 +26,11 @@ define([
         init();
 
         function init() {
+
+            if (appstate.getMode() !== 'share') {
+                $state.go('app.search');
+                return;
+            }
 
             vm.editMode = false;
 
@@ -46,7 +51,7 @@ define([
 
                 mapDataService.getLocation().then(function (pos) {
                     vm.location = [pos.latitude, pos.longitude];
-                },function (error) {
+                }, function (error) {
                     $ionicPopup.show({
                         title: error.message,
                         buttons: [
@@ -57,8 +62,8 @@ define([
                         ]
                     });
                 }).finally(function () {
-                        $ionicLoading.hide();
-                    });
+                    $ionicLoading.hide();
+                });
             }
 
             var locInit = false;
@@ -119,7 +124,7 @@ define([
                     if (results && results.length > 0) {
                         vm.address = results[0].formatted_address;
                     }
-                },function (error) {
+                }, function (error) {
                     $ionicPopup.show({
                         title: 'Error',
                         subTitle: error.message,

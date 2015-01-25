@@ -18,6 +18,12 @@ define([
         init();
 
         function init() {
+
+            if (appstate.getMode() !== 'share') {
+                $state.go('app.search');
+                return;
+            }
+
             vm.sharingToggle = true;
 
             $rootScope.$on('$stateChangeSuccess',
@@ -31,7 +37,6 @@ define([
         }
 
         function changeSharingToggle() {
-            console.log(vm.sharingToggle);
             if (vm.sharingToggle === true) {
                 appstate.setMode('share');
                 $state.go('sharing.mybikes');

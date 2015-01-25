@@ -6,9 +6,9 @@ define([
 
     angular.module('dropbike.sharing').controller('SharingBikePhotoCtrl', SharingBikePhotoCtrl);
 
-    SharingBikePhotoCtrl.$inject = ['targetField', 'initImage', 'bikeEditFormDataService', '$state', '$ionicPopup', 'cameraUtil', 'BACKEND_URL', '$log'];
+    SharingBikePhotoCtrl.$inject = ['targetField', 'initImage', 'bikeEditFormDataService', '$state', 'appstate', '$ionicPopup', 'cameraUtil', 'BACKEND_URL', '$log'];
 
-    function SharingBikePhotoCtrl(targetField, initImage, bikeEditFormDataService, $state, $ionicPopup, cameraUtil, BACKEND_URL, $log) {
+    function SharingBikePhotoCtrl(targetField, initImage, bikeEditFormDataService, $state, appstate, $ionicPopup, cameraUtil, BACKEND_URL, $log) {
 
         var vm = this;
 
@@ -23,7 +23,12 @@ define([
         init();
 
         function init() {
-            console.log("initImage", initImage);
+
+            if (appstate.getMode() !== 'share') {
+                $state.go('app.search');
+                return;
+            }
+
             if (!targetField) {
                 throw "Illegal argument: targetField is not set";
             }
@@ -68,22 +73,22 @@ define([
                     }
                 ]
             }).then(function (src) {
-                    cameraUtil.pick(src)
-                        .then(function (uri) {
-                            vm.photo = uri;
-                        }, function (error) {
-                            $ionicPopup.show({
-                                title: 'Error',
-                                subTitle: 'Failed to get photo: ' + error,
-                                buttons: [
-                                    {
-                                        text: 'Ok',
-                                        type: 'button-assertive'
-                                    }
-                                ]
-                            });
+                cameraUtil.pick(src)
+                    .then(function (uri) {
+                        vm.photo = uri;
+                    }, function (error) {
+                        $ionicPopup.show({
+                            title: 'Error',
+                            subTitle: 'Failed to get photo: ' + error,
+                            buttons: [
+                                {
+                                    text: 'Ok',
+                                    type: 'button-assertive'
+                                }
+                            ]
                         });
-                });
+                    });
+            });
 
         }
 

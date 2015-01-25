@@ -11,9 +11,9 @@ define([
 
     angular.module('dropbike.sharing.history').controller('SharingHistoryListCtrl', SharingHistoryListCtrl);
 
-    SharingHistoryListCtrl.$inject = ['items'];
+    SharingHistoryListCtrl.$inject = ['items', '$state', 'appstate'];
 
-    function SharingHistoryListCtrl(items) {
+    function SharingHistoryListCtrl(items, $state, appstate) {
         var vm = this;
 
         vm.items;
@@ -21,6 +21,12 @@ define([
         init();
 
         function init() {
+
+            if (appstate.getMode() !== 'share') {
+                $state.go('app.search');
+                return;
+            }
+
             vm.items = items;
         }
     }
